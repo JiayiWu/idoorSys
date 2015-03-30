@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
+	xmlns:tx="http://www.springframework.org/schema/tx" default-autowire="byName">
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:db.properties</value>
+		</property>
+	</bean>
+	<bean id="ds1" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="${db1.url}">
+		</property>
+		<property name="user" value="${db1.user}"></property>
+		<property name="password" value="${db1.password}"></property>
+		<property name="maxPoolSize" value="40"></property>
+		<property name="minPoolSize" value="1"></property>
+		<property name="initialPoolSize" value="1"></property>
+		<property name="maxIdleTime" value="20"></property>
+	</bean>
+	<bean id="ds2" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="${db2.url}">
+		</property>
+		<property name="user" value="${db2.user}"></property>
+		<property name="password" value="${db2.password}"></property>
+		<property name="maxPoolSize" value="40"></property>
+		<property name="minPoolSize" value="1"></property>
+		<property name="initialPoolSize" value="1"></property>
+		<property name="maxIdleTime" value="20"></property>
+	</bean>
+
+	<bean id="dataSource" class="com.idoorSys.utils.RoutingDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry key="ds1" value-ref="ds1" />
+				<entry key="ds2" value-ref="ds2" />
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="ds1" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<!-- 自动扫描注解方式配置的hibernate类文件 -->
+		<property name="packagesToScan">
+			<list>
+				<value>com.idoorSys.model</value>
+			</list>
+		</property>
+		<property name="configLocation">
+			<value>classpath:hibernate.cfg.xml</value>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hiberante.format_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!-- 需要引入tx的命名空间 -->
+
+	<bean id="springContextsUtil" class="com.idoorSys.utils.SpringContextsUtil"></bean>
+
+	<bean name="testDao" class="com.idoorSys.dao.TestDao">
+	</bean>
+
+	<bean name="roomDao" class="com.idoorSys.dao.RoomDao">
+	</bean>
+	<bean name="roomService" class="com.idoorSys.service.RoomService">
+		<property name="baseDao">
+			<ref bean="roomDao" />
+		</property>
+	</bean>
+
+	<bean name="permissionDao" class="com.idoorSys.dao.PermissionDao">
+	</bean>
+	<bean name="permissionService" class="com.idoorSys.service.PermissionService">
+		<property name="baseDao">
+			<ref bean="permissionDao" />
+		</property>
+	</bean>
+
+	<bean name="permissionUserDao" class="com.idoorSys.dao.PermissionUserDao">
+	</bean>
+	<bean name="permissionUserService" class="com.idoorSys.service.PermissionUserService">
+		<property name="baseDao">
+			<ref bean="permissionUserDao" />
+		</property>
+	</bean>
+
+	<bean name="remoteRoomUserDao" class="com.idoorSys.dao.RemoteRoomUserDao">
+	</bean>
+	<bean name="remoteRoomUserService" class="com.idoorSys.service.RemoteRoomUserService">
+		<property name="baseDao">
+			<ref bean="remoteRoomUserDao" />
+		</property>
+	</bean>
+
+	<bean name="reserveDetailsDao" class="com.idoorSys.dao.ReserveDetailsDao">
+	</bean>
+	<bean name="reserveDetailsService" class="com.idoorSys.service.ReserveDetailsService">
+		<property name="baseDao">
+			<ref bean="reserveDetailsDao" />
+		</property>
+	</bean>
+
+	<bean name="excelPermitionImportService" class="com.idoorSys.service.ExcelPermitionImportService">
+	</bean>
+
+	<bean name="sysUserDao" class="com.idoorSys.dao.SysUserDao">
+	</bean>
+	<bean name="sysUserService" class="com.idoorSys.service.SysUserService">
+		<property name="baseDao">
+			<ref bean="sysUserDao" />
+		</property>
+	</bean>
+
+	<bean name="reserveDao" class="com.idoorSys.dao.ReserveDao"></bean>
+	<bean name="reserveService" class="com.idoorSys.service.ReserveService">
+		<property name="baseDao">
+			<ref bean="reserveDao" />
+		</property>
+	</bean>
+
+
+	<bean name="job1" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="com.idoorSys.service.TimerJobService" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="timeout" value="0" />
+			</map>
+		</property>
+	</bean>
+	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="job1" />
+		<property name="cronExpression" value="0/100 * * * * ?" />
+	</bean>
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" autowire="no">
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger" />
+			</list>
+		</property>
+	</bean>
+
+
+
+
+
+
+
+
+
+</beans>

@@ -1,0 +1,9 @@
+{
+	"statusCode":"300",
+	"message":"fail",
+	"navTabId":"",
+	"rel":"",
+	"callbackType":"closeCurrent",
+	"forwardUrl":"",
+	"confirmMsg":""
+}
