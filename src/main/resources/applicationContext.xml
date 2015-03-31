@@ -156,7 +156,8 @@
 			</list>
 		</property>
 	</bean>
-
+	<bean name="applianceService" class="com.idoorSys.service.ApplianceService">
+	</bean>
 
 
 
