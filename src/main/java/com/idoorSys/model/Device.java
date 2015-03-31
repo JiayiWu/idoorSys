@@ -1,11 +1,19 @@
 package com.idoorSys.model;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * Device entity. @author MyEclipse Persistence Tools
@@ -15,16 +23,61 @@ import javax.persistence.Table;
 public class Device implements java.io.Serializable {
 
 	// Fields
-
+	public enum State {
+		on, of
+	}
+	
 	private Integer id;
 	private String roomNum;
 	private String frontDoorState;
 	private String backDoorState;
-	private String deskNum;
-	private String deskState;
-	private String lightNum;
-	private String lightState;
+//	private String deskNum;
+	private String deskState;	// json map
+//	private String lightNum;
+	private String lightState;	// json map
 
+	// State Setter
+	public void setDeskState(String deskNo, State state) {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			Map<String, String> map = mapper.readValue(deskState, Map.class);
+			map.put(deskNo, state.toString());
+			this.deskState = mapper.writeValueAsString(map);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public void setLightState(String lightNo, State state) {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			Map<String, String> map = mapper.readValue(lightState, Map.class);
+			map.put(lightNo, state.toString());
+			this.lightState = mapper.writeValueAsString(map);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	// StateMap generator
+	public Map<String, String> generateDeskStateMap() {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, String> map = new HashMap<>();
+		try {
+			map = mapper.readValue(deskState, Map.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	public Map<String, String> generateLightStateMap() {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, String> map = new HashMap<>();
+		try {
+			map = mapper.readValue(lightState, Map.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
 	// Constructors
 
 	/** default constructor */
@@ -33,13 +86,13 @@ public class Device implements java.io.Serializable {
 
 	/** full constructor */
 	public Device(String roomNum, String frontDoorState, String backDoorState,
-			String deskNum, String deskState, String lightNum, String lightState) {
+			String deskState, String lightState) {
 		this.roomNum = roomNum;
 		this.frontDoorState = frontDoorState;
 		this.backDoorState = backDoorState;
-		this.deskNum = deskNum;
+//		this.deskNum = deskNum;
 		this.deskState = deskState;
-		this.lightNum = lightNum;
+//		this.lightNum = lightNum;
 		this.lightState = lightState;
 	}
 
@@ -64,7 +117,7 @@ public class Device implements java.io.Serializable {
 		this.roomNum = roomNum;
 	}
 
-	@Column(name = "front_door_state", length = 1)
+	@Column(name = "front_door_state", length = 2)
 	public String getFrontDoorState() {
 		return this.frontDoorState;
 	}
@@ -73,7 +126,7 @@ public class Device implements java.io.Serializable {
 		this.frontDoorState = frontDoorState;
 	}
 
-	@Column(name = "back_door_state", length = 1)
+	@Column(name = "back_door_state", length = 2)
 	public String getBackDoorState() {
 		return this.backDoorState;
 	}
@@ -82,16 +135,16 @@ public class Device implements java.io.Serializable {
 		this.backDoorState = backDoorState;
 	}
 
-	@Column(name = "desk_num", length = 10)
-	public String getDeskNum() {
-		return this.deskNum;
-	}
+//	@Column(name = "desk_num", length = 10)
+//	public String getDeskNum() {
+//		return this.deskNum;
+//	}
 
-	public void setDeskNum(String deskNum) {
-		this.deskNum = deskNum;
-	}
+//	public void setDeskNum(String deskNum) {
+//		this.deskNum = deskNum;
+//	}
 
-	@Column(name = "desk_state", length = 1)
+	@Column(name = "desk_state", length = 256)
 	public String getDeskState() {
 		return this.deskState;
 	}
@@ -100,16 +153,16 @@ public class Device implements java.io.Serializable {
 		this.deskState = deskState;
 	}
 
-	@Column(name = "light_num", length = 10)
-	public String getLightNum() {
-		return this.lightNum;
-	}
+//	@Column(name = "light_num", length = 10)
+//	public String getLightNum() {
+//		return this.lightNum;
+//	}
 
-	public void setLightNum(String lightNum) {
-		this.lightNum = lightNum;
-	}
+//	public void setLightNum(String lightNum) {
+//		this.lightNum = lightNum;
+//	}
 
-	@Column(name = "light_state", length = 1)
+	@Column(name = "light_state", length = 256)
 	public String getLightState() {
 		return this.lightState;
 	}

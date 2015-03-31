@@ -1,12 +1,17 @@
 package com.idoorSys.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.idoorSys.model.Device;
+import com.idoorSys.model.Room;
 import com.idoorSys.service.ApplianceService;
+import com.idoorSys.service.RoomService;
+import com.idoorSys.utils.Msg;
 import com.idoorSys.utils.SpringContextsUtil;
 
 @Controller
@@ -14,17 +19,30 @@ import com.idoorSys.utils.SpringContextsUtil;
 public class ApplianceController {
 	public static final String PATH = "appliance/";
 	
+	ApplianceService applianceService = (ApplianceService) SpringContextsUtil
+			.getBean("applianceService");
+	RoomService roomService = (RoomService) SpringContextsUtil
+			.getBean("roomService");
+	
 	@RequestMapping("list")
 	public String list(Map<String, Object> model) {
-//		ApplianceService applianceService = (ApplianceService)SpringContextsUtil.getBean("applianceServie");
-//		applianceService.sayHello();
+		List<Room> rooms = (List<Room>) roomService.getAll();
+		model.put("rooms", rooms);
+		return PATH+"list";
+	}
+	@RequestMapping("listDevice")
+	public String listDevice(@RequestParam("roomId")String roomId, Map<String, Object> model) {
+		Device device = applianceService.getDevice(roomId);
+		model.put("device", device);
 		return PATH+"list";
 	}
 	@RequestMapping("send")
-	public String send(@RequestParam("doorNo")String doorNo, Map<String, Object> model) {
-		System.out.println(model.size());
-		model.put("doorNo", doorNo);
-		System.out.println(doorNo);
-		return PATH+"list";
+	public String send(@RequestParam("newState")Device newState) {
+		Msg msg = applianceService.send("command");
+		if (msg == Msg.SUCCESS) {
+			return "ajaxDone";
+		} else {
+			return "ajaxFail";
+		}
 	}
 }
