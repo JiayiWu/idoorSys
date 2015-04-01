@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div class="pageHeader">
 	<form onsubmit="return navTabSearch(this);" action="appliance/listDevice"
 		method="post">
@@ -63,8 +64,10 @@
 		</select>
 		</p>
 		<c:set var="map" value="${device.generateDeskStateMap()}"/>
-		<c:forEach var="desk" items="${map.keySet()}">
-			${desk} ${map.get(desk)}<br />
+		<c:forEach var="deskNo" items="${map.keySet()}">
+			<c:set var="desk" value="${fn:replace(deskNo,'l','号左侧灯')}"/>
+			<c:set var="desk" value="${fn:replace(desk,'r','号右侧灯')}"/>
+			${desk} ${map.get(deskNo)}<br />
 		</c:forEach>
 		
 		<div class="buttonActive">
