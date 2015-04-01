@@ -119,7 +119,7 @@ $(function(){
 			</div>
 
 			<!-- navMenu -->
-			
+
 		</div>
 
 		<div id="leftside">
@@ -140,17 +140,17 @@ $(function(){
 							<li><a href="tabsPage.html" target="navTab">主框架面板</a>
 								<ul>
 									<li><a href="main.html" target="navTab" rel="main">主页</a></li>
-									<li><a href="room/list" target="navTab" rel="page1" fresh="true"">房门管理</a></li>
-									<li><a href="permission/list" target="navTab" rel="page2" fresh="true"">权限管理</a></li>
-									<li><a href="permissionUser/list" target="navTab" rel="page3" fresh="true"">用户管理</a></li>
+									<li><a href="room/list" target="navTab" rel="page1" fresh="true">房门管理</a></li>
+									<li><a href="permission/list" target="navTab" rel="page2" fresh="true">权限管理</a></li>
+									<li><a href="permissionUser/list" target="navTab" rel="page3" fresh="true">用户管理</a></li>
 									<li><a href="remoteRoomUser/list" target="navTab" rel="page4" fresh="true">终端用户管理</a></li>
 									<li><a href="reserveDetail/list" target="navTab" rel="page5" fresh="true">预约管理</a></li>
 									<li><a href="demo_page4.html" target="navTab" rel="page6" title="页面三（自定义标签名）">分析报表</a></li>
-									<li><a href="appliance/list" target="nabTab" rel="page7" fresh="true">电器管理</a></li>
+									<li><a href="appliance/list" target="navTab" rel="page7" fresh="true">电器管理</a></li>
 								</ul>
 							</li>
-							
-							<li><a href="dwz.frag.xml" target="navTab" external="true">dwz.frag.xml</a></li>
+
+							<!-- <li><a href="dwz.frag.xml" target="navTab" external="true">dwz.frag.xml</a></li> -->
 						</ul>
 					</div>
 					<div class="accordionHeader">
@@ -214,14 +214,14 @@ $(function(){
 							</div>
 						</div>
 						<div class="pageFormContent" layoutH="80" style="margin-right:230px">
-							
+
 
 
 						</div>
-						
-						
+
+
 					</div>
-					
+
 				</div>
 			</div>
 		</div>
