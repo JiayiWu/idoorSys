@@ -20,7 +20,7 @@ public class ApplianceService {
 		Map<String, String> deskState = new HashMap<>();
 		deskState.put("01l", "on");
 		deskState.put("01r", "of");
-		deskState.put("01l", "on");
+		deskState.put("02l", "on");
 		deskState.put("02r", "of");
 		Map<String, String> lightState = new HashMap<>();
 		lightState.put("03l", "on");
