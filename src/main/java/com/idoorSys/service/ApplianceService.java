@@ -19,8 +19,14 @@ public class ApplianceService {
 		d.setBackDoorState("on");
 		Map<String, String> deskState = new HashMap<>();
 		deskState.put("01l", "on");
+		deskState.put("01r", "of");
+		deskState.put("01l", "on");
+		deskState.put("02r", "of");
 		Map<String, String> lightState = new HashMap<>();
-		lightState.put("02r", "on");
+		lightState.put("03l", "on");
+		lightState.put("03r", "of");
+		lightState.put("04l", "on");
+		lightState.put("04r", "of");
 		try {
 			d.setDeskState(mapper.writeValueAsString(deskState));
 			d.setLightState(mapper.writeValueAsString(lightState));
