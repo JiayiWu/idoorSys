@@ -18,15 +18,27 @@ public class SysUserService extends BaseService {
 	@Override
 	public void preAdd() {
 		// TODO Auto-generated method stub
-		SysUser sysUser = new SysUser();
+		Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
+		
+		SysUser admin = new SysUser();
 		String account = "eelab";
 		String password = "1234qwer";
-		Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
 		String md5Password = md5PasswordEncoder.encodePassword(password,
 				account);
-		sysUser.setAccount(account);
-		sysUser.setPassword(md5Password);
-		getBaseDao().save(sysUser);
+		admin.setAccount(account);
+		admin.setPassword(md5Password);
+		admin.setRole("admin");
+		
+		SysUser guard = new SysUser();
+		String accountOfGuard = "guard";
+		String passwordOfGuard = "guard";
+		String md5PasswordOfGuard = md5PasswordEncoder.encodePassword(passwordOfGuard, accountOfGuard);
+		guard.setAccount(accountOfGuard);
+		guard.setPassword(md5PasswordOfGuard);
+		guard.setRole("normal");
+		
+		getBaseDao().save(admin);
+		getBaseDao().save(guard);
 	}
 
 	@Override

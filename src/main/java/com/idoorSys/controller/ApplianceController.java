@@ -1,5 +1,6 @@
 package com.idoorSys.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -38,16 +39,33 @@ public class ApplianceController {
 	
 	@RequestMapping("list")
 	public String list(Map<String, Object> model) {
-		List<Room> rooms = (List<Room>) roomService.getAll();
+		List<String> buildings = Arrays.asList("00","01","02");
+		List<String> units = Arrays.asList("01","02");
+		List<String> floors = Arrays.asList("1","2","3","4");
+		List<String> rooms = Arrays.asList("01","02","03","04","05","06","07","08","09","10","11");
+		model.put("buildings", buildings);
+		model.put("units", units);
+		model.put("floors", floors);
 		model.put("rooms", rooms);
 		return PATH+"list";
 	}
 	@RequestMapping("listDevice")
-	public String listDevice(@RequestParam("roomId")String roomId, Map<String, Object> model) {
+	public String listDevice(HttpServletRequest request, Map<String, Object> model) {
+		List<String> buildings = Arrays.asList("00","01","02");
+		List<String> units = Arrays.asList("01","02");
+		List<String> floors = Arrays.asList("1","2","3","4");
+		List<String> rooms = Arrays.asList("01","02","03","04","05","06","07","08","09","10","11");
+		model.put("buildings", buildings);
+		model.put("units", units);
+		model.put("floors", floors);
+		model.put("rooms", rooms);
+		
+		String roomId = request.getParameter("building")
+				+request.getParameter("unit")
+				+request.getParameter("floor")
+				+request.getParameter("room");
 		Device device = applianceService.getDevice(roomId);
 		model.put("device", device);
-		List<Room> rooms = (List<Room>) roomService.getAll();
-		model.put("rooms", rooms);
 		return PATH+"list";
 	}
 	@RequestMapping("send")

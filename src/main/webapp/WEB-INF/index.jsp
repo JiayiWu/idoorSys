@@ -106,7 +106,7 @@ $(function(){
 				<a  >标志</a>
 				<ul class="nav">
 					<li><a href="changepwd.html" target="dialog" width="600">设置</a></li>
-					<li><a href="login.html">退出</a></li>
+					<li><a href="login">退出</a></li>
 				</ul>
 				<ul class="themeList" id="themeList">
 					<li theme="default"><div class="selected">蓝色</div></li>
@@ -146,7 +146,7 @@ $(function(){
 									<li><a href="remoteRoomUser/list" target="navTab" rel="page4" fresh="true">终端用户管理</a></li>
 									<li><a href="reserveDetail/list" target="navTab" rel="page5" fresh="true">预约管理</a></li>
 									<li><a href="demo_page4.html" target="navTab" rel="page6" title="页面三（自定义标签名）">分析报表</a></li>
-									<li><a href="appliance/list" target="navTab" rel="page7" fresh="true">电器管理</a></li>
+<!-- 									<li><a href="appliance/list" target="navTab" rel="page7" fresh="true">电器管理</a></li> -->
 								</ul>
 							</li>
 

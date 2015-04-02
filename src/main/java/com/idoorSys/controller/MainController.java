@@ -32,6 +32,10 @@ public class MainController {
 //		return "index";
 	}
 
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
+	}
 	@RequestMapping("/index")
 	public String main(@RequestParam("account") String account,
 			@RequestParam("password") String password,
@@ -40,7 +44,11 @@ public class MainController {
 		if (sysUser != null) {
 			httpSession.setAttribute("sysUser", sysUser);
 			model.put("sysUser", sysUser);
-			return "index";
+			if (sysUser.getRole().equals("admin")) {
+				return "index";
+			} else {
+				return "index_appliance";
+			}
 		} else {
 			model.put("sysUser", null);
 			return "login";

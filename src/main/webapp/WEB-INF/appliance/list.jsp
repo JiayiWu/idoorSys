@@ -8,10 +8,34 @@
 			<table class="searchContent">
 				<tr>
 					<td>
-						<!-- 房间名称：<input type="text" name="name" /> --> 房门号: <select
-						name="roomId" style="width:100px">
+					<select
+						name="building" >
+							<c:forEach var="building" items="${buildings}">
+								<option value="${building}">${building}</option>
+							</c:forEach>
+					</select>
+					</td>
+					<td>
+					<select
+						name="unit" >
+							<c:forEach var="unit" items="${units}">
+								<option value="${unit}">${unit}</option>
+							</c:forEach>
+					</select>
+					</td>
+					<td>
+					<select
+						name="floor" >
+							<c:forEach var="floor" items="${floors}">
+								<option value="${floor}">${floor}</option>
+							</c:forEach>
+					</select>
+					</td>
+					<td>
+					<select
+						name="room" >
 							<c:forEach var="room" items="${rooms}">
-								<option value="${room.id}">${room.id}</option>
+								<option value="${room}">${room}</option>
 							</c:forEach>
 					</select>
 					</td>
