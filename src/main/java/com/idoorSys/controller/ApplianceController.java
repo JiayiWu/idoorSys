@@ -40,7 +40,30 @@ public class ApplianceController {
 	}
 	@RequestMapping("send")
 	public String send(HttpServletRequest request) {
-		Msg msg = applianceService.send("command");
+		String roomNo = request.getParameter("roomNo");
+		Device oldDevice = applianceService.getDevice(roomNo);
+		Map<String, String> oldDeskState = oldDevice.generateDeskStateMap();
+		Map<String, String> oldLightState = oldDevice.generateLightStateMap();
+		
+		StringBuilder command = new StringBuilder(roomNo);
+		if(!request.getParameter("frontDoorState").equals(oldDevice.getFrontDoorState())) {
+			command.append("|"+"R0"+request.getParameter("frontDoorState"));
+		}
+		if(!request.getParameter("backDoorState").equals(oldDevice.getBackDoorState())) {
+			command.append("|"+"R1"+request.getParameter("backDoorState"));
+		}
+		for (String desk: oldDeskState.keySet()) {
+			if(!request.getParameter("D"+desk).equals(oldDeskState.get(desk))) {
+				command.append("|"+"D"+desk+request.getParameter("D"+desk));
+			}
+		}
+		for (String light: oldLightState.keySet()) {
+			if(!request.getParameter("L"+light).equals(oldLightState.get(light))) {
+				command.append("|"+"L"+light+request.getParameter("L"+light));
+			}
+		}
+		command.append("#");
+		Msg msg = applianceService.send(command.toString());
 		if (msg == Msg.SUCCESS) {
 			return "ajaxDone";
 		} else {

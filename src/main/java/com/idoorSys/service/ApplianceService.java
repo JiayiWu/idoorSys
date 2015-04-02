@@ -10,11 +10,10 @@ import com.idoorSys.model.Device;
 import com.idoorSys.utils.Msg;
 
 public class ApplianceService {
-	public Device getDevice(String roomId) {
+	public Device getDevice(String roomNo) {
 		ObjectMapper mapper = new ObjectMapper();
 		Device d = new Device();
-		d.setId(1234);
-		d.setRoomNum("roomId");
+		d.setRoomNo("0002411");
 		d.setFrontDoorState("on");
 		d.setBackDoorState("on");
 		Map<String, String> deskState = new HashMap<>();
