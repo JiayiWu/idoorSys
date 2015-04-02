@@ -20,6 +20,16 @@ import com.idoorSys.utils.SpringContextsUtil;
 @RequestMapping(ApplianceController.PATH)
 public class ApplianceController {
 	public static final String PATH = "appliance/";
+	private static String ajaxDialog = ""
+	+"{\n"
+	+"statusCode\":\"200\",\n"
+	+"message\":\"success\",\n"
+	+"navTabId\":\"\",\n"
+	+"rel\":\"\",\n"
+	+"callbackType\":\"closeCurrent\",\n"
+	+"forwardUrl\":\"\",\n"
+	+"confirmMsg\":\"\"\n"
+	+"}";
 	
 	ApplianceService applianceService = (ApplianceService) SpringContextsUtil
 			.getBean("applianceService");
