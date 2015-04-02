@@ -46,9 +46,9 @@ public class ApplianceService {
 		String ip = "8.8.8.8";
 		int port = 1024;
 //		try {
-			dispatcher.connect(ip, port);
-			dispatcher.sendMsg(command);
-			dispatcher.closeSocket();
+//			dispatcher.connect(ip, port);
+//			dispatcher.sendMsg(command);
+//			dispatcher.closeSocket();
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //			return Msg.FAIL;

@@ -36,6 +36,8 @@ public class ApplianceController {
 	public String listDevice(@RequestParam("roomId")String roomId, Map<String, Object> model) {
 		Device device = applianceService.getDevice(roomId);
 		model.put("device", device);
+		List<Room> rooms = (List<Room>) roomService.getAll();
+		model.put("rooms", rooms);
 		return PATH+"list";
 	}
 	@RequestMapping("send")
