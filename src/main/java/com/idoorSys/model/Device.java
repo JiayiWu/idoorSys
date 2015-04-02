@@ -28,7 +28,7 @@ public class Device implements java.io.Serializable {
 	}
 	
 	private Integer id;
-	private String roomNum;
+	private String roomNo;
 	private String frontDoorState;
 	private String backDoorState;
 //	private String deskNum;
@@ -85,9 +85,9 @@ public class Device implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Device(String roomNum, String frontDoorState, String backDoorState,
+	public Device(String roomNo, String frontDoorState, String backDoorState,
 			String deskState, String lightState) {
-		this.roomNum = roomNum;
+		this.roomNo = roomNo;
 		this.frontDoorState = frontDoorState;
 		this.backDoorState = backDoorState;
 //		this.deskNum = deskNum;
@@ -109,12 +109,12 @@ public class Device implements java.io.Serializable {
 	}
 
 	@Column(name = "room_num", length = 100)
-	public String getRoomNum() {
-		return this.roomNum;
+	public String getRoomNo() {
+		return this.roomNo;
 	}
 
-	public void setRoomNum(String roomNum) {
-		this.roomNum = roomNum;
+	public void setRoomNo(String roomNo) {
+		this.roomNo = roomNo;
 	}
 
 	@Column(name = "front_door_state", length = 2)
