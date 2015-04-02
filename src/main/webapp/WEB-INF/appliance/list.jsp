@@ -36,7 +36,7 @@
 		action="appliance/send">
 		<p>
 		前门
-		<select>
+		<select name="frontDoorState">
 			<c:choose>
 				<c:when test="${device.getFrontDoorState().equals(\"on\")}">
 					<option value="on" selected="selected">开</option>
@@ -48,9 +48,9 @@
 				</c:otherwise>
 			</c:choose>
 		</select>
-		
+		<br />
 		后门
-		<select>
+		<select name="backDoorState">
 			<c:choose>
 				<c:when test="${device.getBackDoorState().equals(\"on\")}">
 					<option value="on" selected="selected">开</option>
@@ -63,13 +63,29 @@
 			</c:choose>
 		</select>
 		</p>
-		<c:set var="map" value="${device.generateDeskStateMap()}"/>
-		<c:forEach var="deskNo" items="${map.keySet()}">
-			<c:set var="desk" value="${fn:replace(deskNo,'l','号左侧灯')}"/>
-			<c:set var="desk" value="${fn:replace(desk,'r','号右侧灯')}"/>
-			${desk} ${map.get(deskNo)}<br />
-		</c:forEach>
 		
+		<p>
+		<c:set var="map" value="${device.generateDeskStateMap()}"/>
+		<input type="hidden" name="romNo" value="${map.size()}" />
+		<c:forEach var="deskNo" items="${map.keySet()}">
+			<c:set var="desk" value="${fn:replace(deskNo,'l','号左侧桌')}"/>
+			<c:set var="desk" value="${fn:replace(desk,'r','号右侧桌')}"/>
+			${desk}状态: 
+			<select name="D${deskNo}">
+			<c:choose>
+				<c:when test="${map.get(deskNo).equals(\"on\")}">
+					<option value="on" selected="selected">开</option>
+					<option value="of">关</option>
+				</c:when>
+				<c:otherwise>
+					<option value="on">开</option>
+					<option value="of" selected="selected">关</option>
+				</c:otherwise>
+			</c:choose>
+			</select>
+			<br />
+		</c:forEach>
+		</p>
 		<div class="buttonActive">
 			<div class="buttonContent">
 				<button type="submit">提交</button>
