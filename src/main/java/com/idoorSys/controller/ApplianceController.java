@@ -3,6 +3,8 @@ package com.idoorSys.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,7 +39,7 @@ public class ApplianceController {
 		return PATH+"list";
 	}
 	@RequestMapping("send")
-	public String send(@RequestParam("newState")Device newState) {
+	public String send(HttpServletRequest request) {
 		Msg msg = applianceService.send("command");
 		if (msg == Msg.SUCCESS) {
 			return "ajaxDone";
