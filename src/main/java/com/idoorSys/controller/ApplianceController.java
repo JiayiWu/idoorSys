@@ -27,7 +27,7 @@ public class ApplianceController {
 	+"message\":\"success\",\n"
 	+"navTabId\":\"\",\n"
 	+"rel\":\"\",\n"
-	+"callbackType\":\"closeCurrent\",\n"
+	+"callbackType\":\"\",\n"
 	+"forwardUrl\":\"\",\n"
 	+"confirmMsg\":\"\"\n"
 	+"}";
@@ -95,7 +95,7 @@ public class ApplianceController {
 		command.append("#");
 		Msg msg = applianceService.send(command.toString());
 		if (msg == Msg.SUCCESS) {
-			return "ajaxDone";
+			return "ajaxDoneForAppliance";
 		} else {
 			return "ajaxFail";
 		}
