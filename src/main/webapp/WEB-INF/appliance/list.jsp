@@ -66,7 +66,7 @@
 		
 		<p>
 		<c:set var="map" value="${device.generateDeskStateMap()}"/>
-		<input type="hidden" name="romNo" value="${map.size()}" />
+		<input type="hidden" name="roomNo" value="${map.size()}" />
 		<c:forEach var="deskNo" items="${map.keySet()}">
 			<c:set var="desk" value="${fn:replace(deskNo,'l','号左侧桌')}"/>
 			<c:set var="desk" value="${fn:replace(desk,'r','号右侧桌')}"/>
