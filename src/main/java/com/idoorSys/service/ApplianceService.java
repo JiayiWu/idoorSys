@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.idoorSys.devicecontroller.SocketClient;
 import com.idoorSys.model.Device;
 import com.idoorSys.utils.Msg;
 
@@ -36,7 +37,22 @@ public class ApplianceService {
 	}
 
 	public Msg send(String command) {
-		
+		// empty command
+		if (!command.contains("|")) {
+			return Msg.SUCCESS;
+		}
+		SocketClient dispatcher = SocketClient.getInstance();
+		// TODO get ip and port from database 
+		String ip = "8.8.8.8";
+		int port = 1024;
+//		try {
+			dispatcher.connect(ip, port);
+			dispatcher.sendMsg(command);
+			dispatcher.closeSocket();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			return Msg.FAIL;
+//		}
 		return Msg.SUCCESS;
 	}
 }

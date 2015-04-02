@@ -24,7 +24,7 @@ public class SocketClient {
 
     private Socket client;
 
-    public void connect(String site, int port){
+    public void connect(String site, int port) {
         this.site = site;
         this.port = port;
         try {
@@ -32,10 +32,11 @@ public class SocketClient {
             System.out.println("Clinet is created");
         } catch (IOException e) {
             e.printStackTrace();
+//            throw new IOException("connect failure!");
         }
     }
 
-    public String sendMsg(String msg){
+    public String sendMsg(String msg) {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             PrintWriter out = new PrintWriter(client.getOutputStream());
@@ -44,16 +45,17 @@ public class SocketClient {
             return in.readLine();
         } catch (IOException e) {
             e.printStackTrace();
+//            throw new IOException("send failure!");
         }
-
-        return "";
+		return "";
     }
 
-    public void closeSocket(){
+    public void closeSocket() {
         try {
             client.close();
         } catch (IOException e) {
             e.printStackTrace();
+//            throw new IOException("disconnect failure!");
         }
     }
 }
