@@ -43,16 +43,11 @@ public class ApplianceService {
 		}
 		SocketClient dispatcher = SocketClient.getInstance();
 		// TODO get ip and port from database 
-		String ip = "8.8.8.8";
-		int port = 1024;
-//		try {
-//			dispatcher.connect(ip, port);
-//			dispatcher.sendMsg(command);
-//			dispatcher.closeSocket();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			return Msg.FAIL;
-//		}
+//		String ip = "localhost";
+//		int port = 8888;
+//		dispatcher.connect(ip, port);
+//		dispatcher.sendMsg(command);
+//		dispatcher.closeSocket();
 		return Msg.SUCCESS;
 	}
 }
