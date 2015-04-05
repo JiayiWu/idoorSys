@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <div class="pageHeader">
 	<form onsubmit="return navTabSearch(this);"
 		action="appliance/listDevice" method="post">
@@ -46,13 +46,11 @@
 				</tr>
 			</table>
 			<div class="subBar">
-				<ul>
-					<div class="buttonActive">
-						<div class="buttonContent">
-							<button type="submit">确定</button>
-						</div>
+				<div class="buttonActive">
+					<div class="buttonContent">
+						<button type="submit">确定</button>
 					</div>
-				</ul>
+				</div>
 			</div>
 		</div>
 	</form>
