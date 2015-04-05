@@ -41,7 +41,7 @@
 				<entry key="ds2" value-ref="ds2" />
 			</map>
 		</property>
-		<property name="defaultTargetDataSource" ref="ds1" />
+		<property name="defaultTargetDataSource" ref="ds2" />
 	</bean>
 
 	<bean id="sessionFactory"
@@ -60,7 +60,9 @@
 				<prop key="hibernate.dialect">
 					org.hibernate.dialect.MySQLDialect
 				</prop>
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+<!-- 				hibernate.hbm2ddl.auto设为create为每次启动清空数据 供测试用,update不清空 -->
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+<!-- 				<prop key="hibernate.hbm2ddl.auto">create</prop> -->
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hiberante.format_sql">true</prop>
 			</props>
