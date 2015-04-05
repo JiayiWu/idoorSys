@@ -35,6 +35,7 @@ public class Device implements java.io.Serializable {
 	private String deskState;	// json map
 //	private String lightNum;
 	private String lightState;	// json map
+	
 
 	// State Setter
 	public void setDeskState(String deskNo, State state) {

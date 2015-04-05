@@ -14,6 +14,7 @@
 								<option value="${building}">${building}</option>
 							</c:forEach>
 					</select>
+					幢
 					</td>
 					<td>
 					<select
@@ -22,6 +23,7 @@
 								<option value="${unit}">${unit}</option>
 							</c:forEach>
 					</select>
+					单元
 					</td>
 					<td>
 					<select
@@ -30,6 +32,7 @@
 								<option value="${floor}">${floor}</option>
 							</c:forEach>
 					</select>
+					层
 					</td>
 					<td>
 					<select
@@ -38,16 +41,17 @@
 								<option value="${room}">${room}</option>
 							</c:forEach>
 					</select>
+					号房间
 					</td>
 				</tr>
 			</table>
 			<div class="subBar">
 				<ul>
-					<li><div class="buttonActive">
-							<div class="buttonContent">
-								<button type="submit">检索</button>
-							</div>
-						</div></li>
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button type="submit">确定</button>
+						</div>
+					</div>
 				</ul>
 			</div>
 		</div>
@@ -60,29 +64,37 @@
 			class="pageForm required-validate"
 			onsubmit="return validateCallback(this, navTabAjaxDone);">
 			<p>
-				前门 <select name="frontDoorState">
-					<c:choose>
-						<c:when test="${device.getFrontDoorState().equals(\"on\")}">
-							<option value="on" selected="selected">开</option>
-							<option value="of">关</option>
-						</c:when>
-						<c:otherwise>
-							<option value="on">开</option>
-							<option value="of" selected="selected">关</option>
-						</c:otherwise>
-					</c:choose>
-				</select> <br /> 后门 <select name="backDoorState">
-					<c:choose>
-						<c:when test="${device.getBackDoorState().equals(\"on\")}">
-							<option value="on" selected="selected">开</option>
-							<option value="of">关</option>
-						</c:when>
-						<c:otherwise>
-							<option value="on">开</option>
-							<option value="of" selected="selected">关</option>
-						</c:otherwise>
-					</c:choose>
-				</select>
+				<c:if test="${device.getFrontDoorState()!=null}">
+					前门
+					<select name="frontDoorState">
+						<c:choose>
+							<c:when test="${device.getFrontDoorState().equals(\"on\")}">
+								<option value="on" selected="selected">开</option>
+								<option value="of">关</option>
+							</c:when>
+							<c:otherwise>
+								<option value="on">开</option>
+								<option value="of" selected="selected">关</option>
+							</c:otherwise>
+						</c:choose>
+					</select>
+				</c:if>
+				<br />
+				<c:if test="${device.getBackDoorState()!=null}">
+					后门 
+					<select name="backDoorState">
+						<c:choose>
+							<c:when test="${device.getBackDoorState().equals(\"on\")}">
+								<option value="on" selected="selected">开</option>
+								<option value="of">关</option>
+							</c:when>
+							<c:otherwise>
+								<option value="on">开</option>
+								<option value="of" selected="selected">关</option>
+							</c:otherwise>
+						</c:choose>
+					</select>
+				</c:if>
 			</p>
 			<br /> <input type="hidden" name="roomNo"
 				value="${device.getRoomNo()}" />
@@ -113,8 +125,8 @@
 				<c:forEach var="lightNo" items="${map.keySet()}">
 					<c:set var="light" value="${fn:replace(lightNo,'l','号左侧灯')}" />
 					<c:set var="light" value="${fn:replace(light,'r','号右侧灯')}" />
-				${light}状态: 
-				<select name="L${lightNo}">
+					${light}状态: 
+					<select name="L${lightNo}">
 						<c:choose>
 							<c:when test="${map.get(lightNo).equals(\"on\")}">
 								<option value="on" selected="selected">开</option>
@@ -142,4 +154,7 @@
 			</div>
 		</form>
 	</div>
+</c:if>
+<c:if test="${error != null }">
+	<h1>${error}</h1>
 </c:if>
