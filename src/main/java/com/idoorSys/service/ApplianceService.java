@@ -6,26 +6,32 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Arrays;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.idoorSys.model.Device;
+import com.idoorSys.utils.LocalIpAddressService;
 import com.idoorSys.utils.Msg;
 
+//点确定，先检查选择的房间号
 public class ApplianceService {
-	private Socket socket = null;
-	private String cachedRoomNo = null;
-	public Device getDevice(String roomNo) throws IOException {
-		checkSocket(roomNo);
+//	private Socket socket = null;
+//	private String cachedRoomNo = null;
+	public Device getDevice(String roomNo) throws IOException, SQLException {
+		Socket socket = getSocketTo(roomNo);
 		
 		PrintWriter pr = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
 		pr.println("$#GetRoom:"+roomNo);
 		pr.flush();
 		BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String reply = br.readLine();
+		System.out.println("reply is "+reply);
+		
+		disconnect(socket);
+		
 		Device device = json2Device(reply);
 		return device;
 	}
@@ -41,22 +47,33 @@ public class ApplianceService {
 			return Msg.SUCCESS;
 		}
 		String roomNo = command.split("\\|")[0];
-		System.out.println(roomNo);
+		Socket socket = null;
 		try {
-			checkSocket(roomNo);
+			socket = getSocketTo(roomNo);
+			
 			PrintWriter pr = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+			System.out.println("send $#SetRoom:"+command);
 			pr.println("$#SetRoom:"+command);
+			pr.flush();
+//			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//			System.out.println(br.readLine());
+			
+			disconnect(socket);
 		} catch (IOException e) {
-			try {
-				socket.close();
-			} catch (IOException e1) {}
 			e.printStackTrace();
 			return Msg.FAIL;
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			return Msg.FAIL;
+		} finally {
+			try {
+				disconnect(socket);
+			} catch (IOException e1) {}
 		}
 		return Msg.SUCCESS;
 	}
 	
-	public void disconnect() throws IOException {
+	public void disconnect(Socket socket) throws IOException {
 		if (socket != null) {
 			socket.close();
 			socket = null;
@@ -68,47 +85,47 @@ public class ApplianceService {
 	 * @param roomNo
 	 * @return Socket
 	 * @throws IOException
+	 * @throws SQLException 
 	 */
-	private void checkSocket(String roomNo) throws IOException {
-		if (!roomNo.equals(this.cachedRoomNo)) {
-			System.out.println("旧的:"+cachedRoomNo);
-			System.out.println("新的:"+roomNo);
-			this.cachedRoomNo = roomNo;
-			System.out.println("建立新连接");
-			// TODO 从配置文件获取roomNo 对应的 ip地址
-			String ip = "192.168.206.187";
-//			String ip = "localhost";
-			int port = 8888;
-			socket = new Socket(ip, port);
-			try {
-				BufferedReader br = new BufferedReader(new InputStreamReader(
-						socket.getInputStream()));
-				String ack1 = br.readLine();
-				if (ack1.startsWith("Please")) {
-					System.out.println("======================================\nGet: "
-							+ ack1); // test
-					PrintWriter pr = new PrintWriter(new OutputStreamWriter(
-							socket.getOutputStream()));
-					pr.println("webapp");
-					pr.flush();
-					String ack2 = br.readLine();
-					if (ack2.startsWith("Ok")) {
-						System.out.println("==================================\nGet: "
-								+ ack2); // test
-						System.out.println("成功连接控制服务器\n");
-					} else {
-						throw new RuntimeException("控制服务器口令错误，请联系运维人员");
-					}
+	private Socket getSocketTo(String roomNo) throws IOException {
+		// TODO 从配置文件获取roomNo 对应的 ip地址
+		LocalIpAddressService lias = new LocalIpAddressService();
+		String ipAddress = lias.ipAddressOf(roomNo);
+		if(ipAddress == null) {
+			throw new RuntimeException("抱歉，您所选房间的IP未录入服务器");
+		}
+		String ip = ipAddress.split(":")[0];
+		int port = Integer.parseInt(ipAddress.split(":")[1]);
+		Socket socket = new Socket(ip, port);
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					socket.getInputStream()));
+			String ack1 = br.readLine();
+			if (ack1.startsWith("Please")) {
+				System.out.println("======================================\nGet: "
+						+ ack1); // test
+				PrintWriter pr = new PrintWriter(new OutputStreamWriter(
+						socket.getOutputStream()));
+				pr.println("webapp");
+				pr.flush();
+				String ack2 = br.readLine();
+				if (ack2.startsWith("Ok")) {
+					System.out.println("==================================\nGet: "
+							+ ack2); // test
+					System.out.println("成功连接控制服务器\n");
+					return socket;
 				} else {
 					throw new RuntimeException("控制服务器口令错误，请联系运维人员");
 				}
-			} catch (IOException e) {
-				try {
-					socket.close();
-				} catch (IOException e1) {}
-				e.printStackTrace();
-				throw new IOException("控制服务器连接失败，请检查设备");
+			} else {
+				throw new RuntimeException("控制服务器口令错误，请联系运维人员");
 			}
+		} catch (IOException e) {
+			try {
+				disconnect(socket);
+			} catch (IOException e1) {}
+			e.printStackTrace();
+			throw new IOException("控制服务器连接失败，请检查设备");
 		}
 	}
 	

@@ -1,15 +1,14 @@
 package com.idoorSys.model;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -61,9 +60,9 @@ public class Device implements java.io.Serializable {
 	// StateMap generator
 	public Map<String, String> generateDeskStateMap() {
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, String> map = new HashMap<>();
+		Map<String, String> map = new TreeMap<>();
 		try {
-			map = mapper.readValue(deskState, Map.class);
+			map = mapper.readValue(deskState, TreeMap.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -71,9 +70,9 @@ public class Device implements java.io.Serializable {
 	}
 	public Map<String, String> generateLightStateMap() {
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, String> map = new HashMap<>();
+		Map<String, String> map = new TreeMap<>();
 		try {
-			map = mapper.readValue(lightState, Map.class);
+			map = mapper.readValue(lightState, TreeMap.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

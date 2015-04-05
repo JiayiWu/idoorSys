@@ -1,6 +1,7 @@
 package com.idoorSys.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -79,33 +80,26 @@ public class ApplianceController {
 			}
 			for (String desk: oldDeskState.keySet()) {
 				if(!request.getParameter("D"+desk).equals(oldDeskState.get(desk))) {
-					command.append("|"+"D"+desk+request.getParameter("D"+desk));
+					command.append("|"+"D"+desk+"l"+request.getParameter("D"+desk));
 				}
 			}
 			for (String light: oldLightState.keySet()) {
 				if(!request.getParameter("L"+light).equals(oldLightState.get(light))) {
-					command.append("|"+"L"+light+request.getParameter("L"+light));
+					command.append("|"+"L"+light+"l"+request.getParameter("L"+light));
 				}
 			}
 			command.append("#");
-			Msg msg = applianceService.send(command.toString());
-			if (msg == Msg.SUCCESS) {
-				return "ajaxDoneForAppliance";
-			} else {
+			try {
+				Msg msg = applianceService.send(command.toString());
+				if (msg == Msg.SUCCESS) {
+					return "ajaxDoneForAppliance";
+				} else {
+					return "ajaxFailForAppliance";
+				}
+			} catch(RuntimeException e) {
 				return "ajaxFailForAppliance";
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "ajaxFailForAppliance";
-		}
-	}
-	
-	@RequestMapping("disconnect")
-	public String disconnect() {
-		try {
-			applianceService.disconnect();
-			return "ajaxDoneForAppliance";
-		} catch (IOException e) {
+		} catch (IOException|SQLException e) {
 			e.printStackTrace();
 			return "ajaxFailForAppliance";
 		}

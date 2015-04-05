@@ -99,9 +99,9 @@
 			<p>
 				<c:set var="map" value="${device.generateDeskStateMap()}" />
 				<c:forEach var="deskNo" items="${map.keySet()}">
-					<c:set var="desk" value="${fn:replace(deskNo,'l','号左侧桌')}" />
-					<c:set var="desk" value="${fn:replace(desk,'r','号右侧桌')}" />
-				${desk}状态: 
+<!-- 					<c:set var="desk" value="${fn:replace(deskNo,'l','号左侧桌')}" /> -->
+<!-- 					<c:set var="desk" value="${fn:replace(desk,'r','号右侧桌')}" /> -->
+				${desk}号桌状态: 
 				<select name="D${deskNo}">
 						<c:choose>
 							<c:when test="${map.get(deskNo).equals(\"on\")}">
@@ -120,10 +120,11 @@
 			<br />
 			<p>
 				<c:set var="map" value="${device.generateLightStateMap()}" />
+				
 				<c:forEach var="lightNo" items="${map.keySet()}">
-					<c:set var="light" value="${fn:replace(lightNo,'l','号左侧灯')}" />
-					<c:set var="light" value="${fn:replace(light,'r','号右侧灯')}" />
-					${light}状态: 
+<!-- 					<c:set var="light" value="${fn:replace(lightNo,'l','号左侧灯')}" /> -->
+<!-- 					<c:set var="light" value="${fn:replace(light,'r','号右侧灯')}" /> -->
+					${light}号灯状态: 
 					<select name="L${lightNo}">
 						<c:choose>
 							<c:when test="${map.get(lightNo).equals(\"on\")}">
