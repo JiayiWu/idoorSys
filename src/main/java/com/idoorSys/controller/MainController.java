@@ -29,7 +29,6 @@ public class MainController {
 		} else {
 			return "login";
 		}
-//		return "index";
 	}
 
 	@RequestMapping("/login")
@@ -53,6 +52,11 @@ public class MainController {
 			model.put("sysUser", null);
 			return "login";
 		}
+	}
+	
+	@RequestMapping("/empty")
+	public String blackhole() {
+		return "empty";
 	}
 
 }

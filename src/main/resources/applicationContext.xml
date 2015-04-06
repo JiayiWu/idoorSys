@@ -41,7 +41,7 @@
 				<entry key="ds2" value-ref="ds2" />
 			</map>
 		</property>
-		<property name="defaultTargetDataSource" ref="ds2" />
+		<property name="defaultTargetDataSource" ref="ds1" />
 	</bean>
 
 	<bean id="sessionFactory"

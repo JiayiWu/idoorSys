@@ -4,14 +4,23 @@
 <div class="pageHeader">
 	<form onsubmit="return navTabSearch(this);"
 		action="appliance/listDevice" method="post">
+		<input type="hidden" name="fromPage" value="device">
 		<div class="searchBar">
 			<table class="searchContent">
+				<c:set var="roomNo" value="${device.getRoomNo()}"/>
 				<tr>
 					<td>
 					<select
 						name="building" >
 							<c:forEach var="building" items="${buildings}">
-								<option value="${building}">${building}</option>
+								<c:choose>
+									<c:when test="${device.getRoomNo().substring(0,2).equals(building) }">
+										<option value="${building}" selected="selected">${building}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${building}">${building}</option>
+									</c:otherwise>
+								</c:choose>
 							</c:forEach>
 					</select>
 					幢
@@ -20,7 +29,14 @@
 					<select
 						name="unit" >
 							<c:forEach var="unit" items="${units}">
-								<option value="${unit}">${unit}</option>
+								<c:choose>
+									<c:when test="${device.getRoomNo().substring(2,4).equals(unit) }">
+										<option value="${unit}" selected="selected">${unit}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${unit}">${unit}</option>
+									</c:otherwise>
+								</c:choose>
 							</c:forEach>
 					</select>
 					单元
@@ -29,7 +45,14 @@
 					<select
 						name="floor" >
 							<c:forEach var="floor" items="${floors}">
-								<option value="${floor}">${floor}</option>
+								<c:choose>
+									<c:when test="${device.getRoomNo().substring(4,5).equals(floor) }">
+										<option value="${floor}" selected="selected">${floor}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${floor}">${floor}</option>
+									</c:otherwise>
+								</c:choose>
 							</c:forEach>
 					</select>
 					层
@@ -38,7 +61,14 @@
 					<select
 						name="room" >
 							<c:forEach var="room" items="${rooms}">
-								<option value="${room}">${room}</option>
+								<c:choose>
+									<c:when test="${device.getRoomNo().substring(5,7).equals(room) }">
+										<option value="${room}" selected="selected">${room}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${room}">${room}</option>
+									</c:otherwise>
+								</c:choose>
 							</c:forEach>
 					</select>
 					号房间
@@ -61,40 +91,8 @@
 		<form method="post" action="appliance/send"
 			class="pageForm required-validate"
 			onsubmit="return validateCallback(this, navTabAjaxDone);">
-			<p>
-				<c:if test="${device.getFrontDoorState()!=null}">
-					前门
-					<select name="frontDoorState">
-						<c:choose>
-							<c:when test="${device.getFrontDoorState().equals(\"on\")}">
-								<option value="on" selected="selected">开</option>
-								<option value="of">关</option>
-							</c:when>
-							<c:otherwise>
-								<option value="on">开</option>
-								<option value="of" selected="selected">关</option>
-							</c:otherwise>
-						</c:choose>
-					</select>
-				</c:if>
-				<br />
-				<c:if test="${device.getBackDoorState()!=null}">
-					后门 
-					<select name="backDoorState">
-						<c:choose>
-							<c:when test="${device.getBackDoorState().equals(\"on\")}">
-								<option value="on" selected="selected">开</option>
-								<option value="of">关</option>
-							</c:when>
-							<c:otherwise>
-								<option value="on">开</option>
-								<option value="of" selected="selected">关</option>
-							</c:otherwise>
-						</c:choose>
-					</select>
-				</c:if>
-			</p>
-			<br /> <input type="hidden" name="roomNo"
+
+			<input type="hidden" name="roomNo"
 				value="${device.getRoomNo()}" />
 			<p>
 				<c:set var="map" value="${device.generateDeskStateMap()}" />

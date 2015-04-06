@@ -133,60 +133,32 @@ $(function(){
 
 				<div class="accordion" fillSpace="sidebar">
 					<div class="accordionHeader">
-						<h2><span>Folder</span>界面组件</h2>
+						<h2><span>Folder</span>门禁管理</h2>
 					</div>
 					<div class="accordionContent">
-						<ul class="tree treeFolder">
-							<li><a href="tabsPage.html" target="navTab">主框架面板</a>
-								<ul>
-									<li><a href="main.html" target="navTab" rel="main">主页</a></li>
+<!-- 						<ul class="tree treeFolder"> -->
+<!-- 							<li> -->
+<!-- 							<a href="tabsPage.html" target="navTab">主框架面板</a> -->
+								<ul class="tree treeFolder">
+									<li><a href="empty"  target="navTab" rel="main">主页</a></li>
 									<li><a href="room/list" target="navTab" rel="page1" fresh="true">房门管理</a></li>
 									<li><a href="permission/list" target="navTab" rel="page2" fresh="true">权限管理</a></li>
 									<li><a href="permissionUser/list" target="navTab" rel="page3" fresh="true">用户管理</a></li>
 									<li><a href="remoteRoomUser/list" target="navTab" rel="page4" fresh="true">终端用户管理</a></li>
 									<li><a href="reserveDetail/list" target="navTab" rel="page5" fresh="true">预约管理</a></li>
-									<li><a href="demo_page4.html" target="navTab" rel="page6" title="页面三（自定义标签名）">分析报表</a></li>
-<!-- 									<li><a href="appliance/list" target="navTab" rel="page7" fresh="true">电器管理</a></li> -->
+									<li><a href="empty" target="navTab" rel="page6">分析报表</a></li>
+									<li><a href="appliance/door" target="navTab" rel="page7" fresh="true">门禁管理</a></li>
 								</ul>
-							</li>
+<!-- 							</li> -->
 
-							<!-- <li><a href="dwz.frag.xml" target="navTab" external="true">dwz.frag.xml</a></li> -->
-						</ul>
+<!-- 						</ul> -->
 					</div>
 					<div class="accordionHeader">
-						<h2><span>Folder</span>典型页面</h2>
+						<h2><span>Folder</span>电器管理</h2>
 					</div>
 					<div class="accordionContent">
-						<ul class="tree treeFolder treeCheck">
-							<li><a href="demo_page1.html" target="navTab" rel="demo_page1">查询我的客户</a></li>
-							<li><a href="demo_page1.html" target="navTab" rel="demo_page2">表单查询页面</a></li>
-							<li><a href="demo_page4.html" target="navTab" rel="demo_page4">表单录入页面</a></li>
-							<li><a href="demo_page5.html" target="navTab" rel="demo_page5">有文本输入的表单</a></li>
-							<li><a href="javascript:;">有提示的表单输入页面</a>
-								<ul>
-									<li><a href="javascript:;">页面一</a></li>
-									<li><a href="javascript:;">页面二</a></li>
-								</ul>
-							</li>
-							<li><a href="javascript:;">选项卡和图形的页面</a>
-								<ul>
-									<li><a href="javascript:;">页面一</a></li>
-									<li><a href="javascript:;">页面二</a></li>
-								</ul>
-							</li>
-							<li><a href="javascript:;">选项卡和图形切换的页面</a></li>
-							<li><a href="javascript:;">左右两个互动的页面</a></li>
-							<li><a href="javascript:;">列表输入的页面</a></li>
-							<li><a href="javascript:;">双层栏目列表的页面</a></li>
-						</ul>
-					</div>
-					<div class="accordionHeader">
-						<h2><span>Folder</span>流程演示</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree">
-							<li><a href="newPage1.html" target="dialog" rel="dlg_page">列表</a></li>
-							<li><a href="newPage1.html" target="dialog" rel="dlg_page2">列表</a></li>
+						<ul class="tree treeFolder">
+							<li><a href="appliance/device" target="navTab" rel="page7" fresh="true">电器管理</a></li>
 						</ul>
 					</div>
 				</div>

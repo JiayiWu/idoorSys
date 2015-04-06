@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.idoorSys.model.Device;
 import com.idoorSys.service.ApplianceService;
@@ -32,23 +33,33 @@ public class ApplianceController {
 	private List<String> buildings = Arrays.asList("00","01","02");
 	private List<String> units = Arrays.asList("02","01");
 	private List<String> floors = Arrays.asList("4","3","2","1");
-	private List<String> rooms = Arrays.asList("11","01","02","03","04","05","06","07","08","09","10");
+	private List<String> rooms = Arrays.asList("11","10","09","08","07","06","05","04","03","02","01");
 	
-	@RequestMapping("list")
-	public String list(Map<String, Object> model) {
+	@RequestMapping("door")
+	public String door(Map<String, Object> model) {
 		model.put("buildings", buildings);
 		model.put("units", units);
 		model.put("floors", floors);
 		model.put("rooms", rooms);
-		return PATH+"list";
+		return PATH+"door";
 	}
+	
+	@RequestMapping("device")
+	public String device(Map<String, Object> model) {
+		model.put("buildings", buildings);
+		model.put("units", units);
+		model.put("floors", floors);
+		model.put("rooms", rooms);
+		return PATH+"device";
+	}
+
 	@RequestMapping("listDevice")
 	public String listDevice(HttpServletRequest request, Map<String, Object> model) {
 		model.put("buildings", buildings);
 		model.put("units", units);
 		model.put("floors", floors);
 		model.put("rooms", rooms);
-		
+		System.err.println(request.getParameter("fromPage"));
 		String roomId = request.getParameter("building")
 				+request.getParameter("unit")
 				+request.getParameter("floor")
@@ -60,7 +71,9 @@ public class ApplianceController {
 		} catch (Exception e) {
 			model.put("error", e.getMessage());
 		}
-		return PATH+"list";
+		
+		String fromPage = request.getParameter("fromPage");
+		return fromPage.equals("door") ? PATH+"door": PATH+"device";
 	}
 	@RequestMapping("send")
 	public String send(HttpServletRequest request) {
