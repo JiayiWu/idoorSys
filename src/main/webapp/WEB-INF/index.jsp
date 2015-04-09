@@ -148,6 +148,7 @@ $(function(){
 									<li><a href="reserveDetail/list" target="navTab" rel="page5" fresh="true">预约管理</a></li>
 									<li><a href="empty" target="navTab" rel="page6">分析报表</a></li>
 									<li><a href="appliance/door" target="navTab" rel="page7" fresh="true">门禁管理</a></li>
+									<li><a href="dbmanage/list" target="navTab" rel="page8" fresh="true">数据库切换</a></li>
 								</ul>
 <!-- 							</li> -->
 

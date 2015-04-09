@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.idoorSys.model.SysUser;
 import com.idoorSys.service.PermissionUserService;
 import com.idoorSys.service.SysUserService;
+import com.idoorSys.utils.RoutingDataSource;
 import com.idoorSys.utils.SpringContextsUtil;
 
 @Controller
@@ -22,7 +23,10 @@ public class MainController {
 	@RequestMapping("/")
 	public String main(Map<String, Object> model, HttpSession httpSession) {
 		SysUser sysUser = (SysUser) httpSession.getAttribute("sysUser");
-		sysUserService.preAdd();
+		RoutingDataSource.setDataSourceKey("ds3");
+		System.out.println("set to ds3");
+		System.out.println(((com.mchange.v2.c3p0.ComboPooledDataSource)SpringContextsUtil.getBean("ds3")).getJdbcUrl());
+//		sysUserService.preAdd();
 		if (sysUser != null) {
 			model.put("sysUser", sysUser);
 			return "index";
