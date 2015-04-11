@@ -33,7 +33,7 @@
 		<property name="initialPoolSize" value="1"></property>
 		<property name="maxIdleTime" value="20"></property>
 	</bean>
-	<bean id="ds3" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+	<bean id="switcha" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
 		<property name="jdbcUrl" value="${db3.url}">
@@ -45,7 +45,7 @@
 		<property name="initialPoolSize" value="1"></property>
 		<property name="maxIdleTime" value="20"></property>
 	</bean>
-	<bean id="ds4" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+	<bean id="switchb" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
 		<property name="jdbcUrl" value="${db4.url}">
@@ -63,15 +63,28 @@
 			<map key-type="java.lang.String">
 				<entry key="ds1" value-ref="ds1" />
 				<entry key="ds2" value-ref="ds2" />
-				<entry key="ds3" value-ref="ds3" />
-				<entry key="ds4" value-ref="ds4" />
+				<entry key="ds3" value-ref="switcha" />
+				<entry key="ds4" value-ref="switchb" />
 			</map>
 		</property>
 		<property name="defaultTargetDataSource" ref="ds1" />
 	</bean>
 
+	<bean id="myDataSource" class="com.idoorSys.utils.ModifiableRoutingDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry key="ds1" value-ref="ds1" />
+				<entry key="ds2" value-ref="ds2" />
+				<entry key="a" value-ref="switcha" />
+				<entry key="b" value-ref="switchb" />
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="ds1"/>
+	</bean>
+
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="myDataSource"/>
 		<!-- 自动扫描注解方式配置的hibernate类文件 -->
 		<property name="packagesToScan">
 			<list>

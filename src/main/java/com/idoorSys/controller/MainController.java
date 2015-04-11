@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.idoorSys.utils.ModifiableRoutingDataSource;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,10 +25,18 @@ public class MainController {
 	@RequestMapping("/")
 	public String main(Map<String, Object> model, HttpSession httpSession) {
 		SysUser sysUser = (SysUser) httpSession.getAttribute("sysUser");
-		RoutingDataSource.setDataSourceKey("ds3");
-		System.out.println("set to ds3");
-		System.out.println(((com.mchange.v2.c3p0.ComboPooledDataSource)SpringContextsUtil.getBean("ds3")).getJdbcUrl());
-//		sysUserService.preAdd();
+
+
+//		ModifiableRoutingDataSource dataSource = ((ModifiableRoutingDataSource) SpringContextsUtil.getBean("myDataSource"));
+//		dataSource.setDataSourceKey("a");
+//		System.out.println("set to db: a");
+//		ComboPooledDataSource a = (ComboPooledDataSource) SpringContextsUtil.getBean("switcha");
+//		for (Object ds : dataSource.getTargetDataSources().values()) {
+//			System.out.println(((ComboPooledDataSource) ds).getJdbcUrl());
+//		}
+
+		sysUserService.preAdd();
+
 		if (sysUser != null) {
 			model.put("sysUser", sysUser);
 			return "index";
