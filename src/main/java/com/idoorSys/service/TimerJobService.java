@@ -14,7 +14,6 @@ public class TimerJobService extends QuartzJobBean {
 	@Override
 	protected void executeInternal(JobExecutionContext arg0)
 			throws JobExecutionException {
-		// TODO Auto-generated method stub
 		reserveService.cleanLocalReserve();
 		reserveService.SaveRemoteReserve();
 	}
