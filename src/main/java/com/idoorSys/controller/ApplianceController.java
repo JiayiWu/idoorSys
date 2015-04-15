@@ -1,12 +1,14 @@
 package com.idoorSys.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import com.idoorSys.service.ApplianceService;
 import com.idoorSys.service.RoomService;
 import com.idoorSys.utils.Msg;
 import com.idoorSys.utils.SpringContextsUtil;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(ApplianceController.PATH)
@@ -27,7 +30,25 @@ public class ApplianceController {
 			.getBean("applianceService");
 	RoomService roomService = (RoomService) SpringContextsUtil
 			.getBean("roomService");
-	
+
+	String ajaxDone = "{\n" +
+			"\t\"statusCode\":\"200\",\n" +
+			"\t\"message\":\"success\",\n" +
+			"\t\"navTabId\":\"\",\n" +
+			"\t\"rel\":\"\",\n" +
+			"\t\"callbackType\":\"forward\",\n" +
+			"\t\"forwardUrl\":\"appliance/%fromPage%\",\n" +
+			"\t\"confirmMsg\":\"\"\n" +
+			"}";
+	String ajaxFail = "{\n" +
+			"\t\"statusCode\":\"300\",\n" +
+			"\t\"message\":\"fail\",\n" +
+			"\t\"navTabId\":\"\",\n" +
+			"\t\"rel\":\"\",\n" +
+			"\t\"callbackType\":\"forward\",\n" +
+			"\t\"forwardUrl\":\"appliance/%fromPage%\",\n" +
+			"\t\"confirmMsg\":\"\"\n" +
+			"}\n";
 
 	// TODO 房间编号获取
 	private List<String> buildings = Arrays.asList("00","01","02");
@@ -43,6 +64,15 @@ public class ApplianceController {
 		model.put("rooms", rooms);
 		return PATH+"door";
 	}
+//	@RequestMapping("door")
+//	public void door(HttpServletResponse response) {
+//		response.setContentType("application/json");
+//		try {
+//			response.getWriter().print(ajaxDone);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	@RequestMapping("device")
 	public String device(Map<String, Object> model) {
@@ -76,8 +106,10 @@ public class ApplianceController {
 		return fromPage.equals("door") ? PATH+"door": PATH+"device";
 	}
 	@RequestMapping("send")
-	public String send(HttpServletRequest request) {
+	public void send(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String roomNo = request.getParameter("roomNo");
+		response.setContentType("application/json");
+		PrintWriter out = response.getWriter();
 		Device oldDevice;
 		try {
 			oldDevice = applianceService.getDevice(roomNo);
@@ -85,18 +117,28 @@ public class ApplianceController {
 			Map<String, String> oldLightState = oldDevice.generateLightStateMap();
 			
 			StringBuilder command = new StringBuilder(roomNo);
-			if(oldDevice.getFrontDoorState()!=null && !request.getParameter("frontDoorState").equals(oldDevice.getFrontDoorState())) {
+			if(request.getParameter("frontDoorState")!=null
+					&& oldDevice.getFrontDoorState()!=null
+					&& !request.getParameter("frontDoorState").equals(oldDevice.getFrontDoorState())) {
 				command.append("|"+"R0"+request.getParameter("frontDoorState"));
 			}
-			if(oldDevice.getBackDoorState() != null &&!request.getParameter("backDoorState").equals(oldDevice.getBackDoorState())) {
+			if(request.getParameter("backDoorState")!=null
+					&& oldDevice.getBackDoorState() != null
+					&&!request.getParameter("backDoorState").equals(oldDevice.getBackDoorState())) {
 				command.append("|"+"R1"+request.getParameter("backDoorState"));
 			}
 			for (String desk: oldDeskState.keySet()) {
-				if(!request.getParameter("D"+desk).equals(oldDeskState.get(desk))) {
-					command.append("|"+"D"+desk+"l"+request.getParameter("D"+desk));
+				if (request.getParameter("D" + desk) == null) {
+					break;
+				}
+				if (!request.getParameter("D" + desk).equals(oldDeskState.get(desk))) {
+					command.append("|" + "D" + desk + "l" + request.getParameter("D" + desk));
 				}
 			}
 			for (String light: oldLightState.keySet()) {
+				if (request.getParameter("D" + light) == null) {
+					break;
+				}
 				if(!request.getParameter("L"+light).equals(oldLightState.get(light))) {
 					command.append("|"+"L"+light+"l"+request.getParameter("L"+light));
 				}
@@ -105,16 +147,17 @@ public class ApplianceController {
 			try {
 				Msg msg = applianceService.send(command.toString());
 				if (msg == Msg.SUCCESS) {
-					return "ajaxDoneForAppliance";
+					System.out.println("success");
+					out.print(ajaxDone.replace("%fromPage%",request.getParameter("fromPage")));
 				} else {
-					return "ajaxFailForAppliance";
+					out.print(ajaxFail.replace("%fromPage%",request.getParameter("fromPage")));
 				}
 			} catch(RuntimeException e) {
-				return "ajaxFailForAppliance";
+				out.print(ajaxFail.replace("%fromPage%",request.getParameter("fromPage")));
 			}
 		} catch (IOException|SQLException e) {
 			e.printStackTrace();
-			return "ajaxFailForAppliance";
+			out.print(ajaxFail.replace("%fromPage%",request.getParameter("fromPage")));
 		}
 	}
 }

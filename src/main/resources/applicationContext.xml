@@ -44,6 +44,7 @@
 		<property name="minPoolSize" value="1"></property>
 		<property name="initialPoolSize" value="1"></property>
 		<property name="maxIdleTime" value="20"></property>
+		<property name="idleConnectionTestPeriod" value="300"></property>
 	</bean>
 	<bean id="switchb" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
@@ -58,7 +59,7 @@
 		<property name="maxIdleTime" value="20"></property>
 	</bean>
 
-	<bean id="dataSource" class="com.idoorSys.utils.RoutingDataSource">
+	<bean id="dataSource" class="com.idoorSys.utils.ModifiableRoutingDataSource">
 		<property name="targetDataSources">
 			<map key-type="java.lang.String">
 				<entry key="ds1" value-ref="ds1" />
@@ -70,21 +71,9 @@
 		<property name="defaultTargetDataSource" ref="ds1" />
 	</bean>
 
-	<bean id="myDataSource" class="com.idoorSys.utils.ModifiableRoutingDataSource">
-		<property name="targetDataSources">
-			<map key-type="java.lang.String">
-				<entry key="ds1" value-ref="ds1" />
-				<entry key="ds2" value-ref="ds2" />
-				<entry key="a" value-ref="switcha" />
-				<entry key="b" value-ref="switchb" />
-			</map>
-		</property>
-		<property name="defaultTargetDataSource" ref="ds1"/>
-	</bean>
-
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="myDataSource"/>
+		<property name="dataSource" ref="dataSource"/>
 		<!-- 自动扫描注解方式配置的hibernate类文件 -->
 		<property name="packagesToScan">
 			<list>
@@ -197,10 +186,16 @@
 			</list>
 		</property>
 	</bean>
+
 	<bean name="applianceService" class="com.idoorSys.service.ApplianceService">
 	</bean>
 
-
+	<bean name="uGroupDao" class="com.idoorSys.dao.UGroupDao"></bean>
+	<bean name="uGroupService" class="com.idoorSys.service.UGroupService">
+		<property name="baseDao">
+			<ref bean="uGroupDao"/>
+		</property>
+	</bean>
 
 
 

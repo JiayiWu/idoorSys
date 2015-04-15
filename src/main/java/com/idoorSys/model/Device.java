@@ -17,8 +17,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 /**
  * Device entity. @author MyEclipse Persistence Tools
  */
-@Entity
-@Table(name = "device")
+//@Entity
+//@Table(name = "device")
 public class Device implements java.io.Serializable {
 
 	// Fields
@@ -97,9 +97,9 @@ public class Device implements java.io.Serializable {
 	}
 
 	// Property accessors
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
+//	@Id
+//	@GeneratedValue(strategy = IDENTITY)
+//	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;
 	}
@@ -108,7 +108,7 @@ public class Device implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "room_num", length = 100)
+//	@Column(name = "room_num", length = 100)
 	public String getRoomNo() {
 		return this.roomNo;
 	}
@@ -117,7 +117,7 @@ public class Device implements java.io.Serializable {
 		this.roomNo = roomNo;
 	}
 
-	@Column(name = "front_door_state", length = 2)
+//	@Column(name = "front_door_state", length = 2)
 	public String getFrontDoorState() {
 		return this.frontDoorState;
 	}
@@ -126,7 +126,7 @@ public class Device implements java.io.Serializable {
 		this.frontDoorState = frontDoorState;
 	}
 
-	@Column(name = "back_door_state", length = 2)
+//	@Column(name = "back_door_state", length = 2)
 	public String getBackDoorState() {
 		return this.backDoorState;
 	}
@@ -144,7 +144,7 @@ public class Device implements java.io.Serializable {
 //		this.deskNum = deskNum;
 //	}
 
-	@Column(name = "desk_state", length = 256)
+//	@Column(name = "desk_state", length = 256)
 	public String getDeskState() {
 		return this.deskState;
 	}
@@ -162,7 +162,7 @@ public class Device implements java.io.Serializable {
 //		this.lightNum = lightNum;
 //	}
 
-	@Column(name = "light_state", length = 256)
+//	@Column(name = "light_state", length = 256)
 	public String getLightState() {
 		return this.lightState;
 	}

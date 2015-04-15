@@ -47,10 +47,11 @@
 	<table class="table" width="100%" layoutH="138">
 		<thead>
 			<tr>
-				<th width="120" align="center">ID</th>
-				<th width="120" align="center">房间号</th>
-				<th width="120" align="center">卡号</th>
-				<th width="120" align="center">权限类型</th>
+				<th width="100" align="center">ID</th>
+				<th width="100" align="center">房间号</th>
+				<th width="100" align="center">用户名</th>
+				<th width="100" align="center">卡号</th>
+				<th width="100" align="center">权限类型</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -58,6 +59,7 @@
 				<tr target="sid_user" rel="${permission.id}">
 					<td>${permission.id}</td>
 					<td>${permission.room.name}</td>
+					<td>${permission.permissionUser.name}</td>
 					<td>${permission.permissionUser.cardNum}</td>
 					<td>${permission.type}</td>
 					

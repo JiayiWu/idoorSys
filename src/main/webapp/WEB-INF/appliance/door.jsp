@@ -91,6 +91,10 @@
 		<form method="post" action="appliance/send"
 			class="pageForm required-validate"
 			onsubmit="return validateCallback(this, navTabAjaxDone);">
+
+			<input type="hidden" name="fromPage" value="door">
+			<input type="hidden" name="roomNo"
+				   value="${device.getRoomNo()}" />
 			<p>
 				<c:if test="${device.getFrontDoorState()!=null}">
 					前门

@@ -45,10 +45,10 @@ public class ReserveService extends BaseService {
 	private String getRemoteReserveJson() {
 		String jsonData = "";
 		HttpClient client = new HttpClient();
-		 HttpMethod method = new GetMethod(
-		 "http://eelab.nju.edu.cn:780/today_order/");
-//		 HttpMethod method = new
-//		 GetMethod("http://10.225.111.40/today_order/");
+//		 HttpMethod method = new GetMethod(
+//		 "http://eelab.nju.edu.cn:780/today_order/");
+		 HttpMethod method = new
+		 GetMethod("http://10.225.111.40/today_order/");
 
 		try {
 			client.executeMethod(method);

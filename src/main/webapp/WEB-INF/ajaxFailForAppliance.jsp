@@ -1,9 +1,0 @@
-{
-	"statusCode":"300",
-	"message":"fail",
-	"navTabId":"",
-	"rel":"",
-	"callbackType":"forward",
-	"forwardUrl":"appliance/list",
-	"confirmMsg":""
-}

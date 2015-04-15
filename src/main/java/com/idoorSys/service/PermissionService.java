@@ -18,7 +18,31 @@ public class PermissionService extends BaseService {
 	 */
 	@Override
 	public List<?> getAll() {
-		return ((PermissionDao) getBaseDao()).getAll();
+//		return ((PermissionDao) getBaseDao()).getAll();
+		List<Permission> permissions = new ArrayList<>();
+		List<Object[]> objects = getBaseDao()
+				.execSqlQuery(
+						"select Permission.id, PermissionUser.cardNum ,Room.name, Permission.type, PermissionUser.name as pname from "
+								+ "Permission,Room,PermissionUser"
+								+ " where "
+								+ "Permission.room_id=Room.id"
+								+ " and "
+								+ "Permission.permissionUser_cardNum = PermissionUser.cardNum"
+				);
+		for (Object[] object : objects) {
+			Permission permission = new Permission();
+			permission.setId(Long.parseLong(object[0].toString()));
+			PermissionUser permissionUser = new PermissionUser();
+			permissionUser.setCardNum(object[1].toString());
+			permissionUser.setName(object[4].toString());
+			permission.setPermissionUser(permissionUser);
+			Room room = new Room();
+			room.setName(object[2].toString());
+			permission.setRoom(room);
+			permission.setType(object[3].toString());
+			permissions.add(permission);
+		}
+		return permissions;
 	}
 
 	/*

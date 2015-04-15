@@ -31,11 +31,14 @@
 					value="${room.phone}" />
 			</p>
 			<p>
-				<label>用户组别：</label> <select name="group">
-					<option value="学生">学生</option>
-					<option value="教师">教师</option>
-					<option value="工作人员">工作人员</option>
-				</select>
+				<label>用户组别：</label>
+				<input name="group" list="groups" placeholder="用户组别"/>
+				<datalist id="groups">
+					<c:forEach var="group" items="${groups}">
+						<option value="${group.getName()}"/>
+					</c:forEach>
+				</datalist>
+				<a href="permissionUser/group" target="navTab" rel="deleteGroup" title="删除多余分组">组别管理</a>
 			</p>
 
 			<div class="divider"></div>

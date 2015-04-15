@@ -23,8 +23,7 @@ public class RemoteRoomUserController implements IdoorController {
 	@Override
 	@RequestMapping(MAPPING_LIST)
 	public String list(Map<String, Object> model) {
-		// TODO Auto-generated method stub
-		remoteRoomUserService.preAdd();
+//		remoteRoomUserService.preAdd();
 		model.put("rusers", remoteRoomUserService.getAll());
 		return PATH + "list";
 	}

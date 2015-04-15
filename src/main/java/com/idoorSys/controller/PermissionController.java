@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.idoorSys.utils.ModifiableRoutingDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +38,7 @@ public class PermissionController implements IdoorController {
 		// permissionService.preAdd();
 		List<Permission> permissions = (List<Permission>) permissionService
 				.getAll();
-		model.put("permissions", permissions);
+		model.put("permissions",permissions);
 		return PATH + LIST_PAGE;
 	}
 
@@ -85,14 +86,22 @@ public class PermissionController implements IdoorController {
 	public String multiAdd(@RequestParam("users[]") String[] users,
 			@RequestParam("rooms[]") long[] rooms,
 			@RequestParam("type") String type) {
+		Msg result = Msg.SUCCESS;
 		for (int i = 0; i < users.length; i++) {
 			PermissionUser permissionUser = new PermissionUser(users[i]);
 			for (int j = 0; j < rooms.length; j++) {
-				permissionService.add(new Permission(new Room(rooms[j]),
+				Msg addResult = permissionService.add(new Permission(new Room(rooms[j]),
 						permissionUser, type));
+				if (addResult == Msg.FAIL) {
+					result = Msg.FAIL;
+				}
 			}
 		}
-		return DONE_PAGE;
+		if (result == Msg.SUCCESS) {
+			return DONE_PAGE;
+		} else {
+			return FAIL_PAGE;
+		}
 	}
 
 	@Override

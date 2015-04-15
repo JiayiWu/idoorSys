@@ -26,17 +26,7 @@ public class MainController {
 	public String main(Map<String, Object> model, HttpSession httpSession) {
 		SysUser sysUser = (SysUser) httpSession.getAttribute("sysUser");
 
-
-//		ModifiableRoutingDataSource dataSource = ((ModifiableRoutingDataSource) SpringContextsUtil.getBean("myDataSource"));
-//		dataSource.setDataSourceKey("a");
-//		System.out.println("set to db: a");
-//		ComboPooledDataSource a = (ComboPooledDataSource) SpringContextsUtil.getBean("switcha");
-//		for (Object ds : dataSource.getTargetDataSources().values()) {
-//			System.out.println(((ComboPooledDataSource) ds).getJdbcUrl());
-//		}
-
-		sysUserService.preAdd();
-
+//		sysUserService.preAdd();
 		if (sysUser != null) {
 			model.put("sysUser", sysUser);
 			return "index";

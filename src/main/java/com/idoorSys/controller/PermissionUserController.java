@@ -1,8 +1,13 @@
 package com.idoorSys.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.idoorSys.model.UGroup;
+import com.idoorSys.service.UGroupService;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +22,16 @@ import com.idoorSys.service.PermissionUserService;
 import com.idoorSys.utils.Msg;
 import com.idoorSys.utils.SpringContextsUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 @RequestMapping(PermissionUserController.PATH)
 public class PermissionUserController implements IdoorController {
 
 	PermissionUserService permissionUserService = (PermissionUserService) SpringContextsUtil
 			.getBean("permissionUserService");
+	UGroupService uGroupService = (UGroupService)SpringContextsUtil.getBean("uGroupService");
 
 	public static final String PATH = "permissionUser/";
 
@@ -59,6 +68,15 @@ public class PermissionUserController implements IdoorController {
 				type, stdNum);
 		permissionUser.setPhone(phone);
 		permissionUser.setGroup(group);
+		boolean isNewGroup = true;
+		for (UGroup g: uGroupService.getAll()) {
+			if (g.getName().equals(group)) {
+				isNewGroup = false;
+			}
+		}
+		if (isNewGroup) {
+			uGroupService.add(new UGroup(group));
+		}
 		Msg msg = permissionUserService.update(permissionUser);
 		if (msg == Msg.SUCCESS)
 			return DONE_PAGE;
@@ -78,6 +96,15 @@ public class PermissionUserController implements IdoorController {
 				stdNum);
 		permissionUser.setPhone(phone);
 		permissionUser.setGroup(group);
+		boolean isNewGroup = true;
+		for (UGroup g: uGroupService.getAll()) {
+			if (g.getName().equals(group)) {
+				isNewGroup = false;
+			}
+		}
+		if (isNewGroup) {
+			uGroupService.add(new UGroup(group));
+		}
 		Msg msg = permissionUserService.add(permissionUser);
 		if (msg == Msg.SUCCESS)
 			return DONE_PAGE;
@@ -88,15 +115,18 @@ public class PermissionUserController implements IdoorController {
 	@Override
 	@RequestMapping(MAPPING_PAGE_EDIT)
 	public String pageEdit(@PathVariable long id, Map<String, Object> model) {
-		// TODO Auto-generated method stub
 		model.put("puser", permissionUserService.getbyId(id));
+		List<UGroup> groups = uGroupService.getAll();
+		model.put("groups", groups);
 		return PATH + "edit";
 	}
 
 	@Override
 	@RequestMapping(MAPPIND_PAGE_ADD)
 	public String pageAdd(Map<String, Object> model) {
-		// TODO Auto-generated method stub
+		uGroupService.preAdd();
+		List<UGroup> groups = uGroupService.getAll();
+		model.put("groups", groups);
 		return PATH + "add";
 	}
 
@@ -148,4 +178,22 @@ public class PermissionUserController implements IdoorController {
 		return map;
 	}
 
+	@RequestMapping("group")
+	public String showGroup(Map<String, Object> model) {
+		List<UGroup> groups = uGroupService.getAll();
+		model.put("groups", groups);
+		return PATH+"group";
+	}
+	@RequestMapping("deleteGroup")
+	public String deleteGroup(HttpServletRequest request) {
+		String[] groupsToDelete = request.getParameterValues("groupToDelete");
+		boolean success = true;
+		for (String group: groupsToDelete) {
+			Msg msg = uGroupService.deleteByName(group);
+			if (msg == Msg.FAIL) {
+				success = false;
+			}
+		}
+		return success? DONE_PAGE: FAIL_PAGE;
+	}
 }
