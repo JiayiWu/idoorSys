@@ -58,6 +58,18 @@
 		<property name="initialPoolSize" value="1"></property>
 		<property name="maxIdleTime" value="20"></property>
 	</bean>
+	<bean id="test" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		  destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://192.168.206.50:3306/test">
+		</property>
+		<property name="user" value="root"></property>
+		<property name="password" value=""></property>
+		<property name="maxPoolSize" value="40"></property>
+		<property name="minPoolSize" value="1"></property>
+		<property name="initialPoolSize" value="1"></property>
+		<property name="maxIdleTime" value="20"></property>
+	</bean>
 
 	<bean id="dataSource" class="com.idoorSys.utils.ModifiableRoutingDataSource">
 		<property name="targetDataSources">
@@ -66,9 +78,10 @@
 				<entry key="ds2" value-ref="ds2" />
 				<entry key="ds3" value-ref="switcha" />
 				<entry key="ds4" value-ref="switchb" />
+				<entry key="test" value-ref="test" />
 			</map>
 		</property>
-		<property name="defaultTargetDataSource" ref="ds1" />
+		<property name="defaultTargetDataSource" ref="ds2" />
 	</bean>
 
 	<bean id="sessionFactory"
@@ -86,7 +99,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">
-					org.hibernate.dialect.MySQLDialect
+					org.hibernate.dialect.MySQL5Dialect
 				</prop>
 <!-- 				hibernate.hbm2ddl.auto设为create为每次启动清空数据 供测试用,update不清空 -->
 				<prop key="hibernate.hbm2ddl.auto">update</prop>

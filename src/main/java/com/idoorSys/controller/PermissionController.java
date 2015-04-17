@@ -1,6 +1,8 @@
 package com.idoorSys.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +20,9 @@ import com.idoorSys.service.PermissionUserService;
 import com.idoorSys.service.RoomService;
 import com.idoorSys.utils.Msg;
 import com.idoorSys.utils.SpringContextsUtil;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping(PermissionController.PATH)
@@ -50,15 +55,40 @@ public class PermissionController implements IdoorController {
 		model.put("permissions", permissions);
 		return PATH + LIST_PAGE;
 	}
-
+//
 	@Override
-	@RequestMapping(MAPPING_DELETE)
+//	@RequestMapping(MAPPING_DELETE)
 	public String delete(@PathVariable long id, Map<String, Object> model) {
 		Msg msg = permissionService.deleteById(id);
 		if (msg == Msg.SUCCESS)
 			return DONE_PAGE;
 		else
 			return FAIL_PAGE;
+	}
+
+	@RequestMapping(MAPPING_DELETE)
+	public void delete(@PathVariable long id, Map<String, Object> model, HttpServletResponse response) throws IOException {
+		Msg msg = permissionService.deleteById(id);
+		if (msg == Msg.SUCCESS)
+			response.getWriter().print("{\n" +
+					"\t\"statusCode\":\"200\",\n" +
+					"\t\"message\":\"success\",\n" +
+					"\t\"navTabId\":\"\",\n" +
+					"\t\"rel\":\"\",\n" +
+					"\t\"callbackType\":\"forward\",\n" +
+					"\t\"forwardUrl\":\"permission/list\",\n" +
+					"\t\"confirmMsg\":\"\"\n" +
+					"}");
+		else
+			response.getWriter().print("{\n" +
+					"\t\"statusCode\":\"300\",\n" +
+					"\t\"message\":\"fail\",\n" +
+					"\t\"navTabId\":\"\",\n" +
+					"\t\"rel\":\"\",\n" +
+					"\t\"callbackType\":\"forward\",\n" +
+					"\t\"forwardUrl\":\"permission/list\",\n" +
+					"\t\"confirmMsg\":\"\"\n" +
+					"}");
 	}
 
 	@RequestMapping(MAPPING_UPDATE)
@@ -86,6 +116,8 @@ public class PermissionController implements IdoorController {
 	public String multiAdd(@RequestParam("users[]") String[] users,
 			@RequestParam("rooms[]") long[] rooms,
 			@RequestParam("type") String type) {
+		System.out.println("users[]:"+Arrays.toString(users));
+		System.out.println("rooms[]:"+Arrays.toString(rooms));
 		Msg result = Msg.SUCCESS;
 		for (int i = 0; i < users.length; i++) {
 			PermissionUser permissionUser = new PermissionUser(users[i]);

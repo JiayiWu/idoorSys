@@ -204,14 +204,19 @@ public class BaseDao {
 
 	public List<Object[]> execSqlQuery(String sql) {
 		// TODO Auto-generated method stub
+		Session session = null;
 		try {
-			Transaction tx = getSession().beginTransaction();
+			session = getSession();
+			session.getTransaction().begin();
 			List<Object[]> objects = getSession().createSQLQuery(sql).list();
-			tx.commit();
+			session.getTransaction().commit();
 			closeSession();
 			return objects;
 		} catch (Exception re) {
 			re.printStackTrace();
+			if (session!=null) {
+				session.getTransaction().rollback();
+			}
 			closeSession();
 			throw re;
 		}

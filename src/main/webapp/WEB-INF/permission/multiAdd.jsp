@@ -541,6 +541,7 @@
 						"type" : type
 					}, function(data) {
 						alertMsg.correct('success');
+						navTab.closeCurrentTab();
 					});
 				});
 

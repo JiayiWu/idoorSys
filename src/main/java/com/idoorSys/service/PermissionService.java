@@ -1,6 +1,7 @@
 package com.idoorSys.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.idoorSys.dao.PermissionDao;
@@ -28,8 +29,11 @@ public class PermissionService extends BaseService {
 								+ "Permission.room_id=Room.id"
 								+ " and "
 								+ "Permission.permissionUser_cardNum = PermissionUser.cardNum"
+								+ " ORDER BY Permission.id DESC"
 				);
 		for (Object[] object : objects) {
+			System.out.println(object.length);
+			System.out.println(Arrays.toString(object));
 			Permission permission = new Permission();
 			permission.setId(Long.parseLong(object[0].toString()));
 			PermissionUser permissionUser = new PermissionUser();
@@ -91,7 +95,7 @@ public class PermissionService extends BaseService {
 		List<Permission> permissions = new ArrayList<>();
 		List<Object[]> objects = getBaseDao()
 				.execSqlQuery(
-						"select Permission.id,PermissionUser.cardNum, Room.name,  Permission.type from "
+						"select Permission.id,PermissionUser.cardNum, Room.name,  Permission.type, PermissionUser.name as pname from "
 								+ "Permission,Room,PermissionUser"
 								+ " where "
 								+ "Permission.room_id=Room.id"
@@ -103,12 +107,14 @@ public class PermissionService extends BaseService {
 								+ "%'"
 								+ " or "
 								+ "PermissionUser.name like '%"
-								+ userName + "%')");
+								+ userName + "%')"
+								+ "ORDER BY Permission.id DESC");
 		for (Object[] object : objects) {
 			Permission permission = new Permission();
 			permission.setId(Long.parseLong(object[0].toString()));
 			PermissionUser permissionUser = new PermissionUser();
 			permissionUser.setCardNum(object[1].toString());
+			permissionUser.setName(object[4].toString());
 			permission.setPermissionUser(permissionUser);
 			Room room = new Room();
 			room.setName(object[2].toString());
