@@ -23,8 +23,6 @@ public class BaseDao {
 
 	private SessionFactory sessionFactory;
 
-	private Session session;
-
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
@@ -34,150 +32,165 @@ public class BaseDao {
 	}
 
 	public Session getSession() {
-		if (session == null || !session.isOpen()) {
-			session = sessionFactory.openSession();
-		}
-		return session;
+		return sessionFactory.openSession();
 	}
 
 	public Msg save(Object entity) {
-		Transaction tx = getSession().beginTransaction();
+		Session session = getSession();
+		Transaction tx = session.beginTransaction();
 		try {
-			getSession().save(entity);
+			session.save(entity);
 			tx.commit();
-			getSession().clear();
+			session.clear();
 			return Msg.SUCCESS;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			closeSession();
+			tx.rollback();
+			session.close();
 			return Msg.FAIL;
 		}
 	}
 
-	private void closeSession() {
-		// TODO Auto-generated method stub
-		if (session != null && session.isOpen()) {
-			session.close();
-		}
-	}
-
 	public Msg update(Object entity) {
+		Session session = getSession();
 		try {
-			getSession().beginTransaction();
-			getSession().update(entity);
-			getSession().getTransaction().commit();
-			getSession().clear();
+			session.beginTransaction();
+			session.update(entity);
+			session.getTransaction().commit();
+			session.clear();
 			return Msg.SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
-			closeSession();
+			if (session!=null) {
+				session.getTransaction().rollback();
+			}
+			session.close();
 			return Msg.FAIL;
 		}
 
 	}
 
 	public Msg delete(Object entity) {
+		Session session = getSession();
 		try {
-			getSession().beginTransaction();
-			getSession().delete(entity);
-			getSession().getTransaction().commit();
-			getSession().clear();
+			session.beginTransaction();
+			session.delete(entity);
+			session.getTransaction().commit();
+			session.clear();
 			return Msg.SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
-			closeSession();
+			if (session!=null) {
+				session.getTransaction().rollback();
+			}
+			session.close();
 			return Msg.FAIL;
 		}
 	}
 
 	public Msg deleteById(Class<?> className, long id) {
+		Session session = getSession();
 		try {
-			getSession().beginTransaction();
+			session.beginTransaction();
 			Object instance = getSession().get(className, id);
-			getSession().delete(instance);
-			getSession().getTransaction().commit();
-			getSession().clear();
+			session.delete(instance);
+			session.getTransaction().commit();
+			session.clear();
 			return Msg.SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
-			closeSession();
+			if (session!=null) {
+				session.getTransaction().rollback();
+			}
+			session.close();
 			return Msg.FAIL;
 		}
 	}
 
 	public Msg deleteById(Class<?> className, int id) {
+		Session session = getSession();
 		try {
-			getSession().beginTransaction();
+			session.beginTransaction();
 			Object instance = getSession().get(className, id);
-			getSession().delete(instance);
-			getSession().getTransaction().commit();
-			getSession().clear();
+			session.delete(instance);
+			session.getTransaction().commit();
+			session.clear();
 			return Msg.SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
-			closeSession();
+			if (session!=null) {
+				session.getTransaction().rollback();
+			}
+			session.close();
 			return Msg.FAIL;
 		}
 	}
 
 	public List<?> getAll(Class<?> className) {
 		List<?> list = null;
+		Session session = getSession();
 		try {
-			getSession().beginTransaction();
+			session.beginTransaction();
 			Criteria criteria = session.createCriteria(className);
 			criteria.addOrder(Order.desc("id"));
 			list = criteria.list();
-			getSession().getTransaction().commit();
+			session.getTransaction().commit();
 			// List<?> list = getSession().createQuery(
 			// "from  " + className.getSimpleName()).list();
-			getSession().clear();
+			session.clear();
 		} catch (Exception e) {
 			e.printStackTrace();
-			closeSession();
+			if (session!=null) {
+				session.getTransaction().rollback();
+			}
+			session.close();
 		}
 		return list;
 	}
 
 	public Object findById(Class<?> className, Long id) {
+		Session session = getSession();
 		try {
-			Object instance = getSession().get(className, id);
-			closeSession();
+			Object instance = session.get(className, id);
+			session.close();
 			return instance;
 		} catch (Exception re) {
 			re.printStackTrace();
-			closeSession();
+			session.close();
 			throw re;
 		}
 	}
 
 	public Object findById(Class<?> className, int id) {
+		Session session = getSession();
 		try {
 			Object instance = getSession().get(className, id);
-			closeSession();
+			session.close();
 			return instance;
 		} catch (Exception re) {
 			re.printStackTrace();
-			closeSession();
+			session.close();
 			throw re;
 		}
 	}
 
 	public List<?> findByExample(Object entity) {
 		List<?> list = null;
+		Session session = getSession();
 		try {
-			getSession().beginTransaction();
+			session.beginTransaction();
 			Criteria criteria = session.createCriteria(entity.getClass());
 			criteria.addOrder(Order.desc("id"));
 			criteria.add(Example.create(entity).enableLike(MatchMode.ANYWHERE));
 			list = criteria.list();
-			getSession().getTransaction().commit();
+			session.getTransaction().commit();
 			// List<?> list = getSession().createQuery(
 			// "from  " + className.getSimpleName()).list();
-			getSession().clear();
+			session.clear();
 		} catch (Exception e) {
 			e.printStackTrace();
-			closeSession();
+			session.getTransaction().rollback();
+			session.close();
 		}
 		return list;
 	}
@@ -186,38 +199,38 @@ public class BaseDao {
 			Object value) {
 		log.debug("finding Room instance with property: " + propertyName
 				+ ", value: " + value);
+		Session session = getSession();
 		try {
 			String queryString = "from " + className.getSimpleName()
 					+ " as model where model." + propertyName + "= ?";
-			Query queryObject = getSession().createQuery(queryString);
+			Query queryObject = session.createQuery(queryString);
 			queryObject.setParameter(0, value);
 			List<?> list = queryObject.list();
-			closeSession();
+			session.close();
 			return list;
 		} catch (Exception re) {
 			re.printStackTrace();
-			closeSession();
+			session.close();
 			throw re;
 
 		}
 	}
 
 	public List<Object[]> execSqlQuery(String sql) {
-		// TODO Auto-generated method stub
-		Session session = null;
+		Session session = getSession();
 		try {
-			session = getSession();
-			session.getTransaction().begin();
-			List<Object[]> objects = getSession().createSQLQuery(sql).list();
+			session.beginTransaction();
+			List<Object[]> objects = session.createSQLQuery(sql).list();
 			session.getTransaction().commit();
-			closeSession();
+			session.clear();
+			session.close();
 			return objects;
 		} catch (Exception re) {
 			re.printStackTrace();
 			if (session!=null) {
 				session.getTransaction().rollback();
 			}
-			closeSession();
+			session.close();
 			throw re;
 		}
 	}
