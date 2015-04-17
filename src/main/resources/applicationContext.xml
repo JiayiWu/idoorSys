@@ -99,7 +99,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">
-					org.hibernate.dialect.MySQL5Dialect
+					org.hibernate.dialect.MySQL5InnoDBDialect
 				</prop>
 <!-- 				hibernate.hbm2ddl.auto设为create为每次启动清空数据 供测试用,update不清空 -->
 				<prop key="hibernate.hbm2ddl.auto">update</prop>

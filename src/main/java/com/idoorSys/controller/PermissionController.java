@@ -116,8 +116,6 @@ public class PermissionController implements IdoorController {
 	public String multiAdd(@RequestParam("users[]") String[] users,
 			@RequestParam("rooms[]") long[] rooms,
 			@RequestParam("type") String type) {
-		System.out.println("users[]:"+Arrays.toString(users));
-		System.out.println("rooms[]:"+Arrays.toString(rooms));
 		Msg result = Msg.SUCCESS;
 		for (int i = 0; i < users.length; i++) {
 			PermissionUser permissionUser = new PermissionUser(users[i]);

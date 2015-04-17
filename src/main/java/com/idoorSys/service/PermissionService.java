@@ -32,8 +32,6 @@ public class PermissionService extends BaseService {
 								+ " ORDER BY Permission.id DESC"
 				);
 		for (Object[] object : objects) {
-			System.out.println(object.length);
-			System.out.println(Arrays.toString(object));
 			Permission permission = new Permission();
 			permission.setId(Long.parseLong(object[0].toString()));
 			PermissionUser permissionUser = new PermissionUser();
