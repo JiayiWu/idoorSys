@@ -17,13 +17,13 @@ public abstract class BaseService implements IdoorService{
 		this.baseDao = baseDao;
 	}
 
-	public BaseDao getHibernateBaseDao() {
-		return baseDao;
-	}
-
-	public void setHibernateBaseDao(BaseDao hibernateBaseDao) {
-		this.baseDao = hibernateBaseDao;
-	}
+//	public BaseDao getHibernateBaseDao() {
+//		return baseDao;
+//	}
+//
+//	public void setHibernateBaseDao(BaseDao hibernateBaseDao) {
+//		this.baseDao = hibernateBaseDao;
+//	}
 
 	@Override
 	public Msg update(Object object) {

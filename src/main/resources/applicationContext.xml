@@ -33,55 +33,55 @@
 		<property name="initialPoolSize" value="1"></property>
 		<property name="maxIdleTime" value="20"></property>
 	</bean>
-	<bean id="switcha" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close">
-		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="${db3.url}">
-		</property>
-		<property name="user" value="${db3.user}"></property>
-		<property name="password" value="${db3.password}"></property>
-		<property name="maxPoolSize" value="40"></property>
-		<property name="minPoolSize" value="1"></property>
-		<property name="initialPoolSize" value="1"></property>
-		<property name="maxIdleTime" value="20"></property>
-		<property name="idleConnectionTestPeriod" value="300"></property>
-	</bean>
-	<bean id="switchb" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close">
-		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="${db4.url}">
-		</property>
-		<property name="user" value="${db4.user}"></property>
-		<property name="password" value="${db4.password}"></property>
-		<property name="maxPoolSize" value="40"></property>
-		<property name="minPoolSize" value="1"></property>
-		<property name="initialPoolSize" value="1"></property>
-		<property name="maxIdleTime" value="20"></property>
-	</bean>
-	<bean id="test" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		  destroy-method="close">
-		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://192.168.206.50:3306/test">
-		</property>
-		<property name="user" value="root"></property>
-		<property name="password" value=""></property>
-		<property name="maxPoolSize" value="40"></property>
-		<property name="minPoolSize" value="1"></property>
-		<property name="initialPoolSize" value="1"></property>
-		<property name="maxIdleTime" value="20"></property>
-	</bean>
+	<!--<bean id="switcha" class="com.mchange.v2.c3p0.ComboPooledDataSource"-->
+		<!--destroy-method="close">-->
+		<!--<property name="driverClass" value="com.mysql.jdbc.Driver" />-->
+		<!--<property name="jdbcUrl" value="${db3.url}">-->
+		<!--</property>-->
+		<!--<property name="user" value="${db3.user}"></property>-->
+		<!--<property name="password" value="${db3.password}"></property>-->
+		<!--<property name="maxPoolSize" value="40"></property>-->
+		<!--<property name="minPoolSize" value="1"></property>-->
+		<!--<property name="initialPoolSize" value="1"></property>-->
+		<!--<property name="maxIdleTime" value="20"></property>-->
+		<!--<property name="idleConnectionTestPeriod" value="300"></property>-->
+	<!--</bean>-->
+	<!--<bean id="switchb" class="com.mchange.v2.c3p0.ComboPooledDataSource"-->
+		<!--destroy-method="close">-->
+		<!--<property name="driverClass" value="com.mysql.jdbc.Driver" />-->
+		<!--<property name="jdbcUrl" value="${db4.url}">-->
+		<!--</property>-->
+		<!--<property name="user" value="${db4.user}"></property>-->
+		<!--<property name="password" value="${db4.password}"></property>-->
+		<!--<property name="maxPoolSize" value="40"></property>-->
+		<!--<property name="minPoolSize" value="1"></property>-->
+		<!--<property name="initialPoolSize" value="1"></property>-->
+		<!--<property name="maxIdleTime" value="20"></property>-->
+	<!--</bean>-->
+	<!--<bean id="test" class="com.mchange.v2.c3p0.ComboPooledDataSource"-->
+		  <!--destroy-method="close">-->
+		<!--<property name="driverClass" value="com.mysql.jdbc.Driver" />-->
+		<!--<property name="jdbcUrl" value="jdbc:mysql://192.168.206.50:3306/test">-->
+		<!--</property>-->
+		<!--<property name="user" value="root"></property>-->
+		<!--<property name="password" value=""></property>-->
+		<!--<property name="maxPoolSize" value="40"></property>-->
+		<!--<property name="minPoolSize" value="1"></property>-->
+		<!--<property name="initialPoolSize" value="1"></property>-->
+		<!--<property name="maxIdleTime" value="20"></property>-->
+	<!--</bean>-->
 
 	<bean id="dataSource" class="com.idoorSys.utils.ModifiableRoutingDataSource">
 		<property name="targetDataSources">
 			<map key-type="java.lang.String">
 				<entry key="ds1" value-ref="ds1" />
 				<entry key="ds2" value-ref="ds2" />
-				<entry key="ds3" value-ref="switcha" />
-				<entry key="ds4" value-ref="switchb" />
-				<entry key="test" value-ref="test" />
+				<!--<entry key="ds3" value-ref="switcha" />-->
+				<!--<entry key="ds4" value-ref="switchb" />-->
+				<!--<entry key="test" value-ref="test" />-->
 			</map>
 		</property>
-		<property name="defaultTargetDataSource" ref="ds2" />
+		<property name="defaultTargetDataSource" ref="ds1" />
 	</bean>
 
 	<bean id="sessionFactory"
@@ -117,9 +117,6 @@
 	<!-- 需要引入tx的命名空间 -->
 
 	<bean id="springContextsUtil" class="com.idoorSys.utils.SpringContextsUtil"></bean>
-
-	<bean name="testDao" class="com.idoorSys.dao.TestDao">
-	</bean>
 
 	<bean name="roomDao" class="com.idoorSys.dao.RoomDao">
 	</bean>
@@ -180,25 +177,25 @@
 	</bean>
 
 
-	<bean name="job1" class="org.springframework.scheduling.quartz.JobDetailBean">
-		<property name="jobClass" value="com.idoorSys.service.TimerJobService" />
-		<property name="jobDataAsMap">
-			<map>
-				<entry key="timeout" value="0" />
-			</map>
-		</property>
-	</bean>
-	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-		<property name="jobDetail" ref="job1" />
-		<property name="cronExpression" value="0/100 * * * * ?" />
-	</bean>
-	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" autowire="no">
-		<property name="triggers">
-			<list>
-				<ref bean="cronTrigger" />
-			</list>
-		</property>
-	</bean>
+	<!--<bean name="job1" class="org.springframework.scheduling.quartz.JobDetailBean">-->
+		<!--<property name="jobClass" value="com.idoorSys.service.TimerJobService" />-->
+		<!--<property name="jobDataAsMap">-->
+			<!--<map>-->
+				<!--<entry key="timeout" value="0" />-->
+			<!--</map>-->
+		<!--</property>-->
+	<!--</bean>-->
+	<!--<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">-->
+		<!--<property name="jobDetail" ref="job1" />-->
+		<!--<property name="cronExpression" value="0/100 * * * * ?" />-->
+	<!--</bean>-->
+	<!--<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" autowire="no">-->
+		<!--<property name="triggers">-->
+			<!--<list>-->
+				<!--<ref bean="cronTrigger" />-->
+			<!--</list>-->
+		<!--</property>-->
+	<!--</bean>-->
 
 	<bean name="applianceService" class="com.idoorSys.service.ApplianceService">
 	</bean>
@@ -210,6 +207,12 @@
 		</property>
 	</bean>
 
+	<bean name="swipingDao" class="com.idoorSys.dao.SwipingDao"/>
+	<bean name="swipingService" class="com.idoorSys.service.SwipingService">
+		<property name="baseDao">
+			<ref bean="swipingDao"/>
+		</property>
+	</bean>
 
 
 

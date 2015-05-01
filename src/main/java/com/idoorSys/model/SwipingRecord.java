@@ -1,12 +1,9 @@
 package com.idoorSys.model;
 
 import java.sql.Timestamp;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+import javax.persistence.*;
+
 import static javax.persistence.GenerationType.IDENTITY;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * SwipingRecord entity. @author MyEclipse Persistence Tools
@@ -20,6 +17,12 @@ public class SwipingRecord implements java.io.Serializable {
 	private Integer id;
 	private String cardid;
 	private Timestamp swipingTime;
+
+	private String roomNum;
+	private String doorNum;
+
+	private String userName;
+	private String roomName;
 
 	// Constructors
 
@@ -40,7 +43,6 @@ public class SwipingRecord implements java.io.Serializable {
 
 	// Property accessors
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;
@@ -68,4 +70,52 @@ public class SwipingRecord implements java.io.Serializable {
 		this.swipingTime = swipingTime;
 	}
 
+	@Column(name = "room_num")
+	public String getRoomNum() {
+		return roomNum;
+	}
+
+	public void setRoomNum(String roomNum) {
+		this.roomNum = roomNum;
+	}
+
+	@Column(name = "door_num")
+	public String getDoorNum() {
+		return doorNum;
+	}
+
+	public void setDoorNum(String doorNum) {
+		this.doorNum = doorNum;
+	}
+
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@Transient
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
+	@Override
+	public String toString() {
+		return "SwipingRecord{" +
+				"id=" + id +
+				", cardid='" + cardid + '\'' +
+				", swipingTime=" + swipingTime +
+				", roomNum='" + roomNum + '\'' +
+				", doorNum='" + doorNum + '\'' +
+				", userName='" + userName + '\'' +
+				", roomName='" + roomName + '\'' +
+				'}';
+	}
 }

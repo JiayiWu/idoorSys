@@ -84,12 +84,8 @@ public class PermissionService extends BaseService {
 
 	public List<Permission> findByCondition(String userName, String roomName) {
 		// TODO Auto-generated method stub
-		if (userName == null || userName.equals("")) {
-			userName = "null";
-		}
-		if (roomName == null || roomName.equals("")) {
-			roomName = "null";
-		}
+		userName = userName == null || userName.equals("")? null: userName;
+		roomName = roomName == null || roomName.equals("")? null: roomName;
 		List<Permission> permissions = new ArrayList<>();
 		List<Object[]> objects = getBaseDao()
 				.execSqlQuery(
@@ -99,13 +95,10 @@ public class PermissionService extends BaseService {
 								+ "Permission.room_id=Room.id"
 								+ " and "
 								+ "Permission.permissionUser_cardNum = PermissionUser.cardNum"
-								+ " and "
-								+ "(Room.name like '%"
-								+ roomName
-								+ "%'"
-								+ " or "
-								+ "PermissionUser.name like '%"
-								+ userName + "%')"
+								+ (userName == null ? "": (" and "
+								+ "PermissionUser.name like '%" + userName +"%'"))
+								+ (roomName == null ? "": (" and "
+								+ "Room.name like '%" + roomName +"%'"))
 								+ "ORDER BY Permission.id DESC");
 		for (Object[] object : objects) {
 			Permission permission = new Permission();
