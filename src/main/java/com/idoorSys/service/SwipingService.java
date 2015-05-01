@@ -110,6 +110,7 @@ public class SwipingService {
     }
 
     public List<?> getAnonymousByExample(String roomName, Timestamp startTime, Timestamp endTime) {
+        roomName = roomName==null || roomName.equals("")? null: roomName;
         List<SwipingRecord> records = new ArrayList<>();
         List<Object[]> objects = getBaseDao()
                 .execSqlQuery(
@@ -117,6 +118,12 @@ public class SwipingService {
                                 + "swiping_record,Room"
                                 + " where "
                                 + "swiping_record.room_Num = Room.nameEn"
+                                + (roomName == null ? "": (" and "
+                                + "Room.name like '%"+roomName+"%'"))
+                                + (startTime == null ? "": (" and "
+                                + "swiping_record.swiping_Time >= '"+startTime+"'"))
+                                + (endTime == null ? "": (" and "
+                                + "swiping_record.swiping_Time <= '"+endTime+"'"))
                                 + " ORDER BY swiping_record.id DESC"
                 );
         for (Object[] object : objects) {
