@@ -95,7 +95,7 @@ public class BaseDao {
 		Session session = getSession();
 		try {
 			session.beginTransaction();
-			Object instance = getSession().get(className, id);
+			Object instance = session.get(className, id);
 			session.delete(instance);
 			session.getTransaction().commit();
 			session.clear();
@@ -115,7 +115,7 @@ public class BaseDao {
 		Session session = getSession();
 		try {
 			session.beginTransaction();
-			Object instance = getSession().get(className, id);
+			Object instance = session.get(className, id);
 			session.delete(instance);
 			session.getTransaction().commit();
 			session.clear();
@@ -170,7 +170,7 @@ public class BaseDao {
 	public Object findById(Class<?> className, int id) {
 		Session session = getSession();
 		try {
-			Object instance = getSession().get(className, id);
+			Object instance = session.get(className, id);
 			return instance;
 		} catch (Exception re) {
 			re.printStackTrace();
