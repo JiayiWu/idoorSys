@@ -46,8 +46,9 @@ public class BaseDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
-			session.close();
 			return Msg.FAIL;
+		} finally {
+			session.close();
 		}
 	}
 
@@ -64,8 +65,9 @@ public class BaseDao {
 			if (session!=null) {
 				session.getTransaction().rollback();
 			}
-			session.close();
 			return Msg.FAIL;
+		} finally {
+			session.close();
 		}
 
 	}
@@ -83,8 +85,9 @@ public class BaseDao {
 			if (session!=null) {
 				session.getTransaction().rollback();
 			}
-			session.close();
 			return Msg.FAIL;
+		} finally {
+			session.close();
 		}
 	}
 
@@ -102,8 +105,9 @@ public class BaseDao {
 			if (session!=null) {
 				session.getTransaction().rollback();
 			}
-			session.close();
 			return Msg.FAIL;
+		} finally {
+			session.close();
 		}
 	}
 
@@ -121,8 +125,9 @@ public class BaseDao {
 			if (session!=null) {
 				session.getTransaction().rollback();
 			}
-			session.close();
 			return Msg.FAIL;
+		} finally {
+			session.close();
 		}
 	}
 
@@ -143,6 +148,7 @@ public class BaseDao {
 			if (session!=null) {
 				session.getTransaction().rollback();
 			}
+		} finally {
 			session.close();
 		}
 		return list;
@@ -152,12 +158,12 @@ public class BaseDao {
 		Session session = getSession();
 		try {
 			Object instance = session.get(className, id);
-			session.close();
 			return instance;
 		} catch (Exception re) {
 			re.printStackTrace();
-			session.close();
 			throw re;
+		} finally {
+			session.close();
 		}
 	}
 
@@ -165,12 +171,12 @@ public class BaseDao {
 		Session session = getSession();
 		try {
 			Object instance = getSession().get(className, id);
-			session.close();
 			return instance;
 		} catch (Exception re) {
 			re.printStackTrace();
-			session.close();
 			throw re;
+		} finally {
+			session.close();
 		}
 	}
 
@@ -190,6 +196,7 @@ public class BaseDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
+		} finally {
 			session.close();
 		}
 		return list;
@@ -206,13 +213,12 @@ public class BaseDao {
 			Query queryObject = session.createQuery(queryString);
 			queryObject.setParameter(0, value);
 			List<?> list = queryObject.list();
-			session.close();
 			return list;
 		} catch (Exception re) {
 			re.printStackTrace();
-			session.close();
 			throw re;
-
+		} finally {
+			session.close();
 		}
 	}
 
@@ -223,22 +229,25 @@ public class BaseDao {
 			List<Object[]> objects = session.createSQLQuery(sql).list();
 			session.getTransaction().commit();
 			session.clear();
-			session.close();
 			return objects;
 		} catch (Exception re) {
 			re.printStackTrace();
 			if (session!=null) {
 				session.getTransaction().rollback();
 			}
-			session.close();
 			throw re;
+		} finally {
+			session.close();
 		}
 	}
 	
 	public int clearTable(String myTable){
 	    String hql = String.format("delete from %s",myTable);
-	    Query query = getSession().createQuery(hql);
-	    return query.executeUpdate();
+		Session session = getSession();
+	    Query query = session.createQuery(hql);
+		int res = query.executeUpdate();
+		session.close();
+	    return res;
 	}
 
 }
