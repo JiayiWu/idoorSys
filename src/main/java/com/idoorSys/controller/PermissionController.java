@@ -94,9 +94,13 @@ public class PermissionController implements IdoorController {
 	@RequestMapping(MAPPING_UPDATE)
 	public String update(@RequestParam("id") long id,
 			@RequestParam("roomId") long roomId,
-			@RequestParam("type") int type,
+			@RequestParam("type") String type,
 			@RequestParam("cardNum") String cardNum) {
-		// permissionService.update(new Permission(id,roomId,type,cardNum));
+		Room room = new Room();
+		room.setId(roomId);
+		PermissionUser user = new PermissionUser();
+		user.setCardNum(cardNum);
+		permissionService.update(new Permission(id,room,user,type));
 		return DONE_PAGE;
 	}
 
