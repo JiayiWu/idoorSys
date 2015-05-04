@@ -461,7 +461,8 @@
 							for (var i = 0; i < data.pusers.length; i++) {
 								$("#panel_user tbody")
 										.append(
-												"<tr><td style='width: 18px;''><div><input name='ids' value='xxx' type='checkbox'></div></td><td><div>"
+												"<tr target='sid_user' rel='"+pusers[i].cardNum+"'>" +
+												"<td style='width: 18px;''><div><input name='ids' value='xxx' type='checkbox'></div></td><td><div>"
 														+ pusers[i].cardNum
 														+ "</div></td><td><div>"
 														+ pusers[i].name
@@ -483,7 +484,8 @@
 							for (var i = 0; i < rooms.length; i++) {
 								$("#panel_room tbody")
 										.append(
-												"<tr><td style='width: 18px;''><div><input name='ids' value='xxx' type='checkbox'></div></td><td><div>"
+												"<tr target='sid_user' rel='"+rooms[i].id+"'>" +
+												"<td style='width: 18px;''><div><input name='ids' value='xxx' type='checkbox'></div></td><td><div>"
 														+ rooms[i].name
 														+ "</div></td></tr>");
 							}
