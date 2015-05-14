@@ -18,7 +18,7 @@
 					type="text" size="30" value="${puser.stdNum}" />
 			</p>
 			<p>
-				<label>用户卡号：</label> <input name="cardNum" class="required"
+				<label>用户卡号：</label> <input id="cardNum" name="cardNum" class="required"
 					type="text" size="30" value="${puser.cardNum}" />
 			</p>
 			<p>
@@ -62,3 +62,17 @@
 		</div>
 	</form>
 </div>
+<script type="text/javascript">
+	$(function() {
+		$("#cardNum").keydown(function(e){var key = window.event?e.keyCode:e.which;if(key==13){return false;}})
+		$("#cardNum").change(function() {
+			var cardNum = $(this).val();
+			if(cardNum.length>=7){
+				$.post("permissionUser/getCardNumOX",{'cardNum':cardNum},function(data){
+					$("#cardNum").val(data.cardNumOX);
+				},'json');
+			}
+		});
+
+	});
+</script>
