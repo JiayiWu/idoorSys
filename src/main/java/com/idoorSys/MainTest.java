@@ -20,16 +20,11 @@ public class MainTest {
 	public static void main(String args[]) throws Exception {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		BaseDao dao = ((BaseDao) context.getBean("periodicPermissionDao"));
-		PermissionUser user = (PermissionUser) dao.getAll(PermissionUser.class).get(0);
+		System.out.println(dao.getSessionFactory().getAllClassMetadata());
+		List<PermissionUser> all = (List<PermissionUser>) dao.getAll(PermissionUser.class);
+		System.out.println(all);
 
-		PeriodicPermission permission = new PeriodicPermission();
-		Room room = (Room)dao.getAll(Room.class).get(1);
-		permission.setPermissionUser(user);
-		permission.setRoom(room);
-		permission.setDayOfWeek(1);
-		permission.setBeginTime(Time.valueOf("0:0:0"));
-		permission.setEndTime(Time.valueOf("23:59:59"));
-		dao.save(permission);
+
 //		PeriodicPermissionService service = ((PeriodicPermissionService) context.getBean("periodicPermissionService"));
 //		for (PeriodicPermission permission : ((List<PeriodicPermission>) service.getAll())) {
 //			System.out.println(permission.getPermissionUser().getCardNum());

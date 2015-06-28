@@ -33,55 +33,16 @@
 		<property name="initialPoolSize" value="1"></property>
 		<property name="maxIdleTime" value="20"></property>
 	</bean>
-	<!--<bean id="switcha" class="com.mchange.v2.c3p0.ComboPooledDataSource"-->
-		<!--destroy-method="close">-->
-		<!--<property name="driverClass" value="com.mysql.jdbc.Driver" />-->
-		<!--<property name="jdbcUrl" value="${db3.url}">-->
-		<!--</property>-->
-		<!--<property name="user" value="${db3.user}"></property>-->
-		<!--<property name="password" value="${db3.password}"></property>-->
-		<!--<property name="maxPoolSize" value="40"></property>-->
-		<!--<property name="minPoolSize" value="1"></property>-->
-		<!--<property name="initialPoolSize" value="1"></property>-->
-		<!--<property name="maxIdleTime" value="20"></property>-->
-		<!--<property name="idleConnectionTestPeriod" value="300"></property>-->
-	<!--</bean>-->
-	<!--<bean id="switchb" class="com.mchange.v2.c3p0.ComboPooledDataSource"-->
-		<!--destroy-method="close">-->
-		<!--<property name="driverClass" value="com.mysql.jdbc.Driver" />-->
-		<!--<property name="jdbcUrl" value="${db4.url}">-->
-		<!--</property>-->
-		<!--<property name="user" value="${db4.user}"></property>-->
-		<!--<property name="password" value="${db4.password}"></property>-->
-		<!--<property name="maxPoolSize" value="40"></property>-->
-		<!--<property name="minPoolSize" value="1"></property>-->
-		<!--<property name="initialPoolSize" value="1"></property>-->
-		<!--<property name="maxIdleTime" value="20"></property>-->
-	<!--</bean>-->
-	<!--<bean id="test" class="com.mchange.v2.c3p0.ComboPooledDataSource"-->
-		  <!--destroy-method="close">-->
-		<!--<property name="driverClass" value="com.mysql.jdbc.Driver" />-->
-		<!--<property name="jdbcUrl" value="jdbc:mysql://192.168.206.50:3306/test">-->
-		<!--</property>-->
-		<!--<property name="user" value="root"></property>-->
-		<!--<property name="password" value=""></property>-->
-		<!--<property name="maxPoolSize" value="40"></property>-->
-		<!--<property name="minPoolSize" value="1"></property>-->
-		<!--<property name="initialPoolSize" value="1"></property>-->
-		<!--<property name="maxIdleTime" value="20"></property>-->
-	<!--</bean>-->
+
 
 	<bean id="dataSource" class="com.idoorSys.utils.ModifiableRoutingDataSource">
 		<property name="targetDataSources">
 			<map key-type="java.lang.String">
 				<entry key="ds1" value-ref="ds1" />
 				<entry key="ds2" value-ref="ds2" />
-				<!--<entry key="ds3" value-ref="switcha" />-->
-				<!--<entry key="ds4" value-ref="switchb" />-->
-				<!--<entry key="test" value-ref="test" />-->
 			</map>
 		</property>
-		<property name="defaultTargetDataSource" ref="ds1" />
+		<property name="defaultTargetDataSource" ref="ds2" />
 	</bean>
 
 	<bean id="sessionFactory"
@@ -105,7 +66,7 @@
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 <!-- 				<prop key="hibernate.hbm2ddl.auto">create</prop> -->
 				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hiberante.format_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
 			</props>
 		</property>
 	</bean>
