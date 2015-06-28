@@ -5,9 +5,7 @@
 	xmlns:tx="http://www.springframework.org/schema/tx" default-autowire="byName">
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location">
-			<value>classpath:db.properties</value>
-		</property>
+		<property name="location" value="classpath:db.properties"/>
 	</bean>
 	<bean id="ds1" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
@@ -100,14 +98,6 @@
 	<bean name="permissionUserService" class="com.idoorSys.service.PermissionUserService">
 		<property name="baseDao">
 			<ref bean="permissionUserDao" />
-		</property>
-	</bean>
-
-	<bean name="remoteRoomUserDao" class="com.idoorSys.dao.RemoteRoomUserDao">
-	</bean>
-	<bean name="remoteRoomUserService" class="com.idoorSys.service.RemoteRoomUserService">
-		<property name="baseDao">
-			<ref bean="remoteRoomUserDao" />
 		</property>
 	</bean>
 
