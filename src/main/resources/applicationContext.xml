@@ -24,12 +24,12 @@
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
 		<property name="jdbcUrl" value="${db2.url}">
 		</property>
-		<property name="user" value="${db2.user}"></property>
-		<property name="password" value="${db2.password}"></property>
-		<property name="maxPoolSize" value="40"></property>
-		<property name="minPoolSize" value="1"></property>
-		<property name="initialPoolSize" value="1"></property>
-		<property name="maxIdleTime" value="20"></property>
+		<property name="user" value="${db2.user}"/>
+		<property name="password" value="${db2.password}"/>
+		<property name="maxPoolSize" value="40"/>
+		<property name="minPoolSize" value="1"/>
+		<property name="initialPoolSize" value="1"/>
+		<property name="maxIdleTime" value="20"/>
 	</bean>
 
 

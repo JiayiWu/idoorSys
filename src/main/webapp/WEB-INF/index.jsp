@@ -145,7 +145,7 @@ $(function(){
 									<li><a href="permission/list" target="navTab" rel="page2" fresh="true">权限管理</a></li>
 									<li><a href="periodicPermission/list" target="navTab" rel="page9" fresh="true">周期权限管理</a></li>
 									<li><a href="permissionUser/list" target="navTab" rel="page3" fresh="true">用户管理</a></li>
-									<li><a href="remoteRoomUser/list" target="navTab" rel="page4" fresh="true">终端用户管理</a></li>
+									<%--<li><a href="remoteRoomUser/list" target="navTab" rel="page4" fresh="true">终端用户管理</a></li>--%>
 									<li><a href="reserveDetail/list" target="navTab" rel="page5" fresh="true">预约管理</a></li>
 									<li><a href="empty" target="navTab" rel="page6">分析报表</a></li>
 									<li><a href="appliance/door" target="navTab" rel="page7" fresh="true">门禁管理</a></li>
