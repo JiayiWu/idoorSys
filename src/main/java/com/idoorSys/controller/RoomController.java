@@ -1,8 +1,8 @@
 package com.idoorSys.controller;
 
-import java.util.List;
-import java.util.Map;
-
+import com.idoorSys.model.Room;
+import com.idoorSys.service.RoomService;
+import com.idoorSys.utils.Msg;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,13 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.idoorSys.model.Room;
-import com.idoorSys.service.RoomService;
-import com.idoorSys.utils.Msg;
-import com.idoorSys.utils.SpringContextsUtil;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/room")
@@ -27,7 +24,6 @@ public class RoomController implements IdoorController {
 	@Override
 	@RequestMapping("/list")
 	public String list(Map<String, Object> model) {
-		// roomService.preAdd();
 
 		List<Room> totalRooms = roomService.getAll();
 		List<Room> rooms = totalRooms.size()>20? totalRooms.subList(0, 20): totalRooms;

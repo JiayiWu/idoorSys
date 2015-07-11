@@ -1,21 +1,14 @@
 package com.idoorSys.controller;
 
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-
-import com.idoorSys.utils.ModifiableRoutingDataSource;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.idoorSys.model.SysUser;
+import com.idoorSys.service.SysUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.idoorSys.model.SysUser;
-import com.idoorSys.service.PermissionUserService;
-import com.idoorSys.service.SysUserService;
-import com.idoorSys.utils.RoutingDataSource;
-import com.idoorSys.utils.SpringContextsUtil;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -24,8 +17,10 @@ public class MainController {
 
 	@RequestMapping("/")
 	public String main(Map<String, Object> model, HttpSession httpSession) {
+
 		SysUser sysUser = (SysUser) httpSession.getAttribute("sysUser");
 
+		// 添加预先定义的登陆用户
 		sysUserService.preAdd();
 		if (sysUser != null) {
 			model.put("sysUser", sysUser);
@@ -36,13 +31,12 @@ public class MainController {
 	}
 
 	@RequestMapping("/login")
-	public String login() {
-		return "login";
-	}
+	public void login() {}
 	@RequestMapping("/index")
 	public String main(@RequestParam("account") String account,
 			@RequestParam("password") String password,
 			Map<String, Object> model, HttpSession httpSession) {
+
 		SysUser sysUser = sysUserService.checkExits(account, password);
 		if (sysUser != null) {
 			httpSession.setAttribute("sysUser", sysUser);
@@ -59,8 +53,5 @@ public class MainController {
 	}
 	
 	@RequestMapping("/empty")
-	public String blackhole() {
-		return "/empty";
-	}
-
+	public void blackhole() {}
 }

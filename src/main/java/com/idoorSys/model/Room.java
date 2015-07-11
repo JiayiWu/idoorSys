@@ -1,15 +1,8 @@
 package com.idoorSys.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  * 受管理的房间信息
@@ -48,8 +41,7 @@ public class Room implements Serializable {
 	}
 
 	@Id
-	@GeneratedValue(generator = "increment")
-	@GenericGenerator(name = "increment", strategy = "increment")
+	@GeneratedValue
 	public int getId() {
 		return id;
 	}
@@ -58,7 +50,7 @@ public class Room implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "name")
+	@Column
 	public String getName() {
 		return name;
 	}
@@ -67,7 +59,7 @@ public class Room implements Serializable {
 		this.name = name;
 	}
 
-	@Column(name = "type")
+	@Column
 	public String getType() {
 		return type;
 	}
@@ -85,4 +77,8 @@ public class Room implements Serializable {
 		this.num = nameEn;
 	}
 
+	@PrePersist @PreUpdate
+	public void changeTimeStamp() {
+		timetag = new Timestamp(System.currentTimeMillis());
+	}
 }

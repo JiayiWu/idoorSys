@@ -55,14 +55,13 @@
 				<value>com.idoorSys.model</value>
 			</list>
 		</property>
-		<property name="configLocation" value="classpath:hibernate.cfg.xml"/>
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">
 					org.hibernate.dialect.MySQL5InnoDBDialect
 				</prop>
  				<!--hibernate.hbm2ddl.auto设为create为每次启动清空数据 供测试用,update不清空 -->
- 				<prop key="hibernate.hbm2ddl.auto">update</prop>
+ 				<prop key="hibernate.hbm2ddl.auto">create</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">true</prop>
 			</props>
