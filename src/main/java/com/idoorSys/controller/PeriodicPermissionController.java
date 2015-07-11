@@ -1,6 +1,7 @@
 package com.idoorSys.controller;
 
 import com.idoorSys.model.PeriodicPermission;
+import com.idoorSys.model.Permission;
 import com.idoorSys.model.PermissionUser;
 import com.idoorSys.model.Room;
 import com.idoorSys.service.PeriodicPermissionService;
@@ -8,13 +9,14 @@ import com.idoorSys.service.PermissionUserService;
 import com.idoorSys.service.RoomService;
 import com.idoorSys.utils.Msg;
 import com.idoorSys.utils.SpringContextsUtil;
+import org.joda.time.Period;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.sound.midi.Soundbank;
-import java.lang.reflect.Array;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Time;
 import java.util.Arrays;
 import java.util.List;
@@ -24,30 +26,51 @@ import java.util.Map;
  * Created by Ezio on 5/2/2015.
  */
 @Controller
-@RequestMapping(PeriodicPermissionController.PATH)
+@RequestMapping("/periodicPermission")
 public class PeriodicPermissionController implements IdoorController {
 
-    PeriodicPermissionService periodicPermissionService = ((PeriodicPermissionService) SpringContextsUtil
-            .getBean("periodicPermissionService"));
-    RoomService roomService = (RoomService) SpringContextsUtil
-            .getBean("roomService");
-    PermissionUserService permissionUserService = (PermissionUserService) SpringContextsUtil
-            .getBean("permissionUserService");
-    public static final String PATH = "periodicPermission/";
+    @Resource
+    private PeriodicPermissionService periodicPermissionService;
+    @Resource
+    private RoomService roomService;
+    @Resource
+    private PermissionUserService permissionUserService;
 
     private static final List<String> week = Arrays.asList("星期一","星期二","星期三","星期四","星期五","星期六","星期日");
 
     @Override
-    @RequestMapping(MAPPING_LIST)
+    @RequestMapping("/list")
     public String list(Map<String, Object> model) {
-        List<PeriodicPermission> permissions = (List<PeriodicPermission>) periodicPermissionService
-                .getAll();
+        List<PeriodicPermission> totalPermissions = periodicPermissionService.getAll();
+        List<PeriodicPermission> permissions = totalPermissions.size()>20? totalPermissions.subList(0, 20): totalPermissions;
+        int pageNumShown = totalPermissions.size()/20+1; pageNumShown = pageNumShown>10 ? 10: pageNumShown;
+
         model.put("permissions",permissions);
         model.put("week", week);
-        return PATH + LIST_PAGE;
+        model.put("totalCount", totalPermissions.size());
+        model.put("numPerPage", 20);
+        model.put("pageNumShown", pageNumShown);
+        model.put("currentPage",1);
+        return "/periodicPermission/list";
+    }
+    @RequestMapping("/pagedList")
+    public String pagedList(HttpServletRequest request, Map<String, Object> model) {
+
+        int totalCount = Integer.parseInt(request.getParameter("totalCount"));
+        int numPerPage = Integer.parseInt(request.getParameter("numPerPage"));
+        int currentPage = Integer.parseInt(request.getParameter("pageNum"));
+        int pageNumShown = totalCount/numPerPage+1; pageNumShown = pageNumShown>10 ? 10: pageNumShown;
+        List<PeriodicPermission> permissions = periodicPermissionService.getPageAll(numPerPage * (currentPage - 1), numPerPage);
+
+        model.put("permissions", permissions);
+        model.put("totalCount", totalCount);
+        model.put("numPerPage", numPerPage);
+        model.put("pageNumShown", pageNumShown);
+        model.put("currentPage",currentPage);
+        return "/periodicPermission/list";
     }
 
-    @RequestMapping(MAPPING_FIND_BY_EXAMPLE)
+    @RequestMapping("/findByExample")
     public String findByExample(@RequestParam("userName") String userName,
                                 @RequestParam("roomName") String roomName,
                                 @RequestParam("dayOfWeek") int dayOfWeek, Map<String, Object> model) {
@@ -55,43 +78,43 @@ public class PeriodicPermissionController implements IdoorController {
                 .findByCondition(userName, roomName, dayOfWeek);
         model.put("permissions", permissions);
         model.put("week", week);
-        return PATH + LIST_PAGE;
+        return "/periodicPermission/list";
     }
 
-    @RequestMapping(MAPPING_DELETE)
-    public String delete(@PathVariable long id, Map<String, Object> model) {
+    @RequestMapping("/delete/{id}")
+    public String delete(@PathVariable int id, Map<String, Object> model) {
         Msg msg = periodicPermissionService.deleteById(id);
         if (msg == Msg.SUCCESS)
-            return DONE_PAGE;
+            return "/ajaxDone";
         else
-            return FAIL_PAGE;
+            return "/ajaxFail";
     }
 
-    @RequestMapping(MAPPING_PAGE_EDIT)
-    public String pageEdit(@PathVariable("id") long id, Map<String, Object> model) {
+    @RequestMapping("/page/edit/{id}")
+    public String pageEdit(@PathVariable("id") int id, Map<String, Object> model) {
         model.put("permission", periodicPermissionService.getbyId(id));
         model.put("week", week);
-        return PATH+EDIT_PAGE;
+        return "/periodicPermission/edit";
     }
 
-    @RequestMapping(MAPPING_UPDATE)
-    public String update(@RequestParam("id") long id,
-                         @RequestParam("roomId") long roomId,
+    @RequestMapping("/update")
+    public String update(@RequestParam("id") int id,
+                         @RequestParam("roomId") int roomId,
                          @RequestParam("cardNum") String cardNum,
-                         @RequestParam("dayOfWeek") int dayOfWeek,
+                         @RequestParam("dayOfWeek") char dayOfWeek,
                          @RequestParam("beginTime") String beginTime,
                          @RequestParam("endTime") String endTime) {
         Room room = new Room();
         room.setId(roomId);
         PermissionUser user = new PermissionUser();
-        user.setCardNum(cardNum);
+        user.setCard_num(cardNum);
         try {
             PeriodicPermission permission = new PeriodicPermission(id, room, user, dayOfWeek, Time.valueOf(beginTime), Time.valueOf(endTime));
             Msg msg = periodicPermissionService.update(permission);
-            return msg==Msg.SUCCESS ? DONE_PAGE: FAIL_PAGE;
+            return msg==Msg.SUCCESS ? "/ajaxDone": "/ajaxFail";
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            return FAIL_PAGE;
+            return "/ajaxFail";
         }
     }
 
@@ -103,13 +126,13 @@ public class PeriodicPermissionController implements IdoorController {
         model.put("rooms", rooms);
         model.put("pusers", permissionUsers);
         model.put("week", week);
-        return PATH + "multiAdd";
+        return "/periodicPermission/multiAdd";
     }
 
     @RequestMapping("multiAdd")
     public String multiAdd(@RequestParam("users[]") String[] users,
-                           @RequestParam("rooms[]") long[] rooms,
-                           @RequestParam("dayOfWeek") int dayOfWeek,
+                           @RequestParam("rooms[]") int[] rooms,
+                           @RequestParam("dayOfWeek") char dayOfWeek,
                            @RequestParam("beginTime") String beginTime,
                            @RequestParam("endTime") String endTime) {
         try {
@@ -124,10 +147,10 @@ public class PeriodicPermissionController implements IdoorController {
                     }
                 }
             }
-            return result==Msg.SUCCESS ? DONE_PAGE: FAIL_PAGE;
+            return result==Msg.SUCCESS ? "/ajaxDone": "/ajaxFail";
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            return FAIL_PAGE;
+            return "/ajaxFail";
         }
     }
 }

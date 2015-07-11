@@ -3,10 +3,8 @@ package com.idoorSys.model;
 import java.sql.Timestamp;
 import javax.persistence.*;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 /**
- * SwipingRecord entity. @author MyEclipse Persistence Tools
+ * 刷卡记录
  */
 @Entity
 @Table(name = "swiping_record")
@@ -15,14 +13,14 @@ public class SwipingRecord implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private String cardid;
-	private Timestamp swipingTime;
+	private String card_id;
+	private Timestamp swiping_time;
 
-	private String roomNum;
-	private String doorNum;
+	private String room_num;
+	private String door_num;
 
-	private String userName;
-	private String roomName;
+	private String user_name;
+	private String room_name;
 
 	// Constructors
 
@@ -31,14 +29,14 @@ public class SwipingRecord implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public SwipingRecord(Timestamp swipingTime) {
-		this.swipingTime = swipingTime;
+	public SwipingRecord(Timestamp swiping_time) {
+		this.swiping_time = swiping_time;
 	}
 
 	/** full constructor */
-	public SwipingRecord(String cardid, Timestamp swipingTime) {
-		this.cardid = cardid;
-		this.swipingTime = swipingTime;
+	public SwipingRecord(String card_id, Timestamp swiping_time) {
+		this.card_id = card_id;
+		this.swiping_time = swiping_time;
 	}
 
 	// Property accessors
@@ -53,69 +51,69 @@ public class SwipingRecord implements java.io.Serializable {
 	}
 
 	@Column(name = "cardid", length = 100)
-	public String getCardid() {
-		return this.cardid;
+	public String getCard_id() {
+		return this.card_id;
 	}
 
-	public void setCardid(String cardid) {
-		this.cardid = cardid;
+	public void setCard_id(String cardid) {
+		this.card_id = cardid;
 	}
 
 	@Column(name = "swiping_time", nullable = false, length = 19)
-	public Timestamp getSwipingTime() {
-		return this.swipingTime;
+	public Timestamp getSwiping_time() {
+		return this.swiping_time;
 	}
 
-	public void setSwipingTime(Timestamp swipingTime) {
-		this.swipingTime = swipingTime;
+	public void setSwiping_time(Timestamp swipingTime) {
+		this.swiping_time = swipingTime;
 	}
 
 	@Column(name = "room_num")
-	public String getRoomNum() {
-		return roomNum;
+	public String getRoom_num() {
+		return room_num;
 	}
 
-	public void setRoomNum(String roomNum) {
-		this.roomNum = roomNum;
+	public void setRoom_num(String roomNum) {
+		this.room_num = roomNum;
 	}
 
 	@Column(name = "door_num")
-	public String getDoorNum() {
-		return doorNum;
+	public String getDoor_num() {
+		return door_num;
 	}
 
-	public void setDoorNum(String doorNum) {
-		this.doorNum = doorNum;
-	}
-
-	@Transient
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setDoor_num(String doorNum) {
+		this.door_num = doorNum;
 	}
 
 	@Transient
-	public String getRoomName() {
-		return roomName;
+	public String getUser_name() {
+		return user_name;
 	}
 
-	public void setRoomName(String roomName) {
-		this.roomName = roomName;
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
+
+	@Transient
+	public String getRoom_name() {
+		return room_name;
+	}
+
+	public void setRoom_name(String room_name) {
+		this.room_name = room_name;
 	}
 
 	@Override
 	public String toString() {
 		return "SwipingRecord{" +
 				"id=" + id +
-				", cardid='" + cardid + '\'' +
-				", swipingTime=" + swipingTime +
-				", roomNum='" + roomNum + '\'' +
-				", doorNum='" + doorNum + '\'' +
-				", userName='" + userName + '\'' +
-				", roomName='" + roomName + '\'' +
+				", cardid='" + card_id + '\'' +
+				", swipingTime=" + swiping_time +
+				", roomNum='" + room_num + '\'' +
+				", doorNum='" + door_num + '\'' +
+				", user_name='" + user_name + '\'' +
+				", room_name='" + room_name + '\'' +
 				'}';
 	}
 }

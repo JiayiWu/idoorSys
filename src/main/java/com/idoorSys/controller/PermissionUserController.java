@@ -1,12 +1,11 @@
 package com.idoorSys.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.idoorSys.model.Permission;
 import com.idoorSys.model.UGroup;
+import com.idoorSys.service.ExcelPermitionImportService;
 import com.idoorSys.service.UGroupService;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Controller;
@@ -16,47 +15,65 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.idoorSys.model.PermissionUser;
-import com.idoorSys.model.Room;
-import com.idoorSys.service.ExcelPermitionImportService;
+//import com.idoorSys.service.ExcelPermitionImportService;
 import com.idoorSys.service.PermissionUserService;
 import com.idoorSys.utils.Msg;
 import com.idoorSys.utils.SpringContextsUtil;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping(PermissionUserController.PATH)
+@RequestMapping("/permissionUser")
 public class PermissionUserController implements IdoorController {
-
-	PermissionUserService permissionUserService = (PermissionUserService) SpringContextsUtil
-			.getBean("permissionUserService");
-	UGroupService uGroupService = (UGroupService)SpringContextsUtil.getBean("uGroupService");
-
-	public static final String PATH = "permissionUser/";
+	@Resource
+	private PermissionUserService permissionUserService;
+	@Resource
+	private UGroupService uGroupService;
 
 	@Override
-	@RequestMapping(MAPPING_LIST)
+	@RequestMapping("/list")
 	public String list(Map<String, Object> model) {
-		// TODO Auto-generated method stub
-		permissionUserService.preAdd();
-		model.put("pusers", permissionUserService.getAll());
-		return PATH + "list";
+		List<PermissionUser> totalUsers = permissionUserService.getAll();
+		List<PermissionUser> users = totalUsers.size()>20? totalUsers.subList(0, 20): totalUsers;
+		int pageNumShown = totalUsers.size()/20+1; pageNumShown = pageNumShown>10 ? 10: pageNumShown;
+
+		model.put("pusers", users);
+		model.put("totalCount", totalUsers.size());
+		model.put("numPerPage", 20);
+		model.put("pageNumShown", pageNumShown);
+		model.put("currentPage",1);
+		return "/permissionUser/list";
+	}
+	@RequestMapping("/pagedList")
+	public String pagedList(HttpServletRequest request, Map<String, Object> model) {
+		int totalCount = Integer.parseInt(request.getParameter("totalCount"));
+		int numPerPage = Integer.parseInt(request.getParameter("numPerPage"));
+		int currentPage = Integer.parseInt(request.getParameter("pageNum"));
+		int pageNumShown = totalCount/numPerPage+1; pageNumShown = pageNumShown>10 ? 10: pageNumShown;
+		List<PermissionUser> users = permissionUserService.getPageAll(numPerPage * (currentPage - 1), numPerPage);
+
+		model.put("pusers", users);
+		model.put("totalCount", totalCount);
+		model.put("numPerPage", numPerPage);
+		model.put("pageNumShown", pageNumShown);
+		model.put("currentPage",currentPage);
+		return "/permissionUser/list";
 	}
 
 	@Override
-	@RequestMapping(MAPPING_DELETE)
-	public String delete(@PathVariable long id, Map<String, Object> model) {
+	@RequestMapping("/delete/{id}")
+	public String delete(@PathVariable int id, Map<String, Object> model) {
 		// TODO Auto-generated method stub
 		Msg msg = permissionUserService.deleteById(id);
 		if (msg == Msg.SUCCESS)
-			return DONE_PAGE;
+			return "/ajaxDone";
 		else
-			return FAIL_PAGE;
+			return "/ajaxFail";
 	}
 
 	@RequestMapping(MAPPING_UPDATE)
-	public String update(@RequestParam("id") long id,
+	public String update(@RequestParam("id") int id,
 			@RequestParam("name") String name,
 			@RequestParam("type") String type,
 			@RequestParam("cardNum") String cardNum,
@@ -79,9 +96,9 @@ public class PermissionUserController implements IdoorController {
 		}
 		Msg msg = permissionUserService.update(permissionUser);
 		if (msg == Msg.SUCCESS)
-			return DONE_PAGE;
+			return "/ajaxDone";
 		else
-			return FAIL_PAGE;
+			return "/ajaxFail";
 	}
 
 	@RequestMapping(MAPPING_ADD)
@@ -107,18 +124,18 @@ public class PermissionUserController implements IdoorController {
 		}
 		Msg msg = permissionUserService.add(permissionUser);
 		if (msg == Msg.SUCCESS)
-			return DONE_PAGE;
+			return "/ajaxDone";
 		else
-			return FAIL_PAGE;
+			return "/ajaxFail";
 	}
 
 	@Override
 	@RequestMapping(MAPPING_PAGE_EDIT)
-	public String pageEdit(@PathVariable long id, Map<String, Object> model) {
-		model.put("puser", permissionUserService.getbyId(id));
+	public String pageEdit(@PathVariable int id, Map<String, Object> model) {
+		model.put("puser", permissionUserService.getById(id));
 		List<UGroup> groups = uGroupService.getAll();
 		model.put("groups", groups);
-		return PATH + "edit";
+		return "/permissionUser/edit";
 	}
 
 	@Override
@@ -127,10 +144,10 @@ public class PermissionUserController implements IdoorController {
 		uGroupService.preAdd();
 		List<UGroup> groups = uGroupService.getAll();
 		model.put("groups", groups);
-		return PATH + "add";
+		return "/permissionUser/add";
 	}
 
-	@RequestMapping(MAPPING_FIND_BY_EXAMPLE)
+	@RequestMapping("/findByExample")
 	public String findByExample(@RequestParam("name") String name,
 			Map<String, Object> model) {
 		PermissionUser puser = new PermissionUser();
@@ -138,10 +155,10 @@ public class PermissionUserController implements IdoorController {
 		List<PermissionUser> pusers = (List<PermissionUser>) permissionUserService
 				.findByExample(puser);
 		model.put("pusers", pusers);
-		return PATH + LIST_PAGE;
+		return "/permissionUser/list";
 	}
 
-	@RequestMapping(MAPPING_FIND_BY_EXAMPLE_JSON)
+	@RequestMapping("/findByExampleJson")
 	@ResponseBody
 	public Map<String, Object> findByExampleJson(
 			@RequestParam("name") String name) {
@@ -154,7 +171,7 @@ public class PermissionUserController implements IdoorController {
 		return map;
 	}
 
-	@RequestMapping("getByGroup")
+	@RequestMapping("/getByGroup")
 	@ResponseBody
 	public Map<String, Object> getByGroup(@RequestParam("group") String group) {
 		Map<String, Object> map = new HashedMap();
@@ -168,7 +185,7 @@ public class PermissionUserController implements IdoorController {
 		return map;
 	}
 
-	@RequestMapping("getCardNumOX")
+	@RequestMapping("/getCardNumOX")
 	@ResponseBody
 	public Map<String, Object> getCardNumOX(
 			@RequestParam("cardNum") String cardNum) {
@@ -178,13 +195,13 @@ public class PermissionUserController implements IdoorController {
 		return map;
 	}
 
-	@RequestMapping("group")
+	@RequestMapping("/group")
 	public String showGroup(Map<String, Object> model) {
 		List<UGroup> groups = uGroupService.getAll();
 		model.put("groups", groups);
-		return PATH+"group";
+		return "/permissionUser/group";
 	}
-	@RequestMapping("deleteGroup")
+	@RequestMapping("/deleteGroup")
 	public String deleteGroup(HttpServletRequest request) {
 		String[] groupsToDelete = request.getParameterValues("groupToDelete");
 		boolean success = true;
@@ -194,6 +211,6 @@ public class PermissionUserController implements IdoorController {
 				success = false;
 			}
 		}
-		return success? DONE_PAGE: FAIL_PAGE;
+		return success? "/ajaxDone": "/ajaxFail";
 	}
 }

@@ -7,14 +7,14 @@
 		<input type="hidden" name="fromPage" value="door">
 		<div class="searchBar">
 			<table class="searchContent">
-				<c:set var="roomNo" value="${device.getRoomNo()}"/>
+				<c:set var="roomNo" value="${deviceState.getRoomNo()}"/>
 				<tr>
 					<td>
 					<select
 						name="building" >
 							<c:forEach var="building" items="${buildings}">
 								<c:choose>
-									<c:when test="${device.getRoomNo().substring(0,2).equals(building) }">
+									<c:when test="${deviceState.getRoomNo().substring(0,2).equals(building) }">
 										<option value="${building}" selected="selected">${building}</option>
 									</c:when>
 									<c:otherwise>
@@ -30,7 +30,7 @@
 						name="unit" >
 							<c:forEach var="unit" items="${units}">
 								<c:choose>
-									<c:when test="${device.getRoomNo().substring(2,4).equals(unit) }">
+									<c:when test="${deviceState.getRoomNo().substring(2,4).equals(unit) }">
 										<option value="${unit}" selected="selected">${unit}</option>
 									</c:when>
 									<c:otherwise>
@@ -46,7 +46,7 @@
 						name="floor" >
 							<c:forEach var="floor" items="${floors}">
 								<c:choose>
-									<c:when test="${device.getRoomNo().substring(4,5).equals(floor) }">
+									<c:when test="${deviceState.getRoomNo().substring(4,5).equals(floor) }">
 										<option value="${floor}" selected="selected">${floor}</option>
 									</c:when>
 									<c:otherwise>
@@ -62,7 +62,7 @@
 						name="room" >
 							<c:forEach var="room" items="${rooms}">
 								<c:choose>
-									<c:when test="${device.getRoomNo().substring(5,7).equals(room) }">
+									<c:when test="${deviceState.getRoomNo().substring(5,7).equals(room) }">
 										<option value="${room}" selected="selected">${room}</option>
 									</c:when>
 									<c:otherwise>
@@ -85,7 +85,7 @@
 		</div>
 	</form>
 </div>
-<c:if test="${device != null }">
+<c:if test="${deviceState != null }">
 	<div class="pageContent">
 	
 		<form method="post" action="appliance/send"
@@ -94,13 +94,13 @@
 
 			<input type="hidden" name="fromPage" value="door">
 			<input type="hidden" name="roomNo"
-				   value="${device.getRoomNo()}" />
+				   value="${deviceState.getRoomNo()}" />
 			<p>
-				<c:if test="${device.getFrontDoorState()!=null}">
+				<c:if test="${deviceState.getFrontDoorState()!=null}">
 					前门
 					<select name="frontDoorState">
 						<c:choose>
-							<c:when test="${device.getFrontDoorState().equals(\"on\")}">
+							<c:when test="${deviceState.getFrontDoorState().equals(\"on\")}">
 								<option value="on" selected="selected">开</option>
 								<option value="of">关</option>
 							</c:when>
@@ -112,11 +112,11 @@
 					</select>
 				</c:if>
 				<br />
-				<c:if test="${device.getBackDoorState()!=null}">
+				<c:if test="${deviceState.getBackDoorState()!=null}">
 					后门 
 					<select name="backDoorState">
 						<c:choose>
-							<c:when test="${device.getBackDoorState().equals(\"on\")}">
+							<c:when test="${deviceState.getBackDoorState().equals(\"on\")}">
 								<option value="on" selected="selected">开</option>
 								<option value="of">关</option>
 							</c:when>

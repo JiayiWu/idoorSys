@@ -3,47 +3,57 @@ package com.idoorSys.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Time;
+import java.sql.Timestamp;
 
 /**
  * 每周固定时间的权限
- * Created by Ezio on 5/2/2015.
  */
 @Entity
+@Table(name = "periodic_permission")
 public class PeriodicPermission implements Serializable {
 
-    private long id;
+    private int id;
     private Room room;
-    private PermissionUser permissionUser;
-    private int dayOfWeek;
-    private Time beginTime;
-    private Time endTime;
+    private PermissionUser permission_user;
+    private char day_of_week;
+    private Time begin_time;
+    private Time end_time;
+    private Timestamp timetag;
+
+    public Timestamp getTimetag() {
+        return timetag;
+    }
+
+    public void setTimetag(Timestamp timetag) {
+        this.timetag = timetag;
+    }
 
     public PeriodicPermission(){}
 
-    public PeriodicPermission(long id, Room room, PermissionUser permissionUser, int dayOfWeek, Time beginTime, Time endTime) {
+    public PeriodicPermission(int id, Room room, PermissionUser permission_user, char day_of_week, Time begin_time, Time end_time) {
         this.id = id;
         this.room = room;
-        this.permissionUser = permissionUser;
-        this.dayOfWeek = dayOfWeek;
-        this.beginTime = beginTime;
-        this.endTime = endTime;
+        this.permission_user = permission_user;
+        this.day_of_week = day_of_week;
+        this.begin_time = begin_time;
+        this.end_time = end_time;
     }
 
-    public PeriodicPermission(Room room, PermissionUser permissionUser, int dayOfWeek, Time beginTime, Time endTime) {
+    public PeriodicPermission(Room room, PermissionUser permission_user, char day_of_week, Time begin_time, Time end_time) {
         this.room = room;
-        this.permissionUser = permissionUser;
-        this.dayOfWeek = dayOfWeek;
-        this.beginTime = beginTime;
-        this.endTime = endTime;
+        this.permission_user = permission_user;
+        this.day_of_week = day_of_week;
+        this.begin_time = begin_time;
+        this.end_time = end_time;
     }
 
     @Id
     @GeneratedValue
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -57,39 +67,39 @@ public class PeriodicPermission implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "cardNum")
-    public PermissionUser getPermissionUser() {
-        return permissionUser;
+    @JoinColumn(name="card_num", referencedColumnName = "card_num")
+    public PermissionUser getPermission_user() {
+        return permission_user;
     }
 
-    public void setPermissionUser(PermissionUser permissionUser) {
-        this.permissionUser = permissionUser;
+    public void setPermission_user(PermissionUser permissionUser) {
+        this.permission_user = permissionUser;
     }
 
-    public int getDayOfWeek() {
-        return dayOfWeek;
+    public char getDay_of_week() {
+        return day_of_week;
     }
 
-    public void setDayOfWeek(int dayOfWeek) {
-        if (dayOfWeek<1 || dayOfWeek>7) {
+    public void setDay_of_week(char dayOfWeek) {
+        if (dayOfWeek< '1' || dayOfWeek> '7') {
             throw new IllegalArgumentException(dayOfWeek+" must between 1 to 7");
         }
-        this.dayOfWeek = dayOfWeek;
+        this.day_of_week = dayOfWeek;
     }
 
-    public Time getBeginTime() {
-        return beginTime;
+    public Time getBegin_time() {
+        return begin_time;
     }
 
-    public void setBeginTime(Time beginTime) {
-        this.beginTime = beginTime;
+    public void setBegin_time(Time beginTime) {
+        this.begin_time = beginTime;
     }
 
-    public Time getEndTime() {
-        return endTime;
+    public Time getEnd_time() {
+        return end_time;
     }
 
-    public void setEndTime(Time endTime) {
-        this.endTime = endTime;
+    public void setEnd_time(Time endTime) {
+        this.end_time = endTime;
     }
 }

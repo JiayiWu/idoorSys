@@ -91,26 +91,6 @@ public class BaseDao {
 		}
 	}
 
-	public Msg deleteById(Class<?> className, long id) {
-		Session session = getSession();
-		try {
-			session.beginTransaction();
-			Object instance = session.get(className, id);
-			session.delete(instance);
-			session.getTransaction().commit();
-			session.clear();
-			return Msg.SUCCESS;
-		} catch (Exception e) {
-			e.printStackTrace();
-			if (session!=null) {
-				session.getTransaction().rollback();
-			}
-			return Msg.FAIL;
-		} finally {
-			session.close();
-		}
-	}
-
 	public Msg deleteById(Class<?> className, int id) {
 		Session session = getSession();
 		try {
@@ -131,17 +111,18 @@ public class BaseDao {
 		}
 	}
 
-	public List<?> getAll(Class<?> className) {
+
+	public List<?> getPageAll(Class<?> className, int up, int size) {
 		List<?> list = null;
 		Session session = getSession();
 		try {
 			session.beginTransaction();
 			Criteria criteria = session.createCriteria(className);
 			criteria.addOrder(Order.desc("id"));
+			criteria.setFirstResult(up);
+			criteria.setMaxResults(size);
 			list = criteria.list();
 			session.getTransaction().commit();
-			// List<?> list = getSession().createQuery(
-			// "from  " + className.getSimpleName()).list();
 			session.clear();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -153,18 +134,25 @@ public class BaseDao {
 		}
 		return list;
 	}
-
-	public Object findById(Class<?> className, Long id) {
+	public List<?> getAll(Class<?> className) {
+		List<?> list = null;
 		Session session = getSession();
 		try {
-			Object instance = session.get(className, id);
-			return instance;
-		} catch (Exception re) {
-			re.printStackTrace();
-			throw re;
+			session.beginTransaction();
+			Criteria criteria = session.createCriteria(className);
+			criteria.addOrder(Order.desc("id"));
+			list = criteria.list();
+			session.getTransaction().commit();
+			session.clear();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (session!=null) {
+				session.getTransaction().rollback();
+			}
 		} finally {
 			session.close();
 		}
+		return list;
 	}
 
 	public Object findById(Class<?> className, int id) {

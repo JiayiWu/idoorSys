@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -17,27 +16,28 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.idoorSys.dao.BaseDao;
 import com.idoorSys.dao.ReserveDao;
 import com.idoorSys.model.Reserve;
 import com.idoorSys.utils.Msg;
+import org.springframework.stereotype.Service;
 
-public class ReserveService extends BaseService {
+import javax.annotation.Resource;
+
+/**
+ * 对预约数据的拉取与保存
+ */
+@Service
+public class ReserveService {
 	private static final Logger log = LoggerFactory
 			.getLogger(ReserveService.class);
-
-	public static void main(String args[]) {
-		List<Reserve> reserves = new ReserveService().getRemoteReserve();
-		for (Reserve reserve : reserves) {
-			System.out.println(reserve);
-		}
-	}
+	@Resource
+	private ReserveDao dao;
 
 	public Msg SaveRemoteReserve() {
 		List<Reserve> reserves = getRemoteReserve();
 		for (int i = 0; i < reserves.size(); i++) {
 			Reserve reserve = reserves.get(i);
-			getBaseDao().save(reserve);
+			dao.save(reserve);
 		}
 		return Msg.SUCCESS;
 	}
@@ -79,22 +79,21 @@ public class ReserveService extends BaseService {
 			for (int i = 0; i < arr.length(); i++) {
 				Reserve reserve = new Reserve();
 				JSONObject obj = arr.getJSONObject(i);
-				reserve.setLid(obj.getString("lid"));
+				reserve.setRoom_num(obj.getString("lid"));
 				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 						"yyyy-MM-dd HH-mm-ss");
-				reserve.setEndTime(simpleDateFormat.parse((obj
+				reserve.setEnd_time(simpleDateFormat.parse((obj
 						.getString("end_time"))));
-				reserve.setBeginTime(simpleDateFormat.parse(obj
+				reserve.setBegin_time(simpleDateFormat.parse(obj
 						.getString("begin_time")));
-				reserve.setSeatId(obj.getString("seat_id"));
-				reserve.setCardNum(obj.getString("card_number"));
-				reserve.setOldId(obj.getString("oldid"));
+				reserve.setSeat_id(obj.getString("seat_id"));
+				reserve.setCard_num(obj.getString("card_number"));
+				reserve.setOld_id(obj.getString("oldid"));
 				reserves.add(reserve);
 			}
 
 			// jsonObject.get
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -103,51 +102,22 @@ public class ReserveService extends BaseService {
 		return reserves;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.service.IdoorService#getAll()
-	 */
-	@Override
 	public List<?> getAll() {
-		return ((ReserveDao) getBaseDao()).getAll();
+		return dao.getAll();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.service.IdoorService#preAdd()
-	 */
-	@Override
-	public void preAdd() {
-		// getBaseDao().save(new Reserve("fas", "411"));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.service.IdoorService#deleteById(long)
-	 */
-	@Override
-	public Msg deleteById(long id) {
-		return getBaseDao().deleteById(Reserve.class, id);
+	public Msg deleteById(int id) {
+		return dao.deleteById(Reserve.class, id);
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.service.IdoorService#getbyId(long)
-	 */
-	@Override
-	public Object getbyId(long id) {
-		return getBaseDao().findById(Reserve.class, id);
+	public Object getbyId(int id) {
+		return dao.findById(Reserve.class, id);
 	}
 
 	public Msg cleanLocalReserve() {
-		getBaseDao().clearTable(Reserve.class.getSimpleName());
+		dao.clearTable("reserve");
 		return null;
-		// TODO Auto-generated method stub
 	}
 
 }

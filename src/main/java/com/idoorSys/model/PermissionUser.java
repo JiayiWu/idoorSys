@@ -10,15 +10,18 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * 刷卡用户信息
+ */
 @Entity
-@Table
+@Table(name = "permission_user")
 public class PermissionUser implements Serializable {
 
-	private long id;
+	private int id;
 
-	private String stdNum;
+	private String std_num;
 
-	private String cardNum;
+	private String card_num;
 
 	private String name;
 
@@ -33,47 +36,46 @@ public class PermissionUser implements Serializable {
 	}
 
 	@Id
-	@GeneratedValue(generator = "increment")
-	@GenericGenerator(name = "increment", strategy = "increment")
-	public long getId() {
+	@GeneratedValue
+	public int getId() {
 		return id;
 	}
 
-	public PermissionUser(String cardNum) {
+	public PermissionUser(String card_num) {
 		super();
-		this.cardNum = cardNum;
+		this.card_num = card_num;
 	}
 
-	public PermissionUser(long id, String cardNum, String name, String type,
-			String stdNum) {
+	public PermissionUser(int id, String card_num, String name, String type,
+			String std_num) {
 		super();
 		this.id = id;
-		this.cardNum = cardNum;
+		this.card_num = card_num;
 		this.name = name;
 		this.type = type;
-		this.stdNum = stdNum;
+		this.std_num = std_num;
 	}
 
-	public PermissionUser(String cardNum, String name, String type,
-			String stdNum) {
+	public PermissionUser(String card_num, String name, String type,
+			String std_num) {
 		super();
-		this.cardNum = cardNum;
+		this.card_num = card_num;
 		this.name = name;
 		this.type = type;
-		this.stdNum = stdNum;
+		this.std_num = std_num;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
 	@Column(unique = true)
-	public String getCardNum() {
-		return cardNum;
+	public String getCard_num() {
+		return card_num;
 	}
 
-	public void setCardNum(String cardNum) {
-		this.cardNum = cardNum;
+	public void setCard_num(String cardNum) {
+		this.card_num = cardNum;
 	}
 
 	@Column
@@ -95,12 +97,12 @@ public class PermissionUser implements Serializable {
 	}
 
 	@Column
-	public String getStdNum() {
-		return stdNum;
+	public String getStd_num() {
+		return std_num;
 	}
 
-	public void setStdNum(String stdNum) {
-		this.stdNum = stdNum;
+	public void setStd_num(String stdNum) {
+		this.std_num = stdNum;
 	}
 
 	@Column

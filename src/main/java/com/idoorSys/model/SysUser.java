@@ -8,10 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * 管理系统用户
+ */
 @Entity
-@Table
+@Table(name = "sysuser")
 public class SysUser {
-	private long id;
+	private int id;
 	private String account;
 	private String password;
 	private String role;
@@ -20,11 +23,11 @@ public class SysUser {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

@@ -1,19 +1,11 @@
 package com.idoorSys;
 
-import com.idoorSys.dao.BaseDao;
-import com.idoorSys.dao.PeriodicPermissionDao;
-import com.idoorSys.dao.PermissionDao;
-import com.idoorSys.model.PeriodicPermission;
 import com.idoorSys.model.Permission;
-import com.idoorSys.model.PermissionUser;
 import com.idoorSys.model.Room;
-import com.idoorSys.service.PeriodicPermissionService;
 import com.idoorSys.service.PermissionService;
-import com.idoorSys.utils.LocalIpAddressService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.sql.Time;
 import java.util.List;
 
 public class MainTest {
@@ -26,10 +18,12 @@ public class MainTest {
 //		System.out.println(all);
 
 
-		PermissionService service = ((PermissionService) context.getBean("permissionService"));
-		for (Permission permission : ((List<Permission>) service.getAll())) {
-			System.out.println(permission.getPermissionUser().getCardNum());
-		}
+//		PermissionService service = ((PermissionService) context.getBean("permissionService"));
+//		List<Permission> all = (List<Permission>) service.getPageAll(20,40);
+//		for (Permission room : all) {
+//			System.out.println(room.getPermissionUser().getName());
+//		}
+//		System.out.println(all.size());
 	}
 
 }

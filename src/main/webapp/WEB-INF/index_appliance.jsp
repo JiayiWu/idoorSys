@@ -152,7 +152,7 @@ $(function(){
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a href="appliance/device" target="navTab" rel="page7" fresh="true">电器管理</a></li>
+							<li><a href="appliance/deviceState" target="navTab" rel="page7" fresh="true">电器管理</a></li>
 						</ul>
 					</div>
 				</div>

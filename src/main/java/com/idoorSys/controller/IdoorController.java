@@ -21,9 +21,9 @@ public interface IdoorController {
 
 	public abstract String list(Map<String, Object> model);
 
-	public abstract String delete(long id, Map<String, Object> model);
+	public abstract String delete(int id, Map<String, Object> model);
 
-	public abstract String pageEdit(long id, Map<String, Object> model);
+	public abstract String pageEdit(int id, Map<String, Object> model);
 
 	public abstract String pageAdd(Map<String, Object> model);
 

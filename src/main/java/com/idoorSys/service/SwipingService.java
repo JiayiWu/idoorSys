@@ -3,32 +3,27 @@ package com.idoorSys.service;
 import com.idoorSys.dao.BaseDao;
 import com.idoorSys.dao.SwipingDao;
 import com.idoorSys.model.SwipingRecord;
-import com.idoorSys.utils.Msg;
-import org.omg.PortableInterceptor.INACTIVE;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by Ezio on 4/19/2015.
  */
+@Service
 public class SwipingService {
-    private BaseDao baseDao;
+    @Resource
+    private SwipingDao dao;
     
-    public BaseDao getBaseDao() {
-        return this.baseDao;
+    public List<SwipingRecord> getAll() {
+        return getPageAll(0, -1);
     }
-    
-    public void setBaseDao(BaseDao baseDao) {
-        this.baseDao = baseDao;
-    }
-
-    
-    public List<?> getAll() {
+    public List<SwipingRecord> getPageAll(int up, int size) {
         List<SwipingRecord> records = new ArrayList<>();
-        List<Object[]> objects = getBaseDao()
+        List<Object[]> objects = dao
                 .execSqlQuery(
                         "select swiping_record.id, swiping_record.swiping_Time, PermissionUser.name, swiping_record.cardid, Room.name as rname from "
                                 + "swiping_record,PermissionUser,Room"
@@ -37,22 +32,27 @@ public class SwipingService {
                                 + " and "
                                 + "swiping_record.room_Num = Room.nameEn"
                                 + " ORDER BY swiping_record.id DESC"
+                                + (size < 0 || up < 0 ? "" : " LIMIT " + size + " OFFSET " + up)
                 );
         for (Object[] object : objects) {
             SwipingRecord record = new SwipingRecord();
             record.setId(Integer.parseInt(object[0].toString()));
-            record.setSwipingTime(((Timestamp) object[1]));
-            record.setUserName(object[2].toString());
-            record.setCardid(object[3].toString());
-            record.setRoomName(object[4].toString());
+            record.setSwiping_time(((Timestamp) object[1]));
+            record.setUser_name(object[2].toString());
+            record.setCard_id(object[3].toString());
+            record.setRoom_name(object[4].toString());
             records.add(record);
         }
         return records;
     }
 
-    public List<?> getAnonymousRecords() {
+
+    public List<SwipingRecord> getAnonymousRecords() {
+        return getPageAnonymousRecords(0, -1);
+    }
+    public List<SwipingRecord> getPageAnonymousRecords(int up, int size) {
         List<SwipingRecord> records = new ArrayList<>();
-        List<Object[]> objects = getBaseDao()
+        List<Object[]> objects = dao
                 .execSqlQuery(
                         "select swiping_record.id, swiping_record.swiping_Time, swiping_record.cardid, Room.name as rname from "
                                 + "swiping_record,Room"
@@ -61,25 +61,26 @@ public class SwipingService {
                                 + " and "
                                 + "swiping_record.room_Num = Room.nameEn"
                                 + " ORDER BY swiping_record.id DESC"
+                                + (size < 0 || up < 0 ? "" : " LIMIT " + size + " OFFSET " + up)
                 );
         for (Object[] object : objects) {
             SwipingRecord record = new SwipingRecord();
             record.setId(Integer.parseInt(object[0].toString()));
-            record.setSwipingTime(((Timestamp) object[1]));
-            record.setCardid(object[2].toString());
-            record.setRoomName(object[3].toString());
-            record.setUserName("anonymous");
+            record.setSwiping_time(((Timestamp) object[1]));
+            record.setCard_id(object[2].toString());
+            record.setRoom_name(object[3].toString());
+            record.setUser_name("anonymous");
             records.add(record);
         }
         return records;
     }
 
     
-    public List<?> getByExample(String roomName, String userName, Timestamp startTime, Timestamp endTime) {
+    public List<SwipingRecord> getByExample(String roomName, String userName, Timestamp startTime, Timestamp endTime) {
         userName = userName==null || userName.equals("")? null: userName;
         roomName = roomName==null || roomName.equals("")? null: roomName;
         List<SwipingRecord> records = new ArrayList<>();
-        List<Object[]> objects = getBaseDao()
+        List<Object[]> objects = dao
                 .execSqlQuery(
                         "select swiping_record.id, swiping_record.swiping_Time, PermissionUser.name, swiping_record.cardid, Room.name as rname from "
                                 + "swiping_record,PermissionUser,Room"
@@ -87,52 +88,52 @@ public class SwipingService {
                                 + "substring(swiping_record.cardid, 3, 6) = PermissionUser.cardNum"
                                 + " and "
                                 + "swiping_record.room_Num = Room.nameEn"
-                                + (userName == null ? "": (" and "
-                                + "PermissionUser.name like '%" + userName +"%'"))
-                                + (roomName == null ? "": (" and "
-                                + "Room.name like '%"+roomName+"%'"))
-                                + (startTime == null ? "": (" and "
-                                + "swiping_record.swiping_Time >= '"+startTime+"'"))
-                                + (endTime == null ? "": (" and "
-                                + "swiping_record.swiping_Time <= '"+endTime+"'"))
+                                + (userName == null ? "" : (" and "
+                                + "PermissionUser.name like '%" + userName + "%'"))
+                                + (roomName == null ? "" : (" and "
+                                + "Room.name like '%" + roomName + "%'"))
+                                + (startTime == null ? "" : (" and "
+                                + "swiping_record.swiping_Time >= '" + startTime + "'"))
+                                + (endTime == null ? "" : (" and "
+                                + "swiping_record.swiping_Time <= '" + endTime + "'"))
                                 + " ORDER BY swiping_record.id DESC"
                 );
         for (Object[] object : objects) {
             SwipingRecord record = new SwipingRecord();
             record.setId(Integer.parseInt(object[0].toString()));
-            record.setSwipingTime(((Timestamp) object[1]));
-            record.setUserName(object[2].toString());
-            record.setCardid(object[3].toString());
-            record.setRoomName(object[4].toString());
+            record.setSwiping_time(((Timestamp) object[1]));
+            record.setUser_name(object[2].toString());
+            record.setCard_id(object[3].toString());
+            record.setRoom_name(object[4].toString());
             records.add(record);
         }
         return records;
     }
 
-    public List<?> getAnonymousByExample(String roomName, Timestamp startTime, Timestamp endTime) {
+    public List<SwipingRecord> getAnonymousByExample(String roomName, Timestamp startTime, Timestamp endTime) {
         roomName = roomName==null || roomName.equals("")? null: roomName;
         List<SwipingRecord> records = new ArrayList<>();
-        List<Object[]> objects = getBaseDao()
+        List<Object[]> objects = dao
                 .execSqlQuery(
                         "select swiping_record.id, swiping_record.swiping_Time, swiping_record.cardid, Room.name as rname from "
                                 + "swiping_record,Room"
                                 + " where "
                                 + "swiping_record.room_Num = Room.nameEn"
-                                + (roomName == null ? "": (" and "
-                                + "Room.name like '%"+roomName+"%'"))
-                                + (startTime == null ? "": (" and "
-                                + "swiping_record.swiping_Time >= '"+startTime+"'"))
-                                + (endTime == null ? "": (" and "
-                                + "swiping_record.swiping_Time <= '"+endTime+"'"))
+                                + (roomName == null ? "" : (" and "
+                                + "Room.name like '%" + roomName + "%'"))
+                                + (startTime == null ? "" : (" and "
+                                + "swiping_record.swiping_Time >= '" + startTime + "'"))
+                                + (endTime == null ? "" : (" and "
+                                + "swiping_record.swiping_Time <= '" + endTime + "'"))
                                 + " ORDER BY swiping_record.id DESC"
                 );
         for (Object[] object : objects) {
             SwipingRecord record = new SwipingRecord();
             record.setId(Integer.parseInt(object[0].toString()));
-            record.setSwipingTime(((Timestamp) object[1]));
-            record.setCardid(object[2].toString());
-            record.setRoomName(object[3].toString());
-            record.setUserName("anonymous");
+            record.setSwiping_time(((Timestamp) object[1]));
+            record.setCard_id(object[2].toString());
+            record.setRoom_name(object[3].toString());
+            record.setUser_name("anonymous");
             records.add(record);
         }
         return records;

@@ -1,7 +1,6 @@
 package com.idoorSys.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.idoorSys.dao.PermissionDao;
@@ -9,19 +8,24 @@ import com.idoorSys.model.Permission;
 import com.idoorSys.model.PermissionUser;
 import com.idoorSys.model.Room;
 import com.idoorSys.utils.Msg;
+import org.springframework.stereotype.Service;
 
-public class PermissionService extends BaseService {
+import javax.annotation.Resource;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.service.IdoorService#getAll()
-	 */
-	@Override
-	public List<?> getAll() {
-//		return ((PermissionDao) getBaseDao()).getAll();
+/**
+ * 管理刷卡用户权限
+ */
+@Service
+public class PermissionService {
+	@Resource
+	private PermissionDao dao;
+
+	public List<Permission> getAll() {
+		return getPageAll(0, -1);
+	}
+	public List<Permission> getPageAll(int up, int size) {
 		List<Permission> permissions = new ArrayList<>();
-		List<Object[]> objects = getBaseDao()
+		List<Object[]> objects = dao
 				.execSqlQuery(
 						"select Permission.id, PermissionUser.cardNum ,Room.name, Permission.type, PermissionUser.name as pname from "
 								+ "Permission,Room,PermissionUser"
@@ -30,14 +34,15 @@ public class PermissionService extends BaseService {
 								+ " and "
 								+ "Permission.permissionUser_cardNum = PermissionUser.cardNum"
 								+ " ORDER BY Permission.id DESC"
+								+ (size < 0 || up < 0 ? "" : " LIMIT " + size + " OFFSET " + up)
 				);
 		for (Object[] object : objects) {
 			Permission permission = new Permission();
-			permission.setId(Long.parseLong(object[0].toString()));
+			permission.setId((Integer)object[0]);
 			PermissionUser permissionUser = new PermissionUser();
-			permissionUser.setCardNum(object[1].toString());
+			permissionUser.setCard_num(object[1].toString());
 			permissionUser.setName(object[4].toString());
-			permission.setPermissionUser(permissionUser);
+			permission.setPermission_user(permissionUser);
 			Room room = new Room();
 			room.setName(object[2].toString());
 			permission.setRoom(room);
@@ -47,47 +52,19 @@ public class PermissionService extends BaseService {
 		return permissions;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.service.IdoorService#preAdd()
-	 */
-	@Override
-	public void preAdd() {
-		// getBaseDao().save(new Permission(new Room("aa","bb"),new
-		// PermissionUser("aa","bb","cc","dd"),1));
-		// getBaseDao().save(new Permission(new Room("aa","bb"),new
-		// PermissionUser("aa","bb","cc","dd"),2));
-		// getBaseDao().save(new Permission(new Room("aa","bb"),new
-		// PermissionUser("aa","bb","cc","dd"),3));
+	public Msg deleteById(int id) {
+		return dao.deleteById(Permission.class, id);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.service.IdoorService#deleteById(long)
-	 */
-	@Override
-	public Msg deleteById(long id) {
-		return getBaseDao().deleteById(Permission.class, id);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.service.IdoorService#getbyId(long)
-	 */
-	@Override
-	public Object getbyId(long id) {
-		return getBaseDao().findById(Permission.class, id);
+	public Object getbyId(int id) {
+		return dao.findById(Permission.class, id);
 	}
 
 	public List<Permission> findByCondition(String userName, String roomName) {
-		// TODO Auto-generated method stub
 		userName = userName == null || userName.equals("")? null: userName;
 		roomName = roomName == null || roomName.equals("")? null: roomName;
 		List<Permission> permissions = new ArrayList<>();
-		List<Object[]> objects = getBaseDao()
+		List<Object[]> objects = dao
 				.execSqlQuery(
 						"select Permission.id,PermissionUser.cardNum, Room.name,  Permission.type, PermissionUser.name as pname from "
 								+ "Permission,Room,PermissionUser"
@@ -95,18 +72,18 @@ public class PermissionService extends BaseService {
 								+ "Permission.room_id=Room.id"
 								+ " and "
 								+ "Permission.permissionUser_cardNum = PermissionUser.cardNum"
-								+ (userName == null ? "": (" and "
-								+ "PermissionUser.name like '%" + userName +"%'"))
-								+ (roomName == null ? "": (" and "
-								+ "Room.name like '%" + roomName +"%'"))
+								+ (userName == null ? "" : (" and "
+								+ "PermissionUser.name like '%" + userName + "%'"))
+								+ (roomName == null ? "" : (" and "
+								+ "Room.name like '%" + roomName + "%'"))
 								+ "ORDER BY Permission.id DESC");
 		for (Object[] object : objects) {
 			Permission permission = new Permission();
-			permission.setId(Long.parseLong(object[0].toString()));
+			permission.setId((Integer)object[0]);
 			PermissionUser permissionUser = new PermissionUser();
-			permissionUser.setCardNum(object[1].toString());
+			permissionUser.setCard_num(object[1].toString());
 			permissionUser.setName(object[4].toString());
-			permission.setPermissionUser(permissionUser);
+			permission.setPermission_user(permissionUser);
 			Room room = new Room();
 			room.setName(object[2].toString());
 			permission.setRoom(room);
@@ -116,4 +93,11 @@ public class PermissionService extends BaseService {
 		return permissions;
 	}
 
+	public Msg update(Permission permission) {
+		return dao.update(permission);
+	}
+
+	public Msg add(Permission permission) {
+		return dao.save(permission);
+	}
 }

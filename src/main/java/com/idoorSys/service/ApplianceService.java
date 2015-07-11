@@ -10,17 +10,19 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.idoorSys.model.DeviceState;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.idoorSys.model.Device;
 import com.idoorSys.utils.LocalIpAddressService;
 import com.idoorSys.utils.Msg;
+import org.springframework.stereotype.Service;
 
-//点确定，先检查选择的房间号
+/**
+ * 向房间设备发送电源控制信号
+ */
+@Service
 public class ApplianceService {
-//	private Socket socket = null;
-//	private String cachedRoomNo = null;
-	public Device getDevice(String roomNo) throws IOException, SQLException {
+	public DeviceState getDevice(String roomNo) throws IOException, SQLException {
 		Socket socket = getSocketTo(roomNo);
 		
 		PrintWriter pr = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -32,8 +34,8 @@ public class ApplianceService {
 		
 		disconnect(socket);
 		
-		Device device = json2Device(reply);
-		return device;
+		DeviceState deviceState = json2Device(reply);
+		return deviceState;
 	}
 
 	/**
@@ -135,7 +137,7 @@ public class ApplianceService {
 	 * @return
 	 * @throws IOException
 	 */
-	private Device json2Device(String json) throws IOException {
+	private DeviceState json2Device(String json) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, String> stateMap = mapper.readValue(json, Map.class);
 		String roomNo = stateMap.get("No");
@@ -151,12 +153,12 @@ public class ApplianceService {
 				lightState.put(key.substring(1), stateMap.get(key).equals("n")? "on": "of");
 			}
 		}
-		Device device = new Device();
-		device.setRoomNo(roomNo);
-		device.setFrontDoorState(frontDoorState == null ? null: frontDoorState.equals("n")? "on": "of");
-		device.setBackDoorState(backDoorState == null ? null: backDoorState.equals("n")? "on": "of");
-		device.setDeskState(mapper.writeValueAsString(deskState));
-		device.setLightState(mapper.writeValueAsString(lightState));
-		return device;
+		DeviceState deviceState = new DeviceState();
+		deviceState.setRoomNo(roomNo);
+		deviceState.setFrontDoorState(frontDoorState == null ? null: frontDoorState.equals("n")? "on": "of");
+		deviceState.setBackDoorState(backDoorState == null ? null: backDoorState.equals("n")? "on": "of");
+		deviceState.setDeskState(mapper.writeValueAsString(deskState));
+		deviceState.setLightState(mapper.writeValueAsString(lightState));
+		return deviceState;
 	}
 }

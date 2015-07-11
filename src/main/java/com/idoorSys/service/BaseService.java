@@ -17,14 +17,6 @@ public abstract class BaseService implements IdoorService{
 		this.baseDao = baseDao;
 	}
 
-//	public BaseDao getHibernateBaseDao() {
-//		return baseDao;
-//	}
-//
-//	public void setHibernateBaseDao(BaseDao hibernateBaseDao) {
-//		this.baseDao = hibernateBaseDao;
-//	}
-
 	@Override
 	public Msg update(Object object) {
 		return getBaseDao().update(object);
@@ -37,7 +29,6 @@ public abstract class BaseService implements IdoorService{
 
 	@Override
 	public List<?> findByExample(Object object) {
-		// TODO Auto-generated method stub
 		return getBaseDao().findByExample(object);
 	}
 	

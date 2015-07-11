@@ -1,7 +1,7 @@
 package com.idoorSys.dao;
 
-/**
- * Created by Ezio on 4/19/2015.
- */
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class SwipingDao extends BaseDao {
 }

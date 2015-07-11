@@ -458,12 +458,12 @@
 
 <script type="text/javascript">
   function searchUser() {
-    var userName = $("#searchUserName").val();
+    var user_name = $("#searchUserName").val();
     $
             .post(
             "permissionUser/findByExampleJson",
             {
-              "name" : userName
+              "name" : user_name
             },
             function(data) {
               $("#panel_user tbody").html("");
@@ -480,12 +480,12 @@
             }, "json");
   }
   function searchRoom() {
-    var roomName = $("#searchRoomName").val();
+    var room_name = $("#searchRoomName").val();
     $
             .post(
             "room/findByExampleJson",
             {
-              "name" : roomName
+              "name" : room_name
             },
             function(data) {
               $("#panel_room tbody").html("");

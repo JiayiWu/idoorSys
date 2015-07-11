@@ -15,39 +15,58 @@ import com.idoorSys.service.RoomService;
 import com.idoorSys.utils.Msg;
 import com.idoorSys.utils.SpringContextsUtil;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
-@RequestMapping(RoomController.PATH)
+@RequestMapping("/room")
 public class RoomController implements IdoorController {
-	RoomService roomService = (RoomService) SpringContextsUtil
-			.getBean("roomService");
+	@Resource
+	private RoomService roomService;
 
-	public static final String PATH = "room/";
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.controller.IdoorController#list(java.util.Map)
-	 */
 	@Override
-	@RequestMapping(MAPPING_LIST)
+	@RequestMapping("/list")
 	public String list(Map<String, Object> model) {
 		// roomService.preAdd();
-		List<Room> rooms = (List<Room>) roomService.getAll();
+
+		List<Room> totalRooms = roomService.getAll();
+		List<Room> rooms = totalRooms.size()>20? totalRooms.subList(0, 20): totalRooms;
+		int pageNumShown = totalRooms.size()/20+1; pageNumShown = pageNumShown>10 ? 10: pageNumShown;
+
 		model.put("rooms", rooms);
-		return PATH + LIST_PAGE;
+		model.put("totalCount", totalRooms.size());
+		model.put("numPerPage", 20);
+		model.put("pageNumShown", pageNumShown);
+		model.put("currentPage",1);
+		return "/room/list";
+	}
+	@RequestMapping("/pagedList")
+	public String pagedList(HttpServletRequest request, Map<String, Object> model) {
+		int totalCount = Integer.parseInt(request.getParameter("totalCount"));
+		int numPerPage = Integer.parseInt(request.getParameter("numPerPage"));
+		int currentPage = Integer.parseInt(request.getParameter("pageNum"));
+		int pageNumShown = totalCount/numPerPage+1; pageNumShown = pageNumShown>10 ? 10: pageNumShown;
+		List<Room> rooms = roomService.getPageAll(numPerPage*(currentPage-1), numPerPage);
+
+		model.put("rooms", rooms);
+		model.put("totalCount", totalCount);
+		model.put("numPerPage", numPerPage);
+		model.put("pageNumShown", pageNumShown);
+		model.put("currentPage",currentPage);
+		return "/room/list";
 	}
 
-	@RequestMapping(MAPPING_FIND_BY_EXAMPLE)
+	@RequestMapping("/findByExample")
 	public String findByExample(@RequestParam("name") String name,
 			Map<String, Object> model) {
 		Room room = new Room();
 		room.setName(name);
 		List<Room> rooms = (List<Room>) roomService.findByExample(room);
 		model.put("rooms", rooms);
-		return PATH + LIST_PAGE;
+		return "/room/list";
 	}
 
-	@RequestMapping(MAPPING_FIND_BY_EXAMPLE_JSON)
+	@RequestMapping("findByExampleJson")
 	@ResponseBody
 	public Map<String, Object> findByExampleJson(
 			@RequestParam("name") String name) {
@@ -59,83 +78,55 @@ public class RoomController implements IdoorController {
 		return map;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.controller.IdoorController#delete(long, java.util.Map)
-	 */
 	@Override
-	@RequestMapping(MAPPING_DELETE)
-	public String delete(@PathVariable long id, Map<String, Object> model) {
+	@RequestMapping("/delete/{id}")
+	public String delete(@PathVariable int id, Map<String, Object> model) {
 		Msg msg = roomService.deleteById(id);
 		if (msg == Msg.SUCCESS)
-			return DONE_PAGE;
+			return "/ajaxDone";
 		else
-			return FAIL_PAGE;
+			return "/ajaxFail";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.controller.IdoorController#update(long,
-	 * java.lang.String, java.lang.String)
-	 */
-	@RequestMapping(MAPPING_UPDATE)
-	public String update(@RequestParam("id") long id,
+	@RequestMapping("/update")
+	public String update(@RequestParam("id") int id,
 			@RequestParam("name") String name,
 			@RequestParam("nameEn") String nameEn,
 			@RequestParam("type") String type) {
 		Room room = new Room(id, name, type);
-		room.setNameEn(nameEn);
+		room.setNum(nameEn);
 		Msg msg = roomService.update(room);
 		if (msg == Msg.SUCCESS)
-			return DONE_PAGE;
+			return "/ajaxDone";
 		else
-			return FAIL_PAGE;
+			return "/ajaxFail";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.controller.IdoorController#add(java.lang.String,
-	 * java.lang.String, java.util.Map)
-	 */
 	@RequestMapping(MAPPING_ADD)
 	public String add(@RequestParam("name") String name,
 			@RequestParam("type") String type,
 			@RequestParam("nameEn") String nameEn, Map<String, Object> model) {
 		Room room = new Room(name, type);
-		room.setNameEn(nameEn);
+		room.setNum(nameEn);
 		Msg msg = roomService.add(room);
 		if (msg == Msg.SUCCESS)
-			return DONE_PAGE;
+			return "/ajaxDone";
 		else
-			return FAIL_PAGE;
+			return "/ajaxFail";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.controller.IdoorController#pageEdit(long,
-	 * java.util.Map)
-	 */
 	@Override
-	@RequestMapping(MAPPING_PAGE_EDIT)
-	public String pageEdit(@PathVariable("id") long id,
+	@RequestMapping("/page/edit/{id}")
+	public String pageEdit(@PathVariable("id") int id,
 			Map<String, Object> model) {
 		model.put("room", roomService.getbyId(id));
-		return PATH + EDIT_PAGE;
+		return "/room/edit";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.controller.IdoorController#pageAdd(java.util.Map)
-	 */
 	@Override
-	@RequestMapping(MAPPIND_PAGE_ADD)
+	@RequestMapping("/page/add")
 	public String pageAdd(Map<String, Object> model) {
-		return PATH + ADD_PAGE;
+		return "/room/add";
 	}
 
 }

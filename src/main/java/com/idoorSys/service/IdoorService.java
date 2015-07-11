@@ -8,15 +8,13 @@ public interface IdoorService {
 
 	public abstract List<?> getAll();
 
-	public abstract void preAdd();
-
-	public abstract Msg deleteById(long id);
+	public abstract Msg deleteById(int id);
 
 	public abstract Msg update(Object room);
 
 	public abstract Msg add(Object room);
 
-	public abstract Object getbyId(long id);
+	public abstract Object getbyId(int id);
 	
 	public abstract List<?> findByExample(Object object);
 

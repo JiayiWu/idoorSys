@@ -1,52 +1,46 @@
 package com.idoorSys.service;
 
-import java.util.List;
-
 import com.idoorSys.dao.RoomDao;
 import com.idoorSys.model.Room;
 import com.idoorSys.utils.Msg;
+import org.springframework.stereotype.Service;
 
-public class RoomService extends BaseService {
+import javax.annotation.Resource;
+import java.util.List;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.service.IdoorService#getAll()
-	 */
-	@Override
-	public List<?> getAll() {
-		return ((RoomDao) getBaseDao()).getAll();
-	}
+/**
+ * 管理房间信息
+ */
+@Service
+public class RoomService {
+    @Resource
+    private RoomDao dao;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.service.IdoorService#preAdd()
-	 */
-	@Override
-	public void preAdd() {
-		getBaseDao().save(new Room("fas", "411"));
-	}
+    public List<Room> getAll() {
+        return dao.getAll();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.service.IdoorService#deleteById(long)
-	 */
-	@Override
-	public Msg deleteById(long id) {
-		return getBaseDao().deleteById(Room.class, id);
+    public List<Room> getPageAll(int up, int size) {
+        return dao.getPageAll(up, size);
+    }
 
-	}
+    public Msg deleteById(int id) {
+        return dao.deleteById(Room.class, id);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.idoorSys.service.IdoorService#getbyId(long)
-	 */
-	@Override
-	public Object getbyId(long id) {
-		return getBaseDao().findById(Room.class, id);
-	}
+    public Object getbyId(int id) {
+        return dao.findById(Room.class, id);
+    }
 
+    public Msg update(Room room) {
+        return dao.update(room);
+    }
+
+    public Msg add(Room room) {
+        return  dao.save(room);
+    }
+
+    public List<Room> findByExample(Room room) {
+        return dao.findByExample(room);
+    }
 }

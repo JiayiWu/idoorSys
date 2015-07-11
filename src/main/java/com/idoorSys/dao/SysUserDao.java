@@ -1,5 +1,7 @@
 package com.idoorSys.dao;
 
-public class SysUserDao extends BaseDao {
+import org.springframework.stereotype.Repository;
 
+@Repository
+public class SysUserDao extends BaseDao {
 }

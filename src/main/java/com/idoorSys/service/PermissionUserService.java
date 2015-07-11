@@ -2,42 +2,49 @@ package com.idoorSys.service;
 
 import java.util.List;
 
+import com.idoorSys.dao.PermissionUserDao;
 import com.idoorSys.model.PermissionUser;
 import com.idoorSys.utils.Msg;
+import org.springframework.stereotype.Service;
 
-public class PermissionUserService extends BaseService {
+import javax.annotation.Resource;
 
-	private Class<?> className = PermissionUser.class;
+/**
+ * 用户服务，提供对用户数据的操作
+ */
+@Service
+public class PermissionUserService {
+	@Resource
+	private PermissionUserDao dao;
 
-	@Override
-	public List<?> getAll() {
-		// TODO Auto-generated method stub
-		return getBaseDao().getAll(className);
+	public List<PermissionUser> getAll() {
+		return dao.getAll();
+	}
+	public List<PermissionUser> getPageAll(int up, int size) {
+		return dao.getPageAll(up, size);
 	}
 
-	@Override
-	public void preAdd() {
-		// TODO Auto-generated method stub
-		// getBaseDao().save(new
-		// PermissionUser("1230345","擦","gbhfgh","100456456"));
-
+	public Msg update(Object object) {
+		return dao.update(object);
+	}
+	public Msg add(Object object) {
+		return dao.save(object);
 	}
 
-	@Override
-	public Msg deleteById(long id) {
-		// TODO Auto-generated method stub
-		return getBaseDao().deleteById(className, id);
+
+	public Msg deleteById(int id) {
+		return dao.deleteById(PermissionUser.class, id);
 	}
 
-	@Override
-	public Object getbyId(long id) {
-		// TODO Auto-generated method stub
-		return getBaseDao().findById(className, id);
+	public PermissionUser getById(int id) {
+		return (PermissionUser)dao.findById(PermissionUser.class, id);
 	}
 
 	public List<PermissionUser> getByGroup(String group) {
-		// TODO Auto-generated method stub
-		return (List<PermissionUser>) getBaseDao().findByProperty(className, "group", group);
+		return dao.getByGroup(group);
 	}
 
+	public List<PermissionUser> findByExample(Object object) {
+		return dao.findByExample(object);
+	}
 }

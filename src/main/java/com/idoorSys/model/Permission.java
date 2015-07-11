@@ -1,57 +1,61 @@
 package com.idoorSys.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * 刷卡用户权限信息
+ */
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {
-		"permissionUser_cardNum", "room_id" }))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"card_num", "room_id" }))
 public class Permission implements Serializable {
 
-	private long id;
+	private int id;
 	private Room room;
-	private PermissionUser permissionUser;
+	private PermissionUser permission_user;
+	// 用户权限类型0:super	1:always	2:periodic	3:reserve
 	private String type;
+	private Timestamp timetag;
 
-	public Permission() {
-
+	public Timestamp getTimetag() {
+		return timetag;
 	}
 
-	public Permission(Room room, PermissionUser permissionUser, String type) {
+	public void setTimetag(Timestamp timetag) {
+		this.timetag = timetag;
+	}
+
+	public Permission() {
+	}
+
+	public Permission(Room room, PermissionUser permission_user, String type) {
 		super();
 		this.room = room;
-		this.permissionUser = permissionUser;
+		this.permission_user = permission_user;
 		this.type = type;
 	}
 
-	public Permission(long id, Room room, PermissionUser permissionUser,
+	public Permission(int id, Room room, PermissionUser permission_user,
 			String type) {
 		super();
 		this.id = id;
 		this.room = room;
-		this.permissionUser = permissionUser;
+		this.permission_user = permission_user;
 		this.type = type;
 
 	}
 
 	@Id
-	@GeneratedValue(generator = "increment")
-	@GenericGenerator(name = "increment", strategy = "increment")
-	public long getId() {
+	@GeneratedValue
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -65,13 +69,13 @@ public class Permission implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(referencedColumnName = "cardNum")
-	public PermissionUser getPermissionUser() {
-		return permissionUser;
+	@JoinColumn(name = "card_num", referencedColumnName = "card_num")
+	public PermissionUser getPermission_user() {
+		return permission_user;
 	}
 
-	public void setPermissionUser(PermissionUser permissionUser) {
-		this.permissionUser = permissionUser;
+	public void setPermission_user(PermissionUser permissionUser) {
+		this.permission_user = permissionUser;
 	}
 
 	@Column

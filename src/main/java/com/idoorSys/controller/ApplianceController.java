@@ -7,29 +7,28 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.idoorSys.model.DeviceState;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.idoorSys.model.Device;
 import com.idoorSys.service.ApplianceService;
 import com.idoorSys.service.RoomService;
 import com.idoorSys.utils.Msg;
 import com.idoorSys.utils.SpringContextsUtil;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(ApplianceController.PATH)
 public class ApplianceController {
 	public static final String PATH = "appliance/";
-	
-	ApplianceService applianceService = (ApplianceService) SpringContextsUtil
-			.getBean("applianceService");
-	RoomService roomService = (RoomService) SpringContextsUtil
-			.getBean("roomService");
+
+	@Resource
+	private ApplianceService applianceService;
+	@Resource
+	private RoomService roomService;
 
 	String ajaxDone = "{\n" +
 			"\t\"statusCode\":\"200\",\n" +
@@ -94,37 +93,37 @@ public class ApplianceController {
 				+request.getParameter("unit")
 				+request.getParameter("floor")
 				+request.getParameter("room");
-		Device device;
+		DeviceState deviceState;
 		try {
-			device = applianceService.getDevice(roomId);
-			model.put("device", device);
+			deviceState = applianceService.getDevice(roomId);
+			model.put("deviceState", deviceState);
 		} catch (Exception e) {
 			model.put("error", e.getMessage());
 		}
 		
 		String fromPage = request.getParameter("fromPage");
-		return fromPage.equals("door") ? PATH+"door": PATH+"device";
+		return fromPage.equals("door") ? PATH+"door": PATH+"deviceState";
 	}
 	@RequestMapping("send")
 	public void send(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String roomNo = request.getParameter("roomNo");
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
-		Device oldDevice;
+		DeviceState oldDeviceState;
 		try {
-			oldDevice = applianceService.getDevice(roomNo);
-			Map<String, String> oldDeskState = oldDevice.generateDeskStateMap();
-			Map<String, String> oldLightState = oldDevice.generateLightStateMap();
+			oldDeviceState = applianceService.getDevice(roomNo);
+			Map<String, String> oldDeskState = oldDeviceState.generateDeskStateMap();
+			Map<String, String> oldLightState = oldDeviceState.generateLightStateMap();
 			
 			StringBuilder command = new StringBuilder(roomNo);
 			if(request.getParameter("frontDoorState")!=null
-					&& oldDevice.getFrontDoorState()!=null
-					&& !request.getParameter("frontDoorState").equals(oldDevice.getFrontDoorState())) {
+					&& oldDeviceState.getFrontDoorState()!=null
+					&& !request.getParameter("frontDoorState").equals(oldDeviceState.getFrontDoorState())) {
 				command.append("|"+"R0"+request.getParameter("frontDoorState"));
 			}
 			if(request.getParameter("backDoorState")!=null
-					&& oldDevice.getBackDoorState() != null
-					&&!request.getParameter("backDoorState").equals(oldDevice.getBackDoorState())) {
+					&& oldDeviceState.getBackDoorState() != null
+					&&!request.getParameter("backDoorState").equals(oldDeviceState.getBackDoorState())) {
 				command.append("|"+"R1"+request.getParameter("backDoorState"));
 			}
 			for (String desk: oldDeskState.keySet()) {

@@ -2,6 +2,7 @@ package com.idoorSys.controller;
 
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import com.idoorSys.utils.ModifiableRoutingDataSource;
@@ -18,20 +19,19 @@ import com.idoorSys.utils.SpringContextsUtil;
 
 @Controller
 public class MainController {
-
-	SysUserService sysUserService = (SysUserService) SpringContextsUtil
-			.getBean("sysUserService");
+	@Resource
+	private SysUserService sysUserService;
 
 	@RequestMapping("/")
 	public String main(Map<String, Object> model, HttpSession httpSession) {
 		SysUser sysUser = (SysUser) httpSession.getAttribute("sysUser");
 
-//		sysUserService.preAdd();
+		sysUserService.preAdd();
 		if (sysUser != null) {
 			model.put("sysUser", sysUser);
-			return "index";
+			return "/index";
 		} else {
-			return "login";
+			return "/login";
 		}
 	}
 
@@ -48,19 +48,19 @@ public class MainController {
 			httpSession.setAttribute("sysUser", sysUser);
 			model.put("sysUser", sysUser);
 			if (sysUser.getRole().equals("admin")) {
-				return "index";
+				return "/index";
 			} else {
-				return "index_appliance";
+				return "/index_appliance";
 			}
 		} else {
 			model.put("sysUser", null);
-			return "login";
+			return "/login";
 		}
 	}
 	
 	@RequestMapping("/empty")
 	public String blackhole() {
-		return "empty";
+		return "/empty";
 	}
 
 }

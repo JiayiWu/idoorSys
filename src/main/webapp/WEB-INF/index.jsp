@@ -141,7 +141,7 @@ $(function(){
 <!-- 							<a href="tabsPage.html" target="navTab">主框架面板</a> -->
 								<ul class="tree treeFolder">
 									<li><a href="empty"  target="navTab" rel="main">主页</a></li>
-									<li><a href="room/list" target="navTab" rel="page1" fresh="true">房门管理</a></li>
+									<li><a href="room/list" target="navTab" rel="page1" >房门管理</a></li>
 									<li><a href="permission/list" target="navTab" rel="page2" fresh="true">权限管理</a></li>
 									<li><a href="periodicPermission/list" target="navTab" rel="page9" fresh="true">周期权限管理</a></li>
 									<li><a href="permissionUser/list" target="navTab" rel="page3" fresh="true">用户管理</a></li>
@@ -161,7 +161,7 @@ $(function(){
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a href="appliance/device" target="navTab" rel="page7" fresh="true">电器管理</a></li>
+							<li><a href="appliance/deviceState" target="navTab" rel="page7" fresh="true">电器管理</a></li>
 						</ul>
 					</div>
 				</div>

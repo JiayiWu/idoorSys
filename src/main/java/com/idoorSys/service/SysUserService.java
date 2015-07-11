@@ -2,22 +2,24 @@ package com.idoorSys.service;
 
 import java.util.List;
 
+import com.idoorSys.dao.SysUserDao;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import com.idoorSys.model.SysUser;
 import com.idoorSys.utils.Msg;
+import org.springframework.stereotype.Service;
 
-public class SysUserService extends BaseService {
+import javax.annotation.Resource;
 
-	@Override
-	public List<?> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+/**
+ * 管理登陆用户信息
+ */
+@Service
+public class SysUserService {
+	@Resource
+	private SysUserDao dao;
 
-	@Override
 	public void preAdd() {
-		// TODO Auto-generated method stub
 		Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
 		
 		SysUser admin = new SysUser();
@@ -37,24 +39,12 @@ public class SysUserService extends BaseService {
 		guard.setPassword(md5PasswordOfGuard);
 		guard.setRole("normal");
 		
-		getBaseDao().save(admin);
-		getBaseDao().save(guard);
-	}
-
-	@Override
-	public Msg deleteById(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getbyId(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		dao.save(admin);
+		dao.save(guard);
 	}
 
 	public SysUser checkExits(String account, String password) {
-		List<SysUser> userList = (List<SysUser>) getBaseDao().findByProperty(
+		List<SysUser> userList = (List<SysUser>) dao.findByProperty(
 				SysUser.class, "account", account);
 		SysUser sysUserDB = null;
 		if (userList != null && userList.size() > 0) {

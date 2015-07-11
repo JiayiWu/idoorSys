@@ -18,11 +18,18 @@ import com.idoorSys.dao.RoomDao;
 import com.idoorSys.model.Permission;
 import com.idoorSys.model.PermissionUser;
 import com.idoorSys.model.Room;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
+@Service
 public class ExcelPermitionImportService {
 
+	@Resource
 	RoomDao roomDao;
+	@Resource
 	PermissionUserDao permissionUserDao;
+	@Resource
 	PermissionDao permissionDao;
 
 	public void setRoomDao(RoomDao roomDao) {
@@ -72,12 +79,12 @@ public class ExcelPermitionImportService {
 
 					PermissionUser permissionUser = new PermissionUser();
 					permissionUser.setName(userName);
-					permissionUser.setCardNum(cardNum);
+					permissionUser.setCard_num(cardNum);
 					if (!pusers.containsKey(cardNum))
 						pusers.put(cardNum, permissionUser);
 
 					Permission permission = new Permission();
-					permission.setPermissionUser(pusers.get(cardNum));
+					permission.setPermission_user(pusers.get(cardNum));
 					permission.setRoom(rooms.get(roomName));
 					permission.setType("always");
 

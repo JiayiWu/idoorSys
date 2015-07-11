@@ -1,16 +1,14 @@
 package com.idoorSys.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
- * Created by Ezio on 4/14/2015.
+ * 刷卡用户类别
  */
 @Entity
+@Table(name = "ugroup")
 public class UGroup {
-    private long id;
+    private int id;
     private String name;
 
     public UGroup(){}
@@ -20,11 +18,11 @@ public class UGroup {
 
     @Id
     @GeneratedValue
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

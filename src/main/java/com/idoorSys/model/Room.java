@@ -1,6 +1,7 @@
 package com.idoorSys.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,21 +11,26 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * 受管理的房间信息
+ */
 @Entity
-@Table
+@Table(name = "room")
 public class Room implements Serializable {
-	private long id;
+	private int id;
 
 	private String name;
 
 	private String type;
 
-	private String nameEn;
+	private String num;
+
+	private Timestamp timetag;
 
 	public Room() {
 	}
 
-	public Room(long id) {
+	public Room(int id) {
 		this.id = id;
 	}
 
@@ -34,7 +40,7 @@ public class Room implements Serializable {
 		this.type = type;
 	}
 
-	public Room(long id, String name, String type) {
+	public Room(int id, String name, String type) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -44,11 +50,11 @@ public class Room implements Serializable {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -71,12 +77,12 @@ public class Room implements Serializable {
 	}
 
 	@Column(unique = true)
-	public String getNameEn() {
-		return nameEn;
+	public String getNum() {
+		return num;
 	}
 
-	public void setNameEn(String nameEn) {
-		this.nameEn = nameEn;
+	public void setNum(String nameEn) {
+		this.num = nameEn;
 	}
 
 }
