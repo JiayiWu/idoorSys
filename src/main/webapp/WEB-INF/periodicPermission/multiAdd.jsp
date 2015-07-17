@@ -58,13 +58,13 @@
             <table style="width:100%;overflow: auto" layoutH="470">
               <tbody>
               <c:forEach var="puser" items="${pusers}">
-                <tr target="sid_user" rel="${puser.cardNum}">
+                <tr target="sid_user" rel="${puser.card_num}">
                   <td style="width: 18px;"><div>
                     <input name="ids" value="xxx" type="checkbox">
                   </div></td>
-                  <td><div>${puser.cardNum}</div></td>
+                  <td><div>${puser.card_num}</div></td>
                   <td><div>${puser.name}</div></td>
-                  <td><div>${puser.stdNum}</div></td>
+                  <td><div>${puser.std_num}</div></td>
                 </tr>
               </c:forEach>
               </tbody>
@@ -243,9 +243,9 @@
           </p>
           <p>
             <label>起始时间：</label> <input id="beginTime" name="beginTime" type="text" pattern="(0[0-9]|1[0-9]|2[0-3])(\:[0-5][0-9]){2}"
-                                        title="00:00:00-23:59:59" value="${permission.beginTime}"/>
+                                        title="00:00:00-23:59:59" value="${permission.begin_time}"/>
             <label>结束时间：</label> <input id="endTime" name="endTime" type="text" pattern="(0[0-9]|1[0-9]|2[0-3])(\:[0-5][0-9]){2}"
-                                        title="00:00:00-23:59:59" value="${permission.endTime}"/>
+                                        title="00:00:00-23:59:59" value="${permission.end_time}"/>
           </p>
         </div>
       </div>

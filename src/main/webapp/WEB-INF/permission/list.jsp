@@ -14,9 +14,9 @@
 		<div class="searchBar">
 			<table class="searchContent">
 				<tr>
-					<td>房间名称：<input type="text" name="room_name" />
+					<td>房间名称：<input type="text" name="roomName" />
 					</td>
-					<td>用户名称：<input type="text" name="user_name" />
+					<td>用户名称：<input type="text" name="userName" />
 					</td>
 				</tr>
 			</table>
@@ -59,8 +59,8 @@
 				<tr target="sid_user" rel="${permission.id}">
 					<td>${permission.id}</td>
 					<td>${permission.room.name}</td>
-					<td>${permission.permissionUser.name}</td>
-					<td>${permission.permissionUser.cardNum}</td>
+					<td>${permission.permission_user.name}</td>
+					<td>${permission.permission_user.card_num}</td>
 					<td>${permission.type}</td>
 					
 				</tr>

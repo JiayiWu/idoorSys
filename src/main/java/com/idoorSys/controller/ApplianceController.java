@@ -63,15 +63,6 @@ public class ApplianceController {
 		model.put("rooms", rooms);
 		return PATH+"door";
 	}
-//	@RequestMapping("door")
-//	public void door(HttpServletResponse response) {
-//		response.setContentType("application/json");
-//		try {
-//			response.getWriter().print(ajaxDone);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
 	
 	@RequestMapping("device")
 	public String device(Map<String, Object> model) {

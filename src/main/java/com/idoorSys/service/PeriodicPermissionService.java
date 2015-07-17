@@ -28,17 +28,17 @@ public class PeriodicPermissionService {
         List<PeriodicPermission> permissions = new ArrayList<>();
         List<Object[]> objects = dao
                 .execSqlQuery(
-                        "select PeriodicPermission.id" +
-                                ", Room.name as rName" +
-                                ", PeriodicPermission.dayOfWeek" +
-                                ", PeriodicPermission.beginTime" +
-                                ", PeriodicPermission.endTime" +
-                                ", PermissionUser.name" +
-                                ", PermissionUser.cardNum" +
-                                " FROM PeriodicPermission" +
-                                " JOIN Room ON Room.id = PeriodicPermission.room_id" +
-                                " JOIN PermissionUser ON PermissionUser.cardNum = PeriodicPermission.permissionUser_cardNum"
-                                + " ORDER BY PeriodicPermission.id DESC"
+                        "select periodic_permission.id" +
+                                ", room.name as rName" +
+                                ", periodic_permission.day_of_week" +
+                                ", periodic_permission.begin_time" +
+                                ", periodic_permission.end_time" +
+                                ", permission_user.name" +
+                                ", permission_user.card_num" +
+                                " FROM periodic_permission" +
+                                " JOIN room ON room.id = periodic_permission.room_id" +
+                                " JOIN permission_user ON permission_user.card_num = periodic_permission.card_num"
+                                + " ORDER BY periodic_permission.id DESC"
                                 + (size < 0 || up < 0 ? "" : " LIMIT " + size + " OFFSET " + up)
                 );
         for (Object[] object : objects) {
@@ -74,23 +74,23 @@ public class PeriodicPermissionService {
         List<PeriodicPermission> permissions = new ArrayList<>();
         List<Object[]> objects = dao
                 .execSqlQuery(
-                        "select PeriodicPermission.id" +
-                                ", Room.name as rName" +
-                                ", PeriodicPermission.dayOfWeek" +
-                                ", PeriodicPermission.beginTime" +
-                                ", PeriodicPermission.endTime" +
-                                ", PermissionUser.name" +
-                                ", PermissionUser.cardNum" +
-                                " FROM PeriodicPermission" +
-                                " JOIN Room ON Room.id = PeriodicPermission.room_id" +
-                                " JOIN PermissionUser ON PermissionUser.cardNum = PeriodicPermission.permissionUser_cardNum"
+                        "select periodic_permission.id" +
+                                ", room.name as rName" +
+                                ", periodic_permission.day_of_week" +
+                                ", periodic_permission.begin_time" +
+                                ", periodic_permission.end_time" +
+                                ", permission_user.name" +
+                                ", permission_user.card_num" +
+                                " FROM periodic_permission" +
+                                " JOIN room ON room.id = periodic_permission.room_id" +
+                                " JOIN permission_user ON permission_user.card_num = periodic_permission.card_num"
                                 + (userName == null ? "": (" and "
-                                + "PermissionUser.name like '%" + userName +"%'"))
+                                + "permission_user.name like '%" + userName +"%'"))
                                 + (roomName == null ? "": (" and "
-                                + "Room.name like '%" + roomName +"%'"))
+                                + "room.name like '%" + roomName +"%'"))
                                 + (dayOfWeek<1 || dayOfWeek>7 ? "": (" and "
-                                + "PeriodicPermission.dayOfWeek ="+dayOfWeek))
-                                + " ORDER BY PeriodicPermission.id DESC"
+                                + "periodic_permission.day_of_week ="+dayOfWeek))
+                                + " ORDER BY periodic_permission.id DESC"
                 );
         for (Object[] object : objects) {
             PeriodicPermission permission = new PeriodicPermission();

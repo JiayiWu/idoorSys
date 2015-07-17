@@ -21,11 +21,11 @@ import java.util.Map;
 public class SwipingController {
     public static final String PATH = "swiping/";
     @Resource
-    private SwipingService swipingService;// = (SwipingService) SpringContextsUtil.getBean("swipingService");
+    private SwipingService swipingService;
 
     @RequestMapping("list")
     public String listRecord(Map<String, Object> model) {
-        List<SwipingRecord> totalRecords = ((List<SwipingRecord>) swipingService.getAll());
+        List<SwipingRecord> totalRecords = swipingService.getAll();
         List<SwipingRecord> records = totalRecords.size() > 20 ? totalRecords.subList(0, 20) : totalRecords;
         int pageNumShown = totalRecords.size()/20+1; pageNumShown = pageNumShown>10 ? 10: pageNumShown;
 

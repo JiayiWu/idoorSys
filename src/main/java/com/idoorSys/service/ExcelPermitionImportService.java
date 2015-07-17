@@ -32,18 +32,6 @@ public class ExcelPermitionImportService {
 	@Resource
 	PermissionDao permissionDao;
 
-	public void setRoomDao(RoomDao roomDao) {
-		this.roomDao = roomDao;
-	}
-
-	public void setPermissionUserDao(PermissionUserDao permissionUserDao) {
-		this.permissionUserDao = permissionUserDao;
-	}
-
-	public void setPermissionDao(PermissionDao permissionDao) {
-		this.permissionDao = permissionDao;
-	}
-
 	public static String getConvertedID(String id) {
 		String id1 = id.substring(0, id.length() - 5);
 		int id1Num = Integer.parseInt(id1);
@@ -112,7 +100,4 @@ public class ExcelPermitionImportService {
 
 	}
 
-	// public static void main(String args[]) {
-	// System.out.println(getConvertedID("6701160"));
-	// }
 }

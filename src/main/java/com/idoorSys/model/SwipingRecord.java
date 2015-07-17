@@ -50,7 +50,7 @@ public class SwipingRecord implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "cardid", length = 100)
+	@Column(length = 100)
 	public String getCard_id() {
 		return this.card_id;
 	}
@@ -59,7 +59,7 @@ public class SwipingRecord implements java.io.Serializable {
 		this.card_id = cardid;
 	}
 
-	@Column(name = "swiping_time", nullable = false, length = 19)
+	@Column(nullable = false, length = 19)
 	public Timestamp getSwiping_time() {
 		return this.swiping_time;
 	}

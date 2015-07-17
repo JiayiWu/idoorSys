@@ -42,16 +42,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>org.springframework</groupId>-->
-			<!--<artifactId>spring-asm</artifactId>-->
-			<!--<version>3.1.4.RELEASE</version>-->
-		<!--</dependency>-->
-		<dependency>
-			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
@@ -70,11 +60,6 @@
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-context-support</artifactId>
-		<version>${spring.version}</version>
-	</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -243,13 +228,6 @@
 			<artifactId>spring-test</artifactId>
 			<version>3.1.1.RELEASE</version>
 		</dependency>
-
-
-		<!--<dependency>-->
-			<!--<groupId>com.fasterxml.jackson.core</groupId>-->
-			<!--<artifactId>jackson-core</artifactId>-->
-			<!--<version>2.5.2</version>-->
-		<!--</dependency>-->
 
 
 		<dependency>

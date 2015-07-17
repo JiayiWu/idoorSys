@@ -73,12 +73,20 @@ public class Room implements Serializable {
 		return num;
 	}
 
-	public void setNum(String nameEn) {
-		this.num = nameEn;
+	public void setNum(String num) {
+		this.num = num;
 	}
 
-	@PrePersist @PreUpdate
+	public Timestamp getTimetag() {
+		return timetag;
+	}
+
+	public void setTimetag(Timestamp timetag) {
+		this.timetag = timetag;
+	}
+
+	@PrePersist @PreUpdate // annotation not work :(
 	public void changeTimeStamp() {
-		timetag = new Timestamp(System.currentTimeMillis());
+		setTimetag(new Timestamp(System.currentTimeMillis()));
 	}
 }

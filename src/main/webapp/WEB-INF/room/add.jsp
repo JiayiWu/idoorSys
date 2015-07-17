@@ -16,8 +16,8 @@
 					size="30" value="${room.name}" />
 			</p>
 			<p>
-				<label>房间英文名称：</label> <input name="nameEn" class="required" type="text"
-					size="30" value="${room.nameEN}" />
+				<label>房间英文名称：</label> <input name="num" class="required" type="text"
+					size="30" value="${room.num}" />
 			</p>
 			<p>
 				<label>房间类型：</label> <input name="type" type="text" size="30"

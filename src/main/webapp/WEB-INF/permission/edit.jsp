@@ -15,7 +15,7 @@
 				<label>类型：</label> <input name="type" type="text" size="30" value="${permission.type}" />
 			</p>
 			<p>
-				<label>卡号：</label> <input name="cardNum" type="text" size="30" value="${permission.permissionUser.cardNum}" />
+				<label>卡号：</label> <input name="cardNum" type="text" size="30" value="${permission.permission_user.card_num}" />
 			</p>
 
 			<div class="divider"></div>

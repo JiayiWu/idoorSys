@@ -12,8 +12,8 @@
 					value="${room.id}" readonly="readonly" />
 			</p>
 			<p>
-				<label>英文名：</label> <input name="nameEn" type="text" size="30"
-					value="${room.nameEn}" />
+				<label>英文名：</label> <input name="num" type="text" size="30"
+					value="${room.num}" />
 			</p>
 			<p>
 				<label>房间名称：</label> <input name="name" class="required" type="text"

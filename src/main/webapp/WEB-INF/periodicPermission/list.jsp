@@ -14,8 +14,8 @@
     <div class="searchBar">
       <table class="searchContent">
         <tr>
-          <td>房间名称：<input type="text" name="room_name" /></td>
-          <td>用户名称：<input type="text" name="user_name" /></td>
+          <td>房间名称：<input type="text" name="roomName" /></td>
+          <td>用户名称：<input type="text" name="userName" /></td>
         </tr>
         <tr>
           <td>星期几：
@@ -73,11 +73,11 @@
       <tr target="sid_user" rel="${permission.id}">
         <td>${permission.id}</td>
         <td>${permission.room.name}</td>
-        <td>${permission.dayOfWeek}</td>
-        <td>${permission.beginTime}</td>
-        <td>${permission.endTime}</td>
-        <td>${permission.permissionUser.name}</td>
-        <td>${permission.permissionUser.cardNum}</td>
+        <td>${permission.day_of_week}</td>
+        <td>${permission.begin_time}</td>
+        <td>${permission.end_time}</td>
+        <td>${permission.permission_user.name}</td>
+        <td>${permission.permission_user.card_num}</td>
 
       </tr>
     </c:forEach>

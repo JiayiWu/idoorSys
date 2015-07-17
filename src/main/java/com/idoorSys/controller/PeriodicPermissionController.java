@@ -21,6 +21,7 @@ import java.sql.Time;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
 
 /**
  * Created by Ezio on 5/2/2015.
@@ -74,7 +75,7 @@ public class PeriodicPermissionController implements IdoorController {
     public String findByExample(@RequestParam("userName") String userName,
                                 @RequestParam("roomName") String roomName,
                                 @RequestParam("dayOfWeek") int dayOfWeek, Map<String, Object> model) {
-        List<PeriodicPermission> permissions = (List<PeriodicPermission>) periodicPermissionService
+        List<PeriodicPermission> permissions = periodicPermissionService
                 .findByCondition(userName, roomName, dayOfWeek);
         model.put("permissions", permissions);
         model.put("week", week);
@@ -104,6 +105,9 @@ public class PeriodicPermissionController implements IdoorController {
                          @RequestParam("dayOfWeek") char dayOfWeek,
                          @RequestParam("beginTime") String beginTime,
                          @RequestParam("endTime") String endTime) {
+        if (Time.valueOf(beginTime).after(Time.valueOf(endTime))) {
+            return "/ajaxFail";
+        }
         Room room = new Room();
         room.setId(roomId);
         PermissionUser user = new PermissionUser();
@@ -135,6 +139,9 @@ public class PeriodicPermissionController implements IdoorController {
                            @RequestParam("dayOfWeek") char dayOfWeek,
                            @RequestParam("beginTime") String beginTime,
                            @RequestParam("endTime") String endTime) {
+        if (Time.valueOf(beginTime).after(Time.valueOf(endTime))) {
+            return "/ajaxFail";
+        }
         try {
             Msg result = Msg.SUCCESS;
             for (int i = 0; i < users.length; i++) {

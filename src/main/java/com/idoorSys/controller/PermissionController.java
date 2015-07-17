@@ -1,6 +1,7 @@
 package com.idoorSys.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import com.idoorSys.service.PermissionUserService;
 import com.idoorSys.service.RoomService;
 import com.idoorSys.utils.Msg;
 import com.idoorSys.utils.SpringContextsUtil;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -37,17 +39,17 @@ public class PermissionController implements IdoorController {
 	@Override
 	@RequestMapping("/list")
 	public String list(Map<String, Object> model) {
-		// permissionService.preAdd();
 
 		List<Permission> totalPermissions = permissionService.getAll();
 		List<Permission> permissions = totalPermissions.size()>20? totalPermissions.subList(0, 20): totalPermissions;
-		int pageNumShown = totalPermissions.size()/20+1; pageNumShown = pageNumShown>10 ? 10: pageNumShown;
+		int pageNumShown = totalPermissions.size()/20+1;
+		pageNumShown = pageNumShown>10 ? 10: pageNumShown;
 
-		model.put("permissions",permissions);
+		model.put("permissions", permissions);
 		model.put("totalCount", totalPermissions.size());
 		model.put("numPerPage", 20);
 		model.put("pageNumShown", pageNumShown);
-		model.put("currentPage",1);
+		model.put("currentPage", 1);
 		return "/permission/list";
 	}
 	@RequestMapping("/pagedList")
@@ -55,7 +57,8 @@ public class PermissionController implements IdoorController {
 		int totalCount = Integer.parseInt(request.getParameter("totalCount"));
 		int numPerPage = Integer.parseInt(request.getParameter("numPerPage"));
 		int currentPage = Integer.parseInt(request.getParameter("pageNum"));
-		int pageNumShown = totalCount/numPerPage+1; pageNumShown = pageNumShown>10 ? 10: pageNumShown;
+		int pageNumShown = totalCount/numPerPage+1;
+		pageNumShown = pageNumShown>10 ? 10: pageNumShown;
 		List<Permission> permissions = permissionService.getPageAll(numPerPage * (currentPage - 1), numPerPage);
 
 		model.put("permissions", permissions);
@@ -69,8 +72,7 @@ public class PermissionController implements IdoorController {
 	@RequestMapping("/findByExample")
 	public String findByExample(@RequestParam("userName") String userName,
 			@RequestParam("roomName") String roomName, Map<String, Object> model) {
-		List<Permission> permissions = (List<Permission>) permissionService
-				.findByCondition(userName, roomName);
+		List<Permission> permissions = permissionService.findByCondition(userName, roomName);
 		model.put("permissions", permissions);
 		return "/permission/list";
 	}
@@ -85,10 +87,22 @@ public class PermissionController implements IdoorController {
 			return "/ajaxFail";
 	}
 
+	@ResponseBody
 	@RequestMapping("/delete/{id}")
 	public void delete(@PathVariable int id, Map<String, Object> model, HttpServletResponse response) throws IOException {
 		Msg msg = permissionService.deleteById(id);
-		if (msg == Msg.SUCCESS)
+		Map<String, String> json = new HashMap<>();
+		json.put("callbackType", "forward");
+		json.put("forwardUrl", "/permission/list");
+//		if (msg == Msg.SUCCESS) {
+//			json.put("statusCode", "200");
+//			json.put("message", "success");
+//		}
+//		else {
+//			json.put("statusCode", "300");
+//			json.put("message", "fail");
+//		}
+		if (msg == Msg.SUCCESS) {
 			response.getWriter().print("{\n" +
 					"\t\"statusCode\":\"200\",\n" +
 					"\t\"message\":\"success\",\n" +
@@ -98,7 +112,8 @@ public class PermissionController implements IdoorController {
 					"\t\"forwardUrl\":\"permission/list\",\n" +
 					"\t\"confirmMsg\":\"\"\n" +
 					"}");
-		else
+		}
+		else {
 			response.getWriter().print("{\n" +
 					"\t\"statusCode\":\"300\",\n" +
 					"\t\"message\":\"fail\",\n" +
@@ -108,6 +123,7 @@ public class PermissionController implements IdoorController {
 					"\t\"forwardUrl\":\"permission/list\",\n" +
 					"\t\"confirmMsg\":\"\"\n" +
 					"}");
+		}
 	}
 
 	@RequestMapping("/update")
@@ -117,10 +133,9 @@ public class PermissionController implements IdoorController {
 			@RequestParam("cardNum") String cardNum) {
 		Room room = new Room();
 		room.setId(roomId);
-		PermissionUser user = new PermissionUser();
-		user.setCard_num(cardNum);
-		permissionService.update(new Permission(id,room,user,type));
-		return "/ajaxDone";
+		PermissionUser user = new PermissionUser(cardNum);
+		Msg msg = permissionService.update(new Permission(id, room, user, type));
+		return msg==Msg.SUCCESS? "/ajaxDone": "/ajaxFail";
 	}
 
 	@RequestMapping("/add")

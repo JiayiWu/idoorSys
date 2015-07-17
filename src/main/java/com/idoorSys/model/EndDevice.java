@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 终端设备，（由嵌入式控制中心添加，在网页端无业务逻辑或表现P
+ * 终端设备，（由嵌入式控制中心添加，在网页端无业务逻辑或表现)
  * Created by Ezio on 7/9/2015.
  */
 @Entity

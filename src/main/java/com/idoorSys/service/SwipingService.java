@@ -25,12 +25,12 @@ public class SwipingService {
         List<SwipingRecord> records = new ArrayList<>();
         List<Object[]> objects = dao
                 .execSqlQuery(
-                        "select swiping_record.id, swiping_record.swiping_Time, PermissionUser.name, swiping_record.cardid, Room.name as rname from "
-                                + "swiping_record,PermissionUser,Room"
+                        "select swiping_record.id, swiping_record.swiping_time, permission_user.name, swiping_record.card_id, room.name as rname from "
+                                + "swiping_record,permission_user,room"
                                 + " where "
-                                + "substring(swiping_record.cardid, 3, 6) = PermissionUser.cardNum"
+                                + "substring(swiping_record.card_id, 3, 6) = permission_user.card_num"
                                 + " and "
-                                + "swiping_record.room_Num = Room.nameEn"
+                                + "swiping_record.room_num = room.num"
                                 + " ORDER BY swiping_record.id DESC"
                                 + (size < 0 || up < 0 ? "" : " LIMIT " + size + " OFFSET " + up)
                 );
@@ -54,12 +54,12 @@ public class SwipingService {
         List<SwipingRecord> records = new ArrayList<>();
         List<Object[]> objects = dao
                 .execSqlQuery(
-                        "select swiping_record.id, swiping_record.swiping_Time, swiping_record.cardid, Room.name as rname from "
-                                + "swiping_record,Room"
+                        "select swiping_record.id, swiping_record.swiping_time, swiping_record.card_id, room.name as rname from "
+                                + "swiping_record,room"
                                 + " where "
-                                + "substring(swiping_record.cardid, 3, 6) not in (select PermissionUser.cardNum from PermissionUser)"
+                                + "substring(swiping_record.card_id, 3, 6) not in (select permission_user.card_num from permission_user)"
                                 + " and "
-                                + "swiping_record.room_Num = Room.nameEn"
+                                + "swiping_record.room_num = room.num"
                                 + " ORDER BY swiping_record.id DESC"
                                 + (size < 0 || up < 0 ? "" : " LIMIT " + size + " OFFSET " + up)
                 );

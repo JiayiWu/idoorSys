@@ -27,13 +27,13 @@ public class PermissionService {
 		List<Permission> permissions = new ArrayList<>();
 		List<Object[]> objects = dao
 				.execSqlQuery(
-						"select Permission.id, PermissionUser.cardNum ,Room.name, Permission.type, PermissionUser.name as pname from "
-								+ "Permission,Room,PermissionUser"
+						"select permission.id, permission_user.card_num ,room.name, permission.type, permission_user.name as pname from "
+								+ "permission,room,permission_user"
 								+ " where "
-								+ "Permission.room_id=Room.id"
+								+ "permission.room_id=room.id"
 								+ " and "
-								+ "Permission.permissionUser_cardNum = PermissionUser.cardNum"
-								+ " ORDER BY Permission.id DESC"
+								+ "permission.card_num = permission_user.card_num"
+								+ " ORDER BY permission.id DESC"
 								+ (size < 0 || up < 0 ? "" : " LIMIT " + size + " OFFSET " + up)
 				);
 		for (Object[] object : objects) {
@@ -61,22 +61,22 @@ public class PermissionService {
 	}
 
 	public List<Permission> findByCondition(String userName, String roomName) {
-		userName = userName == null || userName.equals("")? null: userName;
-		roomName = roomName == null || roomName.equals("")? null: roomName;
+		userName = userName == null || userName.trim().isEmpty()? null: userName;
+		roomName = roomName == null || roomName.trim().isEmpty()? null: roomName;
+
 		List<Permission> permissions = new ArrayList<>();
-		List<Object[]> objects = dao
-				.execSqlQuery(
-						"select Permission.id,PermissionUser.cardNum, Room.name,  Permission.type, PermissionUser.name as pname from "
-								+ "Permission,Room,PermissionUser"
-								+ " where "
-								+ "Permission.room_id=Room.id"
-								+ " and "
-								+ "Permission.permissionUser_cardNum = PermissionUser.cardNum"
-								+ (userName == null ? "" : (" and "
-								+ "PermissionUser.name like '%" + userName + "%'"))
-								+ (roomName == null ? "" : (" and "
-								+ "Room.name like '%" + roomName + "%'"))
-								+ "ORDER BY Permission.id DESC");
+		List<Object[]> objects = dao.execSqlQuery(
+				"select permission.id,permission_user.card_num, room.name,  permission.type, permission_user.name as pname from "
+						+ "permission,room,permission_user"
+						+ " where "
+						+ "permission.room_id=room.id"
+						+ " and "
+						+ "permission.card_num = permission_user.card_num"
+						+ (userName == null ? "" : (" and "
+						+ "permission_user.name like '%" + userName + "%'"))
+						+ (roomName == null ? "" : (" and "
+						+ "room.name like '%" + roomName + "%'"))
+						+ " ORDER BY permission.id DESC");
 		for (Object[] object : objects) {
 			Permission permission = new Permission();
 			permission.setId((Integer)object[0]);

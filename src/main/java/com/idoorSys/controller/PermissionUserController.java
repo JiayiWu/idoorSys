@@ -72,7 +72,7 @@ public class PermissionUserController implements IdoorController {
 			return "/ajaxFail";
 	}
 
-	@RequestMapping(MAPPING_UPDATE)
+	@RequestMapping("update")
 	public String update(@RequestParam("id") int id,
 			@RequestParam("name") String name,
 			@RequestParam("type") String type,
@@ -101,7 +101,7 @@ public class PermissionUserController implements IdoorController {
 			return "/ajaxFail";
 	}
 
-	@RequestMapping(MAPPING_ADD)
+	@RequestMapping("add")
 	public String add(@RequestParam("name") String name,
 			@RequestParam("type") String type,
 			@RequestParam("cardNum") String cardNum,
@@ -130,7 +130,7 @@ public class PermissionUserController implements IdoorController {
 	}
 
 	@Override
-	@RequestMapping(MAPPING_PAGE_EDIT)
+	@RequestMapping("page/edit/{id}")
 	public String pageEdit(@PathVariable int id, Map<String, Object> model) {
 		model.put("puser", permissionUserService.getById(id));
 		List<UGroup> groups = uGroupService.getAll();
@@ -139,7 +139,7 @@ public class PermissionUserController implements IdoorController {
 	}
 
 	@Override
-	@RequestMapping(MAPPIND_PAGE_ADD)
+	@RequestMapping("/page/add")
 	public String pageAdd(Map<String, Object> model) {
 		uGroupService.preAdd();
 		List<UGroup> groups = uGroupService.getAll();

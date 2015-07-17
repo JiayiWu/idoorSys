@@ -12,14 +12,14 @@
         <label>房间id：</label> <input name="roomId" class="required" type="text" size="30" value="${permission.room.id}" />
       </p>
       <p>
-        <label>卡号：</label> <input name="cardNum" type="text" size="30" value="${permission.permissionUser.cardNum}" />
+        <label>卡号：</label> <input name="cardNum" type="text" size="30" value="${permission.permission_user.card_num}" />
       </p>
       <p>
         <label>星期几：</label>
         <select name="dayOfWeek">
           <c:forEach var="i" begin="1" end="7">
             <c:choose>
-              <c:when test="${i == permission.dayOfWeek}">
+              <c:when test="${i == permission.day_of_week}">
                 <option value="${i}" selected="selected">${week[i-1]}</option>
               </c:when>
               <c:otherwise>
@@ -31,11 +31,11 @@
       </p>
       <p>
         <label>起始时间：</label> <input name="beginTime" type="text" pattern="(0[0-9]|1[0-9]|2[0-3])(\:[0-5][0-9]){2}"
-                                    title="00:00:00-23:59:59" value="${permission.beginTime}"/>
+                                    title="00:00:00-23:59:59" value="${permission.begin_time}"/>
       </p>
       <p>
         <label>结束时间：</label> <input name="endTime" type="text" pattern="(0[0-9]|1[0-9]|2[0-3])(\:[0-5][0-9]){2}"
-                                    title="00:00:00-23:59:59" value="${permission.endTime}"/>
+                                    title="00:00:00-23:59:59" value="${permission.end_time}"/>
       </p>
 
       <div class="divider"></div>

@@ -63,9 +63,9 @@
 			<c:forEach var="puser" items="${pusers}">
 				<tr target="sid_user" rel="${puser.id}">
 					<td>${puser.id}</td>
-					<td>${puser.cardNum}</td>
+					<td>${puser.card_num}</td>
 					<td>${puser.name}</td>
-					<td>${puser.stdNum}</td>
+					<td>${puser.std_num}</td>
 					<td>${puser.phone}</td>
 					<td>${puser.group}</td>
 					<td>${puser.type}</td>

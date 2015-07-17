@@ -1,15 +1,12 @@
 package com.idoorSys.service;
 
-import java.util.List;
-
 import com.idoorSys.dao.SysUserDao;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-
 import com.idoorSys.model.SysUser;
-import com.idoorSys.utils.Msg;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 管理登陆用户信息

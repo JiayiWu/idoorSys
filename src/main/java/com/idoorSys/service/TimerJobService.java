@@ -1,12 +1,10 @@
 package com.idoorSys.service;
 
-import com.idoorSys.model.Reserve;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
-
-import com.idoorSys.utils.SpringContextsUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.annotation.Resource;
 
@@ -16,17 +14,18 @@ import javax.annotation.Resource;
 @Service
 public class TimerJobService extends QuartzJobBean {
 
-//	ReserveService reserveService = (ReserveService) SpringContextsUtil
-//			.getBean("reserveService");
-
+//	@Resource
+//	ReserveService reserveService; //TODO reserveService is null
 	@Resource
-	ReserveService service; //TODO service is null
+	SyncService syncService;
 
 	@Override
 	protected void executeInternal(JobExecutionContext arg0)
 			throws JobExecutionException {
-		service.cleanLocalReserve();
-		service.SaveRemoteReserve();
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+		System.out.println(syncService == null);
+//		reserveService.cleanLocalReserve();
+//		reserveService.SaveRemoteReserve();
 	}
 
 }

@@ -54,7 +54,7 @@
 			<c:forEach var="room" items="${rooms}">
 				<tr target="sid_user" rel="${room.id}">
 					<td>${room.id}</td>
-					<td>${room.nameEn}</td>
+					<td>${room.num}</td>
 					<td>${room.name}</td>
 					<td>${room.type}</td>
 				</tr>

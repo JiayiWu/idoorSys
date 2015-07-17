@@ -15,11 +15,11 @@
 			</p>
 			<p>
 				<label>用户学号：</label> <input name="stdNum" class="required"
-					type="text" size="30" value="${puser.stdNum}" />
+					type="text" size="30" value="${puser.std_num}" />
 			</p>
 			<p>
 				<label>用户卡号：</label> <input id="cardNum" name="cardNum" class="required"
-					type="text" size="30" value="${puser.cardNum}" />
+					type="text" size="30" value="${puser.card_num}" />
 			</p>
 			<p>
 				<label>用户类型：</label> <input name="type" type="text" size="30"

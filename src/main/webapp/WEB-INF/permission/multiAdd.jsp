@@ -58,13 +58,13 @@
 						<table style="width:100%;overflow: auto" layoutH="470">
 							<tbody>
 								<c:forEach var="puser" items="${pusers}">
-									<tr target="sid_user" rel="${puser.cardNum}">
+									<tr target="sid_user" rel="${puser.card_num}">
 										<td style="width: 18px;"><div>
 												<input name="ids" value="xxx" type="checkbox">
 											</div></td>
-										<td><div>${puser.cardNum}</div></td>
+										<td><div>${puser.card_num}</div></td>
 										<td><div>${puser.name}</div></td>
-										<td><div>${puser.stdNum}</div></td>
+										<td><div>${puser.std_num}</div></td>
 									</tr>
 								</c:forEach>
 							</tbody>
