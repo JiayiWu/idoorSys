@@ -1,3 +1,4 @@
 /target/
 .idea/
 idoorSys-dev.iml
+src/main/resources/db.properties
