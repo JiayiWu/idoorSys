@@ -20,7 +20,7 @@
 		<session-timeout>5</session-timeout>
 	</session-config>
 
-	<!-- 著名 Character Encoding filter -->
+	<!--  Character Encoding filter -->
     <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>
