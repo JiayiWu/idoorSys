@@ -1,26 +1,20 @@
 package com.idoorSys.dao;
 
-import java.util.List;
-
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.TransactionException;
+import com.idoorSys.utils.Msg;
+import org.hibernate.*;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.idoorSys.model.Permission;
-import com.idoorSys.model.Room;
-import com.idoorSys.utils.Msg;
+import javax.annotation.Resource;
+import java.util.List;
 
 public class BaseDao {
 	private static final Logger log = LoggerFactory.getLogger(BaseDao.class);
 
+	@Resource
 	private SessionFactory sessionFactory;
 
 	public SessionFactory getSessionFactory() {

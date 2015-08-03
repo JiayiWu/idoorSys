@@ -11,7 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
  * 刷卡用户权限信息
  */
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"card_num", "room_id" }))
+@Table(name = "permission",uniqueConstraints = @UniqueConstraint(columnNames = {"card_num", "room_id" }))
 public class Permission implements Serializable {
 
 	private int id;

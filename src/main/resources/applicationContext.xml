@@ -3,14 +3,13 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
-       xmlns:tx="http://www.springframework.org/schema/tx" default-autowire="byName">
+       xmlns:tx="http://www.springframework.org/schema/tx">
     <context:component-scan base-package="com.idoorSys"/>
 
-    <bean
-            class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:db.properties"/>
     </bean>
-    <bean id="slave" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+    <bean id="local" class="com.mchange.v2.c3p0.ComboPooledDataSource"
           destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
         <property name="jdbcUrl" value="${db1.url}">
@@ -22,18 +21,18 @@
         <property name="initialPoolSize" value="1"/>
         <property name="maxIdleTime" value="20"/>
     </bean>
-    <bean id="local" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-          destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="${db2.url}">
-        </property>
-        <property name="user" value="${db2.user}"/>
-        <property name="password" value="${db2.password}"/>
-        <property name="maxPoolSize" value="40"/>
-        <property name="minPoolSize" value="1"/>
-        <property name="initialPoolSize" value="1"/>
-        <property name="maxIdleTime" value="20"/>
-    </bean>
+    <!--<bean id="slave" class="com.mchange.v2.c3p0.ComboPooledDataSource"-->
+          <!--destroy-method="close">-->
+        <!--<property name="driverClass" value="com.mysql.jdbc.Driver"/>-->
+        <!--<property name="jdbcUrl" value="${db2.url}">-->
+        <!--</property>-->
+        <!--<property name="user" value="${db2.user}"/>-->
+        <!--<property name="password" value="${db2.password}"/>-->
+        <!--<property name="maxPoolSize" value="40"/>-->
+        <!--<property name="minPoolSize" value="1"/>-->
+        <!--<property name="initialPoolSize" value="1"/>-->
+        <!--<property name="maxIdleTime" value="20"/>-->
+    <!--</bean>-->
 
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -59,6 +58,7 @@
 
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <!-- 需要引入tx的命名空间 -->
