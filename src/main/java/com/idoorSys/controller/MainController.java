@@ -5,9 +5,11 @@ import com.idoorSys.service.SysUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -50,6 +52,16 @@ public class MainController {
 			model.put("sysUser", null);
 			return "/login";
 		}
+	}
+
+
+	@ResponseBody
+	@RequestMapping("/loginTimeOut")
+	public Map<String, String> timeout() {
+		Map<String, String> json = new HashMap<>();
+		json.put("statusCode", "301");
+		json.put("message", "time out!");
+		return json;
 	}
 	
 	@RequestMapping("/empty")

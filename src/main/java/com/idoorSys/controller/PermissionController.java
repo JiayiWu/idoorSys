@@ -89,41 +89,20 @@ public class PermissionController implements IdoorController {
 
 	@ResponseBody
 	@RequestMapping("/delete/{id}")
-	public void delete(@PathVariable int id, Map<String, Object> model, HttpServletResponse response) throws IOException {
+	public Map<String, String> delete(@PathVariable int id) throws IOException {
 		Msg msg = permissionService.deleteById(id);
 		Map<String, String> json = new HashMap<>();
 		json.put("callbackType", "forward");
 		json.put("forwardUrl", "/permission/list");
-//		if (msg == Msg.SUCCESS) {
-//			json.put("statusCode", "200");
-//			json.put("message", "success");
-//		}
-//		else {
-//			json.put("statusCode", "300");
-//			json.put("message", "fail");
-//		}
 		if (msg == Msg.SUCCESS) {
-			response.getWriter().print("{\n" +
-					"\t\"statusCode\":\"200\",\n" +
-					"\t\"message\":\"success\",\n" +
-					"\t\"navTabId\":\"\",\n" +
-					"\t\"rel\":\"\",\n" +
-					"\t\"callbackType\":\"forward\",\n" +
-					"\t\"forwardUrl\":\"permission/list\",\n" +
-					"\t\"confirmMsg\":\"\"\n" +
-					"}");
+			json.put("statusCode", "200");
+			json.put("message", "success");
 		}
 		else {
-			response.getWriter().print("{\n" +
-					"\t\"statusCode\":\"300\",\n" +
-					"\t\"message\":\"fail\",\n" +
-					"\t\"navTabId\":\"\",\n" +
-					"\t\"rel\":\"\",\n" +
-					"\t\"callbackType\":\"forward\",\n" +
-					"\t\"forwardUrl\":\"permission/list\",\n" +
-					"\t\"confirmMsg\":\"\"\n" +
-					"}");
+			json.put("statusCode", "300");
+			json.put("message", "fail");
 		}
+		return json;
 	}
 
 	@RequestMapping("/update")

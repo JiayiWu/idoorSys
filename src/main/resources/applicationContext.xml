@@ -2,9 +2,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd"
        xmlns:tx="http://www.springframework.org/schema/tx">
     <context:component-scan base-package="com.idoorSys"/>
+    <sec:http auto-config="true">
+        <sec:session-management invalid-session-url="/loginTimeOut">
+            <sec:concurrency-control max-sessions="1" expired-url="/loginTimeOut"/>
+        </sec:session-management>
+        <sec:logout delete-cookies="JSESSIONID" />
+    </sec:http>
+    <sec:authentication-manager/>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:db.properties"/>
@@ -21,18 +29,6 @@
         <property name="initialPoolSize" value="1"/>
         <property name="maxIdleTime" value="20"/>
     </bean>
-    <!--<bean id="slave" class="com.mchange.v2.c3p0.ComboPooledDataSource"-->
-          <!--destroy-method="close">-->
-        <!--<property name="driverClass" value="com.mysql.jdbc.Driver"/>-->
-        <!--<property name="jdbcUrl" value="${db2.url}">-->
-        <!--</property>-->
-        <!--<property name="user" value="${db2.user}"/>-->
-        <!--<property name="password" value="${db2.password}"/>-->
-        <!--<property name="maxPoolSize" value="40"/>-->
-        <!--<property name="minPoolSize" value="1"/>-->
-        <!--<property name="initialPoolSize" value="1"/>-->
-        <!--<property name="maxIdleTime" value="20"/>-->
-    <!--</bean>-->
 
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
