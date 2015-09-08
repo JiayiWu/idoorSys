@@ -44,7 +44,6 @@ public class ApplianceService {
 	 * @return
 	 */
 	public Msg send(String command) {
-		// empty command
 		if (!command.contains("|")) {
 			return Msg.SUCCESS;
 		}

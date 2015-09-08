@@ -25,7 +25,7 @@ public class Syncronizer {
         syncronizer.username = username;
         syncronizer.password = password;
         loadDriver();
-        syncronizer.connectionM = DriverManager.getConnection("jdbc:mysql://localhost:3306/idoorSys", "root", "1234qwer");
+        syncronizer.connectionM = DriverManager.getConnection("jdbc:mysql://localhost:3306/idoorSysMaster", "root", "1234qwer");
         return syncronizer;
     }
 

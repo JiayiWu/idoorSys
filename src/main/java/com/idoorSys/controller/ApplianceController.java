@@ -1,24 +1,19 @@
 package com.idoorSys.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import com.idoorSys.model.DeviceState;
+import com.idoorSys.service.ApplianceService;
+import com.idoorSys.service.RoomService;
+import com.idoorSys.utils.Msg;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.idoorSys.model.DeviceState;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.idoorSys.service.ApplianceService;
-import com.idoorSys.service.RoomService;
-import com.idoorSys.utils.Msg;
-import com.idoorSys.utils.SpringContextsUtil;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.*;
 
 @Controller
 @RequestMapping(ApplianceController.PATH)
@@ -27,9 +22,17 @@ public class ApplianceController {
 
 	@Resource
 	private ApplianceService applianceService;
-	@Resource
-	private RoomService roomService;
 
+	Map<String, String> ajaxDon = new HashMap<String, String>() {{
+		put("statusCode", "200");
+		put("message", "success");
+		put("callbackType", "forward");
+	}};
+	Map<String, String> ajaxFai = new HashMap<String, String>() {{
+		put("statusCode", "300");
+		put("message", "fail");
+		put("callbackType", "forward");
+	}};
 	String ajaxDone = "{\n" +
 			"\t\"statusCode\":\"200\",\n" +
 			"\t\"message\":\"success\",\n" +

@@ -61,11 +61,11 @@
 
     <bean id="simpleJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="syncService"/>
-        <property name="targetMethod" value="say"/>
+        <property name="targetMethod" value="syncNow"/>
     </bean>
     <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="simpleJobDetail"/>
-        <property name="cronExpression" value="0/10 * * * * ?"/>
+        <property name="cronExpression" value="0 */1 * * * ?"/>
     </bean>
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" autowire="no">
         <property name="triggers">

@@ -24,23 +24,28 @@ public class SyncService {
     private RemoteControllerDao dao;
 
     public void syncNow() {
+        log.info("start sync now");
         try {
             Syncronizer syncronizer = Syncronizer.create("idoorsys", "root", "sqj");
             for (String ip: dao.getIpList()) {
-                System.out.println("start sync " + ip);
+                log.info("start sync " + ip);
                 try {
                     syncronizer.sync(ip);
                 } catch (SQLException e) {
-                    log.debug("Syncronize Fail: "+new Date().toString()+" on ip: "+ip);
+                    log.error("Syncronize Fail: "+new Date().toString()+" on ip: "+ip);
+                    log.error("Syncronize Exception: "+new Date().toString()+"\n" +
+                                    "message: " + e.getMessage()+
+                                    "SQLState: "+e.getSQLState()
+                    );
                 }
-                System.out.println("done");
+                log.info("done");
             }
             syncronizer.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            log.debug("Syncronize Exception: "+new Date().toString()+"\n" +
-                            "message: " + e.getMessage()+
-                            "SQLState: "+e.getSQLState()
+            log.error("Syncronize Exception: " + new Date().toString() + "\n" +
+                            "message: " + e.getMessage() +
+                            "SQLState: " + e.getSQLState()
             );
         }
     }
