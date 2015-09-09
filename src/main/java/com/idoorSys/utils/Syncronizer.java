@@ -1,6 +1,8 @@
 package com.idoorSys.utils;
 
 import com.idoorSys.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -12,6 +14,7 @@ import java.util.Set;
  * Created by Ezio on 7/13/2015.
  */
 public class Syncronizer {
+    private static final Logger log = LoggerFactory.getLogger(Syncronizer.class);
     Connection connectionM = null;
     Connection connectionS = null;
 
@@ -174,6 +177,8 @@ public class Syncronizer {
             toAdd.setRoom(new Room(resultSetS.getInt(5)));
             slaveMap.put(toAdd.getId(), toAdd);
         }
+        log.info("slaveMap.null?: "+(slaveMap == null));
+        log.info("slaveMap.keyset: "+(slaveMap.keySet()));
         Set<Permission> toAdd = new HashSet<>(), toUpdate = new HashSet<>(), toDelete = new HashSet<>();
         for (int id : slaveMap.keySet()) {
             if (masterMap.keySet().contains(id)) {

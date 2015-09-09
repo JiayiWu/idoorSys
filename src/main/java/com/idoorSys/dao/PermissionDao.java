@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository @SuppressWarnings("unchecked")
 public class PermissionDao extends BaseDao {
-    public Msg save(Reserve entity) {
+    public Msg save(Permission entity) {
         Session session = getSession();
         Transaction tx = session.beginTransaction();
         try {
@@ -30,7 +30,7 @@ public class PermissionDao extends BaseDao {
         }
     }
 
-    public Msg update(Reserve entity) {
+    public Msg update(Permission entity) {
         Session session = getSession();
         try {
             entity.setTimetag(new Timestamp(System.currentTimeMillis()));
